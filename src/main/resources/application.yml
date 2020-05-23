@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    password: test
+    username: test
+    url: jdbc:postgresql://localhost:5432
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: eu-west-1
+    credentials:
+      profile-path: ~/.aws/credentials
+      profile-name: serverless-admin
