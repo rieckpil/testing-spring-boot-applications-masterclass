@@ -1,29 +1,48 @@
-import React from 'react';
-import {Button, Container} from "semantic-ui-react";
+import React, {useState} from 'react';
+import {Container} from "semantic-ui-react";
+import Keycloak from 'keycloak-js';
+import {Route, Switch} from "react-router-dom";
+
 import Header from "./Header";
-import LatestBookList from "./LatestBookList";
-import LatestReviewList from "./LatestReviewList";
+import SubmitReviewContainer from "./SubmitReviewContainer";
+import HomeContainer from "./HomeContainer";
 
 function App() {
+
+  const [keycloak, setKeycloak] = useState();
+  const [authenticated, setAuthenticated] = useState();
+
+  const login = () => {
+    const keycloakInstance = Keycloak('/keycloak.json');
+    keycloakInstance.init({onLoad: 'login-required'}).then(authenticated => {
+      console.log("CALLBACK");
+      console.log(authenticated)
+      setAuthenticated(authenticated);
+      setKeycloak(keycloakInstance);
+    });
+  }
+
+  const logout = () => {
+    keycloak.logout().then(() => {
+      setAuthenticated(false);
+    });
+  }
+
   return (
     <Container>
-      <Header/>
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <Button circular icon='add' />
-      <LatestBookList/>
-      <LatestReviewList/>
+      <Header onLogin={login} onLogout={logout} isAuthenticated={authenticated}/>
+      <Switch>
+        <Route exact path="/">
+          <HomeContainer/>
+        </Route>
+        <Route path="/all-reviews">
+        </Route>
+        <Route path="/all-books">
+        </Route>
+        <Route path="/submit-review">
+          <SubmitReviewContainer isAuthenticated={authenticated}/>
+        </Route>
+      </Switch>
     </Container>
   );
 }

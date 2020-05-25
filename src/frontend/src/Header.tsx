@@ -1,42 +1,68 @@
 import {Button, Icon, Menu} from "semantic-ui-react";
 import React, {useState} from "react";
+import {Link} from "react-router-dom";
 
-const App = () => {
+const App: React.FC<{
+  onLogin: Function,
+  onLogout: Function,
+  isAuthenticated: boolean
+}> = ({onLogin, onLogout, isAuthenticated}) => {
   const [activeItem, setActiveItem] = useState();
 
   return (
     <Menu size={"small"} stackable>
-      <Menu.Item header>Book Reviewr</Menu.Item>
+      <Menu.Item
+        as={Link}
+        to="/"
+        header>Book Reviewr</Menu.Item>
 
       <Menu.Item
+        as={Link}
         name='allBooks'
         active={activeItem === 'allBooks'}
-        onClick={() => setActiveItem('allBooks')}
-      />
+        to="/all-books"
+        onClick={() => setActiveItem('allBooks')}>
+      </Menu.Item>
 
       <Menu.Item
+        as={Link}
         name='allReviews'
         active={activeItem === 'allReviews'}
         onClick={() => setActiveItem('allReviews')}
+        to="/all-reviews"
       />
 
       <Menu.Menu position='right'>
         <Menu.Item>
-          <Button secondary animated='fade'>
-            <Button.Content visible>Submit a new review</Button.Content>
-            <Button.Content hidden>
-              <Icon name='add'/>
-            </Button.Content>
+          <Button
+            as={Link}
+            to="/submit-review"
+            secondary>
+            Submit a new review
           </Button>
         </Menu.Item>
 
         <Menu.Item>
-          <Button primary animated>
-            <Button.Content visible>Login</Button.Content>
-            <Button.Content hidden>
-              <Icon name='arrow right'/>
-            </Button.Content>
-          </Button>
+          {isAuthenticated ?
+            <Button
+              color='red'
+              animated
+              onClick={() => onLogout()}>
+              <Button.Content visible>Logout</Button.Content>
+              <Button.Content hidden>
+                <Icon name='sign-out'/>
+              </Button.Content>
+            </Button> :
+            <Button
+              primary
+              animated
+              onClick={() => onLogin()}>
+              <Button.Content visible>Login</Button.Content>
+              <Button.Content hidden>
+                <Icon name='sign-in'/>
+              </Button.Content>
+            </Button>
+          }
         </Menu.Item>
       </Menu.Menu>
     </Menu>
