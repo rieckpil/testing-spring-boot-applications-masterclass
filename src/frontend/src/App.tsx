@@ -1,12 +1,14 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {Button, Container} from "semantic-ui-react";
+import Header from "./Header";
+import LatestBookList from "./LatestBookList";
+import LatestReviewList from "./LatestReviewList";
 
 function App() {
   return (
-    <div className="App">
+    <Container>
+      <Header/>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo"/>
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
@@ -19,7 +21,10 @@ function App() {
           Learn React
         </a>
       </header>
-    </div>
+      <Button circular icon='add' />
+      <LatestBookList/>
+      <LatestReviewList/>
+    </Container>
   );
 }
 

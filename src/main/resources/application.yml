@@ -3,6 +3,11 @@ spring:
     password: test
     username: test
     url: jdbc:postgresql://localhost:5432
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8888/auth/realms/spring
 cloud:
   aws:
     stack:
