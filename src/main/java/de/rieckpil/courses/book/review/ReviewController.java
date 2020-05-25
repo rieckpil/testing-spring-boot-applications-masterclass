@@ -1,5 +1,7 @@
 package de.rieckpil.courses.book.review;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -11,22 +13,18 @@ public class ReviewController {
     return "Hello World";
   }
 
-  @PostMapping("/{bookId}/reviews")
-  public String createBookReview(@PathVariable("bookId") Long bookId) {
-    return "Hello World";
+  @PostMapping("/{isbn}/reviews")
+  public ResponseEntity<Void> createBookReview(@PathVariable("isbn") Long isbn, @RequestBody ObjectNode objectNode) {
+    System.out.println(objectNode);
+    return ResponseEntity.created(null).build();
   }
 
-  @PutMapping("/{bookId}/reviews/{reviewId}")
-  public String updateBookReview() {
-    return "Hello World";
-  }
-
-  @DeleteMapping("/{bookId}/reviews/{reviewId}")
+  @DeleteMapping("/{isbn}/reviews/{reviewId}")
   public String deleteBookReview() {
     return "Hello World";
   }
 
-  @GetMapping("/{bookId}/reviews")
+  @GetMapping("/{isbn}/reviews")
   public String getReviewsForBook() {
     return "Hello World";
   }

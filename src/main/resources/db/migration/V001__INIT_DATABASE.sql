@@ -1,0 +1,3 @@
+CREATE TABLE books (
+ id BIGINT PRIMARY KEY
+);

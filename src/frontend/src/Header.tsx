@@ -18,7 +18,7 @@ const Header: React.FC<Props> = ({isAuthenticated}) => {
   const [activeItem, setActiveItem] = useState();
 
   return (
-    <Menu size={"small"} stackable>
+    <Menu size='large' stackable>
       <Menu.Item
         as={Link}
         to="/"

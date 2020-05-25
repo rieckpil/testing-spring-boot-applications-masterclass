@@ -2,7 +2,7 @@ spring:
   datasource:
     password: test
     username: test
-    url: jdbc:postgresql://localhost:5432
+    url: jdbc:postgresql://localhost:5432/postgres
   security:
     oauth2:
       resourceserver:
