@@ -1,36 +1,15 @@
-import React, {useState} from 'react';
-import {Container} from "semantic-ui-react";
-import Keycloak from 'keycloak-js';
+import React from 'react';
 import {Route, Switch} from "react-router-dom";
+import {Container} from "semantic-ui-react";
 
 import Header from "./Header";
 import SubmitReviewContainer from "./SubmitReviewContainer";
 import HomeContainer from "./HomeContainer";
 
-function App() {
-
-  const [keycloak, setKeycloak] = useState();
-  const [authenticated, setAuthenticated] = useState();
-
-  const login = () => {
-    const keycloakInstance = Keycloak('/keycloak.json');
-    keycloakInstance.init({onLoad: 'login-required'}).then(authenticated => {
-      console.log("CALLBACK");
-      console.log(authenticated)
-      setAuthenticated(authenticated);
-      setKeycloak(keycloakInstance);
-    });
-  }
-
-  const logout = () => {
-    keycloak.logout().then(() => {
-      setAuthenticated(false);
-    });
-  }
-
+const App: React.FC = () => {
   return (
     <Container>
-      <Header onLogin={login} onLogout={logout} isAuthenticated={authenticated}/>
+      <Header/>
       <Switch>
         <Route exact path="/">
           <HomeContainer/>
@@ -40,7 +19,7 @@ function App() {
         <Route path="/all-books">
         </Route>
         <Route path="/submit-review">
-          <SubmitReviewContainer isAuthenticated={authenticated}/>
+          <SubmitReviewContainer/>
         </Route>
       </Switch>
     </Container>

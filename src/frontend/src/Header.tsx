@@ -1,12 +1,20 @@
 import {Button, Icon, Menu} from "semantic-ui-react";
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
+import {connect, ConnectedProps} from 'react-redux';
+import {RootState} from "./types";
+import {keycloakLogin, keycloakLogout} from "./KeycloakService";
 
-const App: React.FC<{
-  onLogin: Function,
-  onLogout: Function,
-  isAuthenticated: boolean
-}> = ({onLogin, onLogout, isAuthenticated}) => {
+const mapState = (state: RootState) => ({
+  isAuthenticated: state.authentication.isAuthenticated
+});
+
+const connector = connect(mapState)
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+type Props = PropsFromRedux & {}
+
+const Header: React.FC<Props> = ({isAuthenticated}) => {
   const [activeItem, setActiveItem] = useState();
 
   return (
@@ -47,7 +55,7 @@ const App: React.FC<{
             <Button
               color='red'
               animated
-              onClick={() => onLogout()}>
+              onClick={() => keycloakLogout()}>
               <Button.Content visible>Logout</Button.Content>
               <Button.Content hidden>
                 <Icon name='sign-out'/>
@@ -56,7 +64,7 @@ const App: React.FC<{
             <Button
               primary
               animated
-              onClick={() => onLogin()}>
+              onClick={() => keycloakLogin()}>
               <Button.Content visible>Login</Button.Content>
               <Button.Content hidden>
                 <Icon name='sign-in'/>
@@ -69,4 +77,4 @@ const App: React.FC<{
   );
 }
 
-export default App;
+export default connector(Header);
