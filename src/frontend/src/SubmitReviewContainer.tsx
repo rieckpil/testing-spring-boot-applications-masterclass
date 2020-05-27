@@ -1,6 +1,6 @@
 import React, {FormEvent, useEffect, useState} from "react";
 import {Button, Checkbox, Container, Dropdown, Form, Header, Rating, RatingProps, TextArea} from "semantic-ui-react";
-import {RootState} from "./types";
+import {Book, RootState} from "./types";
 import {connect, ConnectedProps} from "react-redux";
 import {login} from "./actions";
 import {DropdownProps} from "semantic-ui-react/dist/commonjs/modules/Dropdown/Dropdown";
@@ -21,11 +21,11 @@ type Props = PropsFromRedux & {}
 
 const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
 
-  const [bookOptions, setBookOptions] = useState([]);
-  const [isbn, setIsbn] = useState();
+  const [bookOptions, setBookOptions] = useState<any>();
+  const [isbn, setIsbn] = useState<any>();
   const [reviewTitle, setReviewTitle] = useState();
   const [reviewContent, setReviewContent] = useState();
-  const [rating, setRating] = useState();
+  const [rating, setRating] = useState<number | string>();
 
   const handleSubmit = (evt: FormEvent) => {
     evt.preventDefault();
@@ -34,7 +34,7 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authentication': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
         reviewTitle,
@@ -53,7 +53,17 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
   useEffect(() => {
     fetch('http://localhost:8080/api/books')
       .then(result => result.json())
-      .then(result => setBookOptions(result));
+      .then((result: Book[]) => {
+        const formattedBooks = result.map((book: Book) => {
+          return {
+            "key": book.isbn,
+            "text": `${book.title} - ${book.author}`,
+            "value": book.isbn,
+            "image": {"src": book.thumbnailUrl}
+          }
+        });
+        setBookOptions(formattedBooks);
+      })
   }, []);
 
   return (

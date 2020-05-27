@@ -15,7 +15,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>
 type Props = PropsFromRedux & {}
 
 const Header: React.FC<Props> = ({isAuthenticated}) => {
-  const [activeItem, setActiveItem] = useState();
+  const [activeItem, setActiveItem] = useState<string>();
 
   return (
     <Menu size='large' stackable>

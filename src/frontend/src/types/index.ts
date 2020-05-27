@@ -27,3 +27,14 @@ interface LogoutAction {
 }
 
 export type AuthenticationActionTypes = LoginAction | LogoutAction
+
+export interface Book {
+  title: string,
+  isbn: string,
+  author: string,
+  genre: string,
+  thumbnailUrl: string,
+  description: string,
+  publisher: string,
+  pages: number
+}

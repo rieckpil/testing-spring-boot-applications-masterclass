@@ -18,8 +18,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .mvcMatchers("/api/**").authenticated()
         .anyRequest().permitAll()
       )
-      .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
       .sessionManagement()
-      .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+      .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      .and()
+      .csrf().disable()
+      .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
   }
 }

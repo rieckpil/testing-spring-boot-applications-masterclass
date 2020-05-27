@@ -20,7 +20,7 @@
     "react-scripts": "3.4.1",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.2",
-    "typescript": "^3.7.5"
+    "typescript": "^3.9.3"
   },
   "scripts": {
     "start": "react-scripts start",
