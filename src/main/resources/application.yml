@@ -8,6 +8,9 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8888/auth/realms/spring
+  jpa:
+    hibernate:
+      ddl-auto: validate
 cloud:
   aws:
     stack:

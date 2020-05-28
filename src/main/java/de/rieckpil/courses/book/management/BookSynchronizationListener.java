@@ -22,8 +22,8 @@ public class BookSynchronizationListener implements CommandLineRunner {
     if (bookRepository.findAll().isEmpty()) {
       isbnList.forEach(isbn -> {
         Book book = openLibraryApiClient.fetchMetadataForBook(isbn);
+        book = bookRepository.save(book);
         System.out.println(book);
-        bookRepository.save(book);
       });
     }
   }
