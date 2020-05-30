@@ -1,5 +1,16 @@
 import React, {FormEvent, useEffect, useState} from "react";
-import {Button, Checkbox, Container, Dropdown, Form, Header, Rating, RatingProps, TextArea} from "semantic-ui-react";
+import {
+  Button,
+  Checkbox,
+  Container,
+  Dropdown,
+  Form,
+  Header,
+  Message,
+  Rating,
+  RatingProps,
+  TextArea
+} from "semantic-ui-react";
 import {Book, RootState} from "./types";
 import {connect, ConnectedProps} from "react-redux";
 import {login} from "./actions";
@@ -22,13 +33,19 @@ type Props = PropsFromRedux & {}
 const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
 
   const [bookOptions, setBookOptions] = useState<any>();
-  const [isbn, setIsbn] = useState<any>();
-  const [reviewTitle, setReviewTitle] = useState();
-  const [reviewContent, setReviewContent] = useState();
-  const [rating, setRating] = useState<number | string>();
+  const [isbn, setIsbn] = useState<string | number | boolean | (string | number | boolean)[] | undefined>("");
+  const [reviewTitle, setReviewTitle] = useState("");
+  const [reviewContent, setReviewContent] = useState("");
+  const [rating, setRating] = useState<number | string | undefined>(0);
+  const [confirmation, setConfirmation] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
 
   const handleSubmit = (evt: FormEvent) => {
     evt.preventDefault();
+
+    setSuccess(false)
+    setError(false)
 
     fetch(`http://localhost:8080/api/books/${isbn}/reviews`, {
       method: 'POST',
@@ -43,9 +60,14 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
       })
     }).then(result => {
       if (result.status === 201) {
-        console.log('success');
+        setSuccess(true)
+        setConfirmation(false)
+        setRating(0)
+        setReviewTitle("")
+        setReviewContent("")
+        setIsbn("")
       } else {
-        console.log('error');
+        setError(true)
       }
     });
   }
@@ -70,8 +92,20 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
     <Container>
       <Header as='h1' textAlign='center'>Submit a new book review</Header>
       {isAuthenticated ?
-        <Form size='large' onSubmit={(e: FormEvent) => handleSubmit(e)}>
+        <Form size='large' onSubmit={(e: FormEvent) => handleSubmit(e)} success={success} error={error}>
+          <Message
+            success
+            header='This was a success'
+            content='You successfully submitted a new book review'
+          />
+          <Message
+            error
+            header='There was an error'
+            content='We could not store your review, please try again later'
+          />
+
           <Form.Dropdown
+            loading={bookOptions == null}
             label='Select a book'
             required
             control={Dropdown}
@@ -80,14 +114,15 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
             clearable
             search
             selection
+            value={isbn}
             onChange={(event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => setIsbn(data.value)}
             options={bookOptions}
           />
 
-          <Form.Field
+          <Form.Input
             label='Title'
-            control='input'
             placeholder='Enter the title of your review'
+            value={reviewTitle}
             onChange={(e: any) => setReviewTitle(e.target.value)}
             required
           />
@@ -96,21 +131,27 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
             label='Your rating'
             control={Rating}
             icon='star'
-            defaultRating={0}
-            onRate={(event: React.MouseEvent<HTMLDivElement>, data: RatingProps) => setRating(data.rating)}
+            size='huge'
+            rating={rating}
             maxRating={5}
+            onRate={(event: React.MouseEvent<HTMLDivElement>, data: RatingProps) => setRating(data.rating)}
+            required
+            clearable
           />
 
           <Form.Field
             control={TextArea}
             label='Your review'
             placeholder='Enter your book review...'
+            value={reviewContent}
             onChange={(e: any) => setReviewContent(e.target.value)}
             required
           />
 
           <Form.Field
             control={Checkbox}
+            checked={confirmation}
+            onChange={() => setConfirmation(!confirmation)}
             label='I hereby affirm that I have read the book'
           />
           <Button type='submit'>Submit your review</Button>
