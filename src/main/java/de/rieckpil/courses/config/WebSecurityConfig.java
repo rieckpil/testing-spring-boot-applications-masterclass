@@ -16,6 +16,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http
       .authorizeRequests(authorize -> authorize
         .mvcMatchers(HttpMethod.GET, "/api/books").permitAll()
+        .mvcMatchers(HttpMethod.GET, "/api/books/reviews").permitAll()
         .mvcMatchers("/api/**").authenticated()
       )
       .sessionManagement()
