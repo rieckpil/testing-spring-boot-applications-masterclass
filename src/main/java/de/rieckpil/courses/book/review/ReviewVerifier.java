@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 public class ReviewVerifier {
 
   public boolean doesNotContainSwearWords(String review) {
-    return false;
+    return true;
   }
 
   public boolean doesMeetQualityStandards(String review) {

@@ -2,7 +2,6 @@ package de.rieckpil.courses.book.review;
 
 import de.rieckpil.courses.book.management.Book;
 import de.rieckpil.courses.book.management.User;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -24,13 +23,13 @@ public class Review {
   @Column(nullable = false)
   private Integer rating;
 
-  @CreatedDate
+  @Column(nullable = false)
   private LocalDateTime createdAt;
 
   @ManyToOne
   private Book book;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne
   private User user;
 
   public Long getId() {

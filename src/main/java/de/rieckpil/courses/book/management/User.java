@@ -19,7 +19,7 @@ public class User {
   @Column(nullable = false)
   private String email;
 
-  @CreatedDate
+  @Column(nullable = false)
   private LocalDateTime createdAt;
 
   public Long getId() {
