@@ -69,6 +69,8 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
       } else {
         setError(true)
       }
+    }).catch(error => {
+      setError(true)
     });
   }
 

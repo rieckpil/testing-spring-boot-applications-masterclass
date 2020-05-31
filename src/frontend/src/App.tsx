@@ -5,6 +5,7 @@ import {Container} from "semantic-ui-react";
 import Header from "./Header";
 import SubmitReviewContainer from "./SubmitReviewContainer";
 import HomeContainer from "./HomeContainer";
+import AllReviewContainer from "./AllReviewContainer";
 
 const App: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ const App: React.FC = () => {
           <HomeContainer/>
         </Route>
         <Route path="/all-reviews">
+          <AllReviewContainer/>
         </Route>
         <Route path="/all-books">
         </Route>

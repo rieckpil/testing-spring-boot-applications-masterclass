@@ -38,3 +38,14 @@ export interface Book {
   publisher: string,
   pages: number
 }
+
+export interface BookReview {
+  reviewContent: string,
+  reviewTitle: string,
+  rating: number,
+  bookIsbn: string,
+  bookTitle: string,
+  bookThumbnailUrl: string,
+  submittedBy: string,
+  submittedAt: number
+}

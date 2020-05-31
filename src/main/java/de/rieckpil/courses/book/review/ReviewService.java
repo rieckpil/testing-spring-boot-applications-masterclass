@@ -58,19 +58,25 @@ public class ReviewService {
     ObjectMapper objectMapper = new ObjectMapper();
     ArrayNode result = objectMapper.createArrayNode();
 
-    reviewRepository.findAll().stream().map(review -> {
-      ObjectNode objectNode = objectMapper.createObjectNode();
-      objectNode.put("reviewContent", review.getContent());
-      objectNode.put("reviewTitle", review.getTitle());
-      objectNode.put("rating", review.getRating());
-      objectNode.put("bookIsbn", review.getBook().getIsbn());
-      objectNode.put("bookTitle", review.getBook().getTitle());
-      objectNode.put("submittedBy", review.getUser().getName());
-      objectNode.put("submittedAt",
-        review.getCreatedAt().atZone(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli());
-      return objectNode;
-    }).forEach(review -> result.add(review));
+    reviewRepository.findAll()
+      .stream()
+      .map(review -> mapReview(review, objectMapper))
+      .forEach(result::add);
 
     return result;
+  }
+
+  private ObjectNode mapReview(Review review, ObjectMapper objectMapper) {
+    ObjectNode objectNode = objectMapper.createObjectNode();
+    objectNode.put("reviewContent", review.getContent());
+    objectNode.put("reviewTitle", review.getTitle());
+    objectNode.put("rating", review.getRating());
+    objectNode.put("bookIsbn", review.getBook().getIsbn());
+    objectNode.put("bookTitle", review.getBook().getTitle());
+    objectNode.put("bookThumbnailUrl", review.getBook().getThumbnailUrl());
+    objectNode.put("submittedBy", review.getUser().getName());
+    objectNode.put("submittedAt",
+      review.getCreatedAt().atZone(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli());
+    return objectNode;
   }
 }

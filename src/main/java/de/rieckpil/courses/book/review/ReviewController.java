@@ -29,6 +29,7 @@ public class ReviewController {
   }
 
   @GetMapping("/reviews")
+  @CrossOrigin(origins = "*")
   public ArrayNode getAllReviews() {
     return reviewService.getAllReviews();
   }
