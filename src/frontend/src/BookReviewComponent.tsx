@@ -1,5 +1,5 @@
 import React from "react";
-import {Container, Header, Icon, Item, Rating} from "semantic-ui-react";
+import {Icon, Item, Rating} from "semantic-ui-react";
 import {BookReview} from "./types";
 
 const BookReviewComponent: React.FC<BookReview> = ({bookTitle, bookIsbn, reviewTitle, bookThumbnailUrl, reviewContent, rating, submittedBy, submittedAt}) => {

@@ -22,7 +22,7 @@ const AllReviewContainer = () => {
       <Header as='h1' textAlign='center'>Browse through all book reviews</Header>
       <Grid centered>
         <Grid.Column width={10}>
-          {reviews.length == 0 ? 'There are no books reviews yet. Consider adding the first' : ''}
+          {reviews.length === 0 ? 'There are no books reviews yet. Consider adding the first' : ''}
           <Item.Group divided>
             {reviews.map((review, index) =>
               <BookReviewComponent
