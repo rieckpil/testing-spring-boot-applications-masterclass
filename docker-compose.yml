@@ -12,5 +12,8 @@ services:
     environment:
       - KEYCLOAK_USER=keycloak
       - KEYCLOAK_PASSWORD=keycloak
+      - JAVA_OPTS=-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/keycloak-dump.json
+    volumes:
+    - ./tmp/keycloak-dump.json:/tmp/keycloak-dump.json
     ports:
     - 8888:8080
