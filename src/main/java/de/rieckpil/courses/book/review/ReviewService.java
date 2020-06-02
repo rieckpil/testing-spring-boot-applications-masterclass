@@ -68,6 +68,7 @@ public class ReviewService {
 
   private ObjectNode mapReview(Review review, ObjectMapper objectMapper) {
     ObjectNode objectNode = objectMapper.createObjectNode();
+    objectNode.put("reviewId", review.getId());
     objectNode.put("reviewContent", review.getContent());
     objectNode.put("reviewTitle", review.getTitle());
     objectNode.put("rating", review.getRating());
@@ -78,5 +79,9 @@ public class ReviewService {
     objectNode.put("submittedAt",
       review.getCreatedAt().atZone(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli());
     return objectNode;
+  }
+
+  public void deleteReview(String isbn, Long reviewId) {
+    this.reviewRepository.deleteByIdAndBookIsbn(reviewId, isbn);
   }
 }

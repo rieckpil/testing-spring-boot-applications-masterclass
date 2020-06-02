@@ -14,6 +14,7 @@ export const initKeycloak = (onInitCallback: Function, store: Store) => {
           username: profile.username,
           email: profile.email,
           token: keycloak.token,
+          roles: keycloak.tokenParsed?.realm_access?.roles,
           refresh_token: keycloak.refreshToken
         }));
       });

@@ -1,8 +1,13 @@
 import React from "react";
-import {Icon, Item, Rating} from "semantic-ui-react";
+import {Button, Icon, Item, Rating} from "semantic-ui-react";
 import {BookReview} from "./types";
 
-const BookReviewComponent: React.FC<BookReview> = ({bookTitle, bookIsbn, reviewTitle, bookThumbnailUrl, reviewContent, rating, submittedBy, submittedAt}) => {
+type Props = BookReview & {
+  onDelete: () => void,
+  isModerator: boolean
+}
+
+const BookReviewComponent: React.FC<Props> = ({bookTitle, bookIsbn, reviewTitle, bookThumbnailUrl, reviewContent, rating, submittedBy, submittedAt, onDelete, isModerator}) => {
   return (
     <Item>
       <Item.Image size='mini' src={bookThumbnailUrl}/>
@@ -20,6 +25,15 @@ const BookReviewComponent: React.FC<BookReview> = ({bookTitle, bookIsbn, reviewT
           <span>Rating: <Rating icon='star' rating={rating} maxRating={5} disabled/></span>
           <span><Icon color='green' name='check'/>Confirmed reader</span>
           <span>Submitted by {submittedBy} on {new Date(submittedAt).toLocaleString()}</span>
+          {isModerator ?
+            <Button
+              floated='right'
+              compact
+              color='red'
+              onClick={() => onDelete()}>
+              Delete
+            </Button> : ''
+          }
         </Item.Extra>
       </Item.Content>
     </Item>

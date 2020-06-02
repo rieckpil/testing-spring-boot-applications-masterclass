@@ -1,9 +1,19 @@
 import React, {useEffect, useState} from "react";
 import {Container, Grid, Header, Item} from "semantic-ui-react";
-import {BookReview} from "./types";
+import {BookReview, RootState} from "./types";
 import BookReviewComponent from "./BookReviewComponent";
+import {connect, ConnectedProps} from "react-redux";
 
-const AllReviewContainer = () => {
+const mapState = (state: RootState) => ({
+  isModerator: state.authentication.details?.roles?.includes('moderator'),
+  token: state.authentication.details?.token
+});
+
+const connector = connect(mapState);
+
+type Props = ConnectedProps<typeof connector>
+
+const AllReviewContainer: React.FC<Props> = ({token, isModerator}) => {
 
   const [reviews, setReviews] = useState<BookReview[]>([])
 
@@ -17,6 +27,19 @@ const AllReviewContainer = () => {
       .then((result: BookReview[]) => setReviews(result))
   }, [])
 
+  const deleteReview = (bookIsbn: string, reviewId: number) => {
+    fetch(`http://localhost:8080/api/books/${bookIsbn}/reviews/${reviewId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+    }).then(result => {
+      if (result.status === 200) {
+        setReviews(prevState => prevState.filter(review => review.reviewId !== reviewId))
+      }
+    })
+  }
+
   return (
     <Container>
       <Header as='h1' textAlign='center'>Browse through all book reviews</Header>
@@ -27,6 +50,9 @@ const AllReviewContainer = () => {
             {reviews.map((review, index) =>
               <BookReviewComponent
                 key={index}
+                isModerator={isModerator ? isModerator : false}
+                onDelete={() => deleteReview(review.bookIsbn, review.reviewId)}
+                reviewId={review.reviewId}
                 reviewContent={review.reviewContent}
                 reviewTitle={review.reviewTitle}
                 rating={review.rating}
@@ -44,4 +70,4 @@ const AllReviewContainer = () => {
   );
 }
 
-export default AllReviewContainer;
+export default connector(AllReviewContainer);

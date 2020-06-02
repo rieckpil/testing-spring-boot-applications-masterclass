@@ -10,4 +10,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
   @Query(value = "SELECT * FROM reviews", nativeQuery = true)
   List<Review> getHighestRatedReviews(Long amount);
 
+  void deleteByIdAndBookIsbn(Long reviewId, String isbn);
 }

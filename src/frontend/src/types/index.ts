@@ -14,7 +14,8 @@ export interface LoginPayload {
   username?: string,
   email?: string,
   token?: string,
-  refresh_token?: string
+  refresh_token?: string,
+  roles?: string[]
 }
 
 interface LoginAction {
@@ -40,6 +41,7 @@ export interface Book {
 }
 
 export interface BookReview {
+  reviewId: number,
   reviewContent: string,
   reviewTitle: string,
   rating: number,
