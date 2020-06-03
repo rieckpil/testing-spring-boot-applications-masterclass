@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {Container, Grid, Header, Item} from "semantic-ui-react";
+import {Container, Grid, Header, Item, Message} from "semantic-ui-react";
 import {BookReview, RootState} from "./types";
 import BookReviewComponent from "./BookReviewComponent";
 import {connect, ConnectedProps} from "react-redux";
+import {Link} from "react-router-dom";
 
 const mapState = (state: RootState) => ({
   isModerator: state.authentication.details?.roles?.includes('moderator'),
@@ -24,7 +25,9 @@ const AllReviewContainer: React.FC<Props> = ({token, isModerator}) => {
         'Content-Type': 'application/json',
       }
     }).then(result => result.json())
-      .then((result: BookReview[]) => setReviews(result))
+      .then((result: BookReview[]) => {
+        setReviews(result)
+      })
   }, [])
 
   const deleteReview = (bookIsbn: string, reviewId: number) => {
@@ -45,7 +48,12 @@ const AllReviewContainer: React.FC<Props> = ({token, isModerator}) => {
       <Header as='h1' textAlign='center'>Browse through all book reviews</Header>
       <Grid centered>
         <Grid.Column width={10}>
-          {reviews.length === 0 ? 'There are no books reviews yet. Consider adding the first' : ''}
+          {reviews.length === 0 ?
+            <Message
+            icon='inbox'
+            header='Sad news :('
+            content={<span>There are no books reviews yet. Consider <Link to='/submit-review'>adding</Link> the first.</span>}
+            /> : ''}
           <Item.Group divided>
             {reviews.map((review, index) =>
               <BookReviewComponent

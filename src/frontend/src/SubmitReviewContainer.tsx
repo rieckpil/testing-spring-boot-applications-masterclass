@@ -4,7 +4,7 @@ import {
   Checkbox,
   Container,
   Dropdown,
-  Form,
+  Form, Grid,
   Header,
   Message,
   Rating,
@@ -15,6 +15,8 @@ import {Book, RootState} from "./types";
 import {connect, ConnectedProps} from "react-redux";
 import {login} from "./actions";
 import {DropdownProps} from "semantic-ui-react/dist/commonjs/modules/Dropdown/Dropdown";
+import {Link} from "react-router-dom";
+import {keycloakLogin} from "./KeycloakService";
 
 const mapState = (state: RootState) => ({
   isAuthenticated: state.authentication.isAuthenticated,
@@ -92,75 +94,84 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
 
   return (
     <Container>
-      <Header as='h1' textAlign='center'>Submit a new book review</Header>
-      {isAuthenticated ?
-        <Form size='large' onSubmit={(e: FormEvent) => handleSubmit(e)} success={success} error={error}>
-          <Message
-            success
-            header='This was a success'
-            content='You successfully submitted a new book review'
-          />
-          <Message
-            error
-            header='There was an error'
-            content='We could not store your review, please try again later'
-          />
+      <Grid centered>
+        <Grid.Column width={10}>
+          <Header as='h1' textAlign='center'>Submit a new book review</Header>
+          {isAuthenticated ?
+            <Form size='large' onSubmit={(e: FormEvent) => handleSubmit(e)} success={success} error={error}>
+              <Message
+                success
+                header='This was a success'
+                content={<span>You successfully submitted a <Link to='/all-reviews'>new book review</Link>.</span>}
+              />
+              <Message
+                error
+                header='There was an error'
+                content='We could not store your review, please try again later'
+              />
 
-          <Form.Dropdown
-            loading={bookOptions == null}
-            label='Select a book'
-            required
-            control={Dropdown}
-            placeholder='Search for a book'
-            fluid
-            clearable
-            search
-            selection
-            value={isbn}
-            onChange={(event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => setIsbn(data.value)}
-            options={bookOptions}
-          />
+              <Form.Dropdown
+                loading={bookOptions == null}
+                label='Select a book'
+                required
+                control={Dropdown}
+                placeholder='Search for a book'
+                fluid
+                clearable
+                search
+                selection
+                value={isbn}
+                onChange={(event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => setIsbn(data.value)}
+                options={bookOptions}
+              />
 
-          <Form.Input
-            label='Title'
-            placeholder='Enter the title of your review'
-            value={reviewTitle}
-            onChange={(e: any) => setReviewTitle(e.target.value)}
-            required
-          />
+              <Form.Input
+                label='Title'
+                placeholder='Enter the title of your review'
+                value={reviewTitle}
+                onChange={(e: any) => setReviewTitle(e.target.value)}
+                required
+              />
 
-          <Form.Field
-            label='Your rating'
-            control={Rating}
-            icon='star'
-            size='huge'
-            rating={rating}
-            maxRating={5}
-            onRate={(event: React.MouseEvent<HTMLDivElement>, data: RatingProps) => setRating(data.rating)}
-            required
-            clearable
-          />
+              <Form.Field
+                label='Your rating'
+                control={Rating}
+                icon='star'
+                size='huge'
+                rating={rating}
+                maxRating={5}
+                onRate={(event: React.MouseEvent<HTMLDivElement>, data: RatingProps) => setRating(data.rating)}
+                required
+                clearable
+              />
 
-          <Form.Field
-            control={TextArea}
-            label='Your review'
-            placeholder='Enter your book review...'
-            value={reviewContent}
-            onChange={(e: any) => setReviewContent(e.target.value)}
-            required
-          />
+              <Form.Field
+                control={TextArea}
+                label='Your review'
+                placeholder='Enter your book review...'
+                value={reviewContent}
+                onChange={(e: any) => setReviewContent(e.target.value)}
+                required
+              />
 
-          <Form.Field
-            control={Checkbox}
-            checked={confirmation}
-            onChange={() => setConfirmation(!confirmation)}
-            label='I hereby affirm that I have read the book'
-          />
-          <Button type='submit'>Submit your review</Button>
-        </Form>
-        :
-        <span>To submit a new book review, please login first.</span>
-      }
+              <Form.Field
+                control={Checkbox}
+                checked={confirmation}
+                onChange={() => setConfirmation(!confirmation)}
+                label='I hereby affirm that I have read the book'
+              />
+              <Button type='submit'>Submit your review</Button>
+            </Form>
+            :
+            <Message
+              icon='lock'
+              header='Restricted area'
+              content={<span>To submit a new book review, please <span style={{color: "rgb(30, 112, 191)", cursor: "pointer"}} onClick={() => keycloakLogin()}>login</span> first.</span>}
+            />
+
+          }
+        </Grid.Column>
+      </Grid>
     </Container>
   );
 }
