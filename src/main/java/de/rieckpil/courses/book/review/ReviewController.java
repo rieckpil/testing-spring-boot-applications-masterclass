@@ -43,7 +43,7 @@ public class ReviewController {
   }
 
   @DeleteMapping("/{isbn}/reviews/{reviewId}")
-  @PreAuthorize("hasAuthority('SCOPE_moderator')")
+  @PreAuthorize("hasAuthority('ROLE_moderator')")
   public void deleteBookReview(@PathVariable String isbn, @PathVariable Long reviewId) {
     reviewService.deleteReview(isbn, reviewId);
   }
