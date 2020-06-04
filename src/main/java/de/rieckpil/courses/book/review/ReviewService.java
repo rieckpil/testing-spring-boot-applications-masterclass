@@ -56,14 +56,14 @@ public class ReviewService {
     }
   }
 
-  public ArrayNode getAllReviews(Integer size, String groupBy) {
+  public ArrayNode getAllReviews(Integer size, String orderBy) {
     ObjectMapper objectMapper = new ObjectMapper();
     ArrayNode result = objectMapper.createArrayNode();
 
     List<Review> requestedReviews;
 
-    if (groupBy.equals("book")) {
-      requestedReviews = reviewRepository.getHighestRatedReviewByBook(10L);
+    if (orderBy.equals("rating")) {
+      requestedReviews = reviewRepository.findTop5ByOrderByRatingDescCreatedAtDesc();
     } else {
       requestedReviews = reviewRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(0, size));
     }

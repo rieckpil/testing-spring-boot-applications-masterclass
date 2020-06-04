@@ -12,7 +12,7 @@ type Props = {
 const LatestReviewComponent: React.FC<Props> = ({recentReviews, bestRatedReviews}) => {
   return (
     <Container style={{marginTop: '20px'}}>
-      <Header as='h2' textAlign='center'>Best rated review by book</Header>
+      <Header as='h2' textAlign='center'>Best rated reviews</Header>
       <Segment>
         <Button
           as={Link}

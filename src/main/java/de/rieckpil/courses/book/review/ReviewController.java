@@ -24,8 +24,8 @@ public class ReviewController {
 
   @GetMapping("/reviews")
   public ArrayNode getAllReviews(@RequestParam(name = "size", defaultValue = "20") Integer size,
-                                 @RequestParam(name = "groupBy", defaultValue = "none") String groupBy) {
-    return reviewService.getAllReviews(size, groupBy);
+                                 @RequestParam(name = "orderBy", defaultValue = "none") String orderBy) {
+    return reviewService.getAllReviews(size, orderBy);
   }
 
   @PostMapping("/{isbn}/reviews")

@@ -21,7 +21,7 @@ const HomeContainer = () => {
         setRecentReviews(result)
       })
 
-    fetch(`http://localhost:8080/api/books/reviews?groupBy=book`, {
+    fetch(`http://localhost:8080/api/books/reviews?orderBy=rating`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

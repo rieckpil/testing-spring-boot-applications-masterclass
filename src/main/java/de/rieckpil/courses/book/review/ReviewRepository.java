@@ -8,10 +8,19 @@ import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-  List<Review> findAllByOrderByCreatedAtDesc(Pageable pageable);
+  @Query(value =
+    "SELECT id, isbn, avg, ratings, users " +
+      "FROM books " +
+      "JOIN " +
+      "(SELECT book_id, ROUND(AVG(rating), 2) AS avg, COUNT(*) ratings, COUNT(distinct user_id) users " +
+      "FROM reviews group by book_id) AS statistics " +
+      "ON statistics.book_id = id;",
+    nativeQuery = true)
+  List<Object> getReviewStatistics();
 
-  @Query(value = "SELECT * FROM reviews", nativeQuery = true)
-  List<Review> getHighestRatedReviewByBook(Long amount);
+  List<Review> findTop5ByOrderByRatingDescCreatedAtDesc();
+
+  List<Review> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
   void deleteByIdAndBookIsbn(Long reviewId, String isbn);
 }
