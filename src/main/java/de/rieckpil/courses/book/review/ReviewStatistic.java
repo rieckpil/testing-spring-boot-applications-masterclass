@@ -7,8 +7,6 @@ public interface ReviewStatistic {
 
   Long getRatings();
 
-  Long getUsers();
-
   String getIsbn();
 
   BigDecimal getAvg();

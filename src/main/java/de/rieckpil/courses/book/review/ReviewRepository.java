@@ -9,11 +9,10 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
   @Query(value =
-    "SELECT id, ratings, users, isbn, avg " +
+    "SELECT id, ratings, isbn, avg " +
       "FROM books " +
       "JOIN " +
-      "(SELECT book_id, ROUND(AVG(rating), 2) AS avg, COUNT(*) ratings, COUNT(distinct user_id) users " +
-      "FROM reviews group by book_id) AS statistics " +
+      "(SELECT book_id, ROUND(AVG(rating), 2) AS avg, COUNT(*) ratings FROM reviews group by book_id) AS statistics " +
       "ON statistics.book_id = id;",
     nativeQuery = true)
   List<ReviewStatistic> getReviewStatistics();

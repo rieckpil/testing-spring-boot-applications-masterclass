@@ -1,35 +1,54 @@
 import React from "react";
-import {Book} from "./types";
-import {Card, Image, Label} from "semantic-ui-react";
+import {Book, ReviewStatistic} from "./types";
+import {Card, Icon, Image, Label} from "semantic-ui-react";
 
-const BookComponent: React.FC<Book> = ({isbn, author, description, genre, thumbnailUrl, title, pages, publisher}) => {
+type Props = {
+  metadata: Book,
+  statistics?: ReviewStatistic
+}
+
+const BookComponent: React.FC<Props> = ({metadata, statistics}) => {
   return (
     <Card>
       <Card.Content>
         <Image
           floated='right'
           size='mini'
-          src={thumbnailUrl}
+          src={metadata.thumbnailUrl}
         />
-        <Card.Header>{title}</Card.Header>
-        <Card.Meta>from {author}</Card.Meta>
+        <Card.Header>{metadata.title}</Card.Header>
+        <Card.Meta>from {metadata.author}</Card.Meta>
         <Card.Description>
-          {description}
+          {metadata.description}
         </Card.Description>
       </Card.Content>
       <Card.Content extra>
         <Label>
-          {publisher}
+          {metadata.publisher}
         </Label>
         <Label>
-          ISBN: {isbn}
-        </Label>
-        <Label>
-          {pages} pages
+          {metadata.pages} pages
         </Label>
         <Label as='a' tag>
-          {genre}
+          {metadata.genre}
         </Label>
+        {statistics ?
+          <React.Fragment>
+            <Label
+              color='blue'>
+              Avg. rating: {statistics.avg}
+            </Label>
+            <Label
+              color='blue'>
+              Total ratings: {statistics.ratings}
+            </Label>
+          </React.Fragment>
+          :
+          <Label
+            color='blue'>
+            <Icon name='line graph'/>Statistics only for logged in users
+          </Label>
+        }
       </Card.Content>
     </Card>
   )

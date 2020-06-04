@@ -22,6 +22,7 @@ public class ReviewService {
   private final UserService userService;
   private final BookRepository bookRepository;
   private final ReviewRepository reviewRepository;
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   public ReviewService(ReviewVerifier reviewVerifier, UserService userService, BookRepository bookRepository, ReviewRepository reviewRepository) {
     this.reviewVerifier = reviewVerifier;
@@ -56,8 +57,18 @@ public class ReviewService {
     }
   }
 
+  public ArrayNode getReviewStatistics() {
+    ArrayNode result = objectMapper.createArrayNode();
+
+    reviewRepository.getReviewStatistics()
+      .stream()
+      .map(this::mapReviewStatistic)
+      .forEach(result::add);
+
+    return result;
+  }
+
   public ArrayNode getAllReviews(Integer size, String orderBy) {
-    ObjectMapper objectMapper = new ObjectMapper();
     ArrayNode result = objectMapper.createArrayNode();
 
     List<Review> requestedReviews;
@@ -70,13 +81,13 @@ public class ReviewService {
 
     requestedReviews
       .stream()
-      .map(review -> mapReview(review, objectMapper))
+      .map(this::mapReview)
       .forEach(result::add);
 
     return result;
   }
 
-  private ObjectNode mapReview(Review review, ObjectMapper objectMapper) {
+  private ObjectNode mapReview(Review review) {
     ObjectNode objectNode = objectMapper.createObjectNode();
     objectNode.put("reviewId", review.getId());
     objectNode.put("reviewContent", review.getContent());
@@ -91,7 +102,17 @@ public class ReviewService {
     return objectNode;
   }
 
+  private ObjectNode mapReviewStatistic(ReviewStatistic reviewStatistic) {
+    ObjectNode statistic = objectMapper.createObjectNode();
+    statistic.put("bookId", reviewStatistic.getId());
+    statistic.put("isbn", reviewStatistic.getIsbn());
+    statistic.put("avg", reviewStatistic.getAvg());
+    statistic.put("ratings", reviewStatistic.getRatings());
+    return statistic;
+  }
+
   public void deleteReview(String isbn, Long reviewId) {
     this.reviewRepository.deleteByIdAndBookIsbn(reviewId, isbn);
   }
+
 }

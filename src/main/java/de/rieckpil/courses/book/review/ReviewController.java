@@ -28,6 +28,11 @@ public class ReviewController {
     return reviewService.getAllReviews(size, orderBy);
   }
 
+  @GetMapping("/reviews/statistics")
+  public ArrayNode getReviewStatistics() {
+    return reviewService.getReviewStatistics();
+  }
+
   @PostMapping("/{isbn}/reviews")
   public ResponseEntity<Void> createBookReview(@PathVariable("isbn") String isbn,
                                                @RequestBody @Valid BookReviewRequest bookReviewRequest,
@@ -46,11 +51,6 @@ public class ReviewController {
   @PreAuthorize("hasAuthority('ROLE_moderator')")
   public void deleteBookReview(@PathVariable String isbn, @PathVariable Long reviewId) {
     reviewService.deleteReview(isbn, reviewId);
-  }
-
-  @GetMapping("/{isbn}/reviews")
-  public String getReviewsForBook() {
-    return "Hello World";
   }
 
 }

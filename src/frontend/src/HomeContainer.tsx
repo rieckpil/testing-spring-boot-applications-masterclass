@@ -2,13 +2,24 @@ import React, {useEffect, useState} from "react";
 import {Container} from "semantic-ui-react";
 import LatestBookListComponent from "./LatestBookListComponent";
 import LatestReviewComponent from "./LatestReviewComponent";
-import {Book, BookReview} from "./types";
+import {Book, BookReview, ReviewStatistic, RootState} from "./types";
+import {connect, ConnectedProps} from "react-redux";
 
-const HomeContainer = () => {
+const mapState = (state: RootState) => ({
+  isAuthenticated: state.authentication.isAuthenticated,
+  token: state.authentication.details?.token
+});
+
+const connector = connect(mapState);
+
+type Props = ConnectedProps<typeof connector>
+
+const HomeContainer: React.FC<Props> = ({isAuthenticated, token}) => {
 
   const [recentReviews, setRecentReviews] = useState<BookReview[]>([])
   const [bestRatedReviews, setBestRatedReviews] = useState<BookReview[]>([])
   const [availableBooks, setAvailableBooks] = useState<Book[]>([])
+  const [reviewStatistics, setReviewStatistics] = useState<ReviewStatistic[]>([])
 
   useEffect(() => {
     fetch(`http://localhost:8080/api/books/reviews?size=5`, {
@@ -41,15 +52,26 @@ const HomeContainer = () => {
         setAvailableBooks(result)
       })
 
-  }, [])
+    if (isAuthenticated) {
+      fetch(`http://localhost:8080/api/books/reviews/statistics`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }).then(result => result.json())
+        .then((result: ReviewStatistic[]) => {
+          setReviewStatistics(result)
+        })
+    }
+  }, [isAuthenticated, token])
 
 
   return (
     <Container>
-      <LatestBookListComponent availableBooks={availableBooks}/>
+      <LatestBookListComponent reviewStatistics={reviewStatistics} availableBooks={availableBooks}/>
       <LatestReviewComponent recentReviews={recentReviews} bestRatedReviews={bestRatedReviews}/>
     </Container>
   );
 }
 
-export default HomeContainer;
+export default connector(HomeContainer);

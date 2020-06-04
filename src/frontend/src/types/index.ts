@@ -51,3 +51,10 @@ export interface BookReview {
   submittedBy: string,
   submittedAt: number
 }
+
+export interface ReviewStatistic {
+  bookId: number,
+  isbn: string,
+  avg: number,
+  ratings: number
+}
