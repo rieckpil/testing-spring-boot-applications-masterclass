@@ -13,7 +13,6 @@ import javax.validation.Valid;
 
 @Validated
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/api/books")
 public class ReviewController {
 
@@ -24,8 +23,9 @@ public class ReviewController {
   }
 
   @GetMapping("/reviews")
-  public ArrayNode getAllReviews() {
-    return reviewService.getAllReviews();
+  public ArrayNode getAllReviews(@RequestParam(name = "size", defaultValue = "20") Integer size,
+                                 @RequestParam(name = "groupBy", defaultValue = "none") String groupBy) {
+    return reviewService.getAllReviews(size, groupBy);
   }
 
   @PostMapping("/{isbn}/reviews")

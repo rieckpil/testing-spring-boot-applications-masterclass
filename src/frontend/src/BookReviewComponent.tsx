@@ -3,7 +3,7 @@ import {Button, Icon, Item, Rating} from "semantic-ui-react";
 import {BookReview} from "./types";
 
 type Props = BookReview & {
-  onDelete: () => void,
+  onDelete?: () => void,
   isModerator: boolean
 }
 
@@ -30,7 +30,7 @@ const BookReviewComponent: React.FC<Props> = ({bookTitle, bookIsbn, reviewTitle,
               floated='right'
               compact
               color='red'
-              onClick={() => onDelete()}>
+              onClick={onDelete ? () => onDelete() : () => null}>
               Delete
             </Button> : ''
           }

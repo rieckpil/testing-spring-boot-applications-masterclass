@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Container, Grid, Header, Item, Message} from "semantic-ui-react";
+import {Container, Header, Item, Message} from "semantic-ui-react";
 import {BookReview, RootState} from "./types";
 import BookReviewComponent from "./BookReviewComponent";
 import {connect, ConnectedProps} from "react-redux";
@@ -45,9 +45,7 @@ const AllReviewContainer: React.FC<Props> = ({token, isModerator}) => {
 
   return (
     <Container>
-      <Header as='h1' textAlign='center'>Browse through all book reviews</Header>
-      <Grid centered>
-        <Grid.Column width={10}>
+      <Header as='h2' textAlign='center'>Browse through all book reviews</Header>
           {reviews.length === 0 ?
             <Message
             icon='inbox'
@@ -72,8 +70,6 @@ const AllReviewContainer: React.FC<Props> = ({token, isModerator}) => {
               />
             )}
           </Item.Group>
-        </Grid.Column>
-      </Grid>
     </Container>
   );
 }

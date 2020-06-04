@@ -21,16 +21,9 @@ const Header: React.FC<Props> = ({isAuthenticated}) => {
     <Menu size='large' stackable>
       <Menu.Item
         as={Link}
+        onClick={() => setActiveItem('')}
         to="/"
         header>Book Reviewr</Menu.Item>
-
-      <Menu.Item
-        as={Link}
-        name='allBooks'
-        active={activeItem === 'allBooks'}
-        to="/all-books"
-        onClick={() => setActiveItem('allBooks')}>
-      </Menu.Item>
 
       <Menu.Item
         as={Link}
@@ -45,6 +38,7 @@ const Header: React.FC<Props> = ({isAuthenticated}) => {
           <Button
             as={Link}
             to="/submit-review"
+            onClick={() => setActiveItem('submitReview')}
             secondary>
             Submit a new review
           </Button>

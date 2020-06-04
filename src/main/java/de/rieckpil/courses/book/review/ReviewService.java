@@ -6,11 +6,13 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.rieckpil.courses.book.management.Book;
 import de.rieckpil.courses.book.management.BookRepository;
 import de.rieckpil.courses.book.management.UserService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 @Service
 @Transactional
@@ -54,11 +56,19 @@ public class ReviewService {
     }
   }
 
-  public ArrayNode getAllReviews() {
+  public ArrayNode getAllReviews(Integer size, String groupBy) {
     ObjectMapper objectMapper = new ObjectMapper();
     ArrayNode result = objectMapper.createArrayNode();
 
-    reviewRepository.findAll()
+    List<Review> requestedReviews;
+
+    if (groupBy.equals("book")) {
+      requestedReviews = reviewRepository.getHighestRatedReviewByBook(10L);
+    } else {
+      requestedReviews = reviewRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(0, size));
+    }
+
+    requestedReviews
       .stream()
       .map(review -> mapReview(review, objectMapper))
       .forEach(result::add);
