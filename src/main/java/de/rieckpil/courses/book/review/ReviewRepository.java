@@ -9,14 +9,14 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
   @Query(value =
-    "SELECT id, isbn, avg, ratings, users " +
+    "SELECT id, ratings, users, isbn, avg " +
       "FROM books " +
       "JOIN " +
       "(SELECT book_id, ROUND(AVG(rating), 2) AS avg, COUNT(*) ratings, COUNT(distinct user_id) users " +
       "FROM reviews group by book_id) AS statistics " +
       "ON statistics.book_id = id;",
     nativeQuery = true)
-  List<Object> getReviewStatistics();
+  List<ReviewStatistic> getReviewStatistics();
 
   List<Review> findTop5ByOrderByRatingDescCreatedAtDesc();
 
