@@ -16,7 +16,9 @@ cloud:
     stack:
       auto: false
     region:
-      static: eu-west-1
+      static: eu-central-1
     credentials:
-      profile-path: ~/.aws/credentials
-      profile-name: serverless-admin
+      profileName: local-development
+
+sqs:
+  book-synchronization-queue: book-sync-spring-boot
