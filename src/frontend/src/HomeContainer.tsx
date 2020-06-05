@@ -68,7 +68,8 @@ const HomeContainer: React.FC<Props> = ({isAuthenticated, token}) => {
 
   return (
     <Container>
-      <LatestBookListComponent reviewStatistics={reviewStatistics} availableBooks={availableBooks}/>
+      <LatestBookListComponent reviewStatistics={reviewStatistics}
+                               availableBooks={availableBooks}/>
       <LatestReviewComponent recentReviews={recentReviews} bestRatedReviews={bestRatedReviews}/>
     </Container>
   );

@@ -41,13 +41,13 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
   const [rating, setRating] = useState<number | string | undefined>(0);
   const [confirmation, setConfirmation] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleSubmit = (evt: FormEvent) => {
     evt.preventDefault();
 
     setSuccess(false)
-    setError(false)
+    setErrorMessage("")
 
     fetch(`http://localhost:8080/api/books/${isbn}/reviews`, {
       method: 'POST',
@@ -68,11 +68,13 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
         setReviewTitle("")
         setReviewContent("")
         setIsbn("")
+      } else if (result.status === 418) {
+        setErrorMessage('Your review does not meet the quality standards, please read them carefully and submit again.')
       } else {
-        setError(true)
+        setErrorMessage('We could not store your review, please try again later.')
       }
     }).catch(error => {
-      setError(true)
+      setErrorMessage('We could not store your review, please try again later.')
     });
   }
 
@@ -96,7 +98,7 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
     <Container>
       <Header as='h2' textAlign='center'>Submit a new book review</Header>
       {isAuthenticated ?
-        <Form size='large' onSubmit={(e: FormEvent) => handleSubmit(e)} success={success} error={error}>
+        <Form size='large' onSubmit={(e: FormEvent) => handleSubmit(e)} success={success} error={errorMessage !== ""}>
           <Message
             success
             header='This was a success'
@@ -105,7 +107,7 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
           <Message
             error
             header='There was an error'
-            content='We could not store your review, please try again later'
+            content={errorMessage}
           />
 
           <Form.Dropdown
@@ -151,6 +153,15 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
             onChange={(e: any) => setReviewContent(e.target.value)}
             required
           />
+
+          <Message>
+            <Message.Header>Quality standards for your review</Message.Header>
+            <Message.List>
+              <Message.Item>The review contains at least 10 words</Message.Item>
+              <Message.Item>Swear words are not allowed</Message.Item>
+              <Message.Item>Don't use 'I' or 'good' too often</Message.Item>
+            </Message.List>
+          </Message>
 
           <Form.Field
             control={Checkbox}

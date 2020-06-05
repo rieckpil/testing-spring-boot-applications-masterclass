@@ -53,7 +53,7 @@ public class ReviewService {
 
       return review.getId();
     } else {
-      throw new IllegalArgumentException("Not meeting standards");
+      throw new BadReviewQualityException("Not meeting standards");
     }
   }
 

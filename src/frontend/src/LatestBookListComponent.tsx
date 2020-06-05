@@ -16,7 +16,12 @@ const LatestBookListComponent: React.FC<Props> = ({availableBooks, reviewStatist
         {availableBooks.map((book, index) =>
           <BookComponent
             metadata={book}
-            statistics={reviewStatistics && reviewStatistics.find(statistic => statistic.isbn === book.isbn)}
+            statistics={reviewStatistics.length === 0 ? undefined : reviewStatistics.find(statistic => statistic.isbn === book.isbn) || {
+              ratings: 0,
+              avg: 0,
+              isbn: book.isbn,
+              bookId: 42
+            }}
           />
         )}
       </Card.Group>

@@ -36,11 +36,11 @@ const BookComponent: React.FC<Props> = ({metadata, statistics}) => {
           <React.Fragment>
             <Label
               color='blue'>
-              Avg. rating: {statistics.avg}
+              Avg. rating: {statistics.ratings === 0 ? 'n.A.': statistics.avg}
             </Label>
             <Label
               color='blue'>
-              Total ratings: {statistics.ratings}
+              Total ratings: {statistics.ratings === 0 ? 'n.A.': statistics.ratings}
             </Label>
           </React.Fragment>
           :
