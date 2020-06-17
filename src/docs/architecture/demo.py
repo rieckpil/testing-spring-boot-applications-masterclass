@@ -1,17 +1,16 @@
 from diagrams import Cluster, Diagram, Edge
 from diagrams.aws.compute import EC2
 from diagrams.aws.database import RDS
+from diagrams.aws.integration import SQS
 from diagrams.aws.network import ELB
 from diagrams.aws.storage import S3
-from diagrams.onprem.monitoring import Grafana, Prometheus
 from diagrams.onprem.ci import Jenkins
 from diagrams.onprem.client import Client, User, Users
-from diagrams.onprem.database import PostgreSQL
 from diagrams.onprem.compute import Server
 from diagrams.onprem.container import Docker
+from diagrams.onprem.database import PostgreSQL
+from diagrams.onprem.monitoring import Grafana, Prometheus
 from diagrams.onprem.network import Internet
-
-from diagrams.aws.integration import SQS
 from diagrams.programming.framework import Spring, React
 
 graph_attr = {
