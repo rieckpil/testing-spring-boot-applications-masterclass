@@ -26,3 +26,10 @@
 - happy/corner case path for sliced test, happy path tests for integration tests
 - TestEntityManager will flush first level cache
 - Show missing default constructor (check JPA) if using the repository tests in a wrong way
+- Test behaviour
+- Cheat Sheet from Test Driven Development with Spring Boot
+- Unit test pyramid: Unit test -> Unit test + Spring -> Integration Test
+- Certantity that you don't break things and can push to production with confidence
+- What about test coverage? Pay less attention
+- add tests where risks might occur (-> not getter/setter)
+- too many mocks -> chance to refactor or use a integration test (maintain both application and mocks require effort)
