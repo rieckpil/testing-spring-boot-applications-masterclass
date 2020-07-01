@@ -25,7 +25,6 @@ with Diagram("", direction="LR", graph_attr=graph_attr, outformat="png", filenam
   keycloak << [frontend, backend]
 
   users >> frontend
-  # frontend >> keycloak
   frontend >> backend >> database
   backend >> api
   backend << queue
