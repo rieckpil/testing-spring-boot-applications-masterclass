@@ -33,3 +33,9 @@
 - What about test coverage? Pay less attention
 - add tests where risks might occur (-> not getter/setter)
 - too many mocks -> chance to refactor or use a integration test (maintain both application and mocks require effort)
+
+- https://junit.org/junit5/docs/current/user-guide/
+
+- JUnit creates a new instance of each test class before executingeach test method (`per-method` default)
+- test class will still be initiated even if the test is disabled
+- JUnit 5 requires single constructor
