@@ -18,9 +18,24 @@
 
   <properties>
     <java.version>14</java.version>
-    <spring-cloud.version>Hoxton.SR4</spring-cloud.version>
+    <node.version>v12.18.3</node.version>
+    <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
     <testcontainers.version>1.14.2</testcontainers.version>
+    <wiremock.version>2.27.1</wiremock.version>
+    <selenium.version>3.141.59</selenium.version>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -90,19 +105,38 @@
       <version>${testcontainers.version}</version>
       <scope>test</scope>
     </dependency>
-  </dependencies>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>localstack</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>selenium</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-remote-driver</artifactId>
+      <version>${selenium.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-chrome-driver</artifactId>
+      <version>${selenium.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.tomakehurst</groupId>
+      <artifactId>wiremock</artifactId>
+      <version>${wiremock.version}</version>
+      <scope>test</scope>
+    </dependency>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-dependencies</artifactId>
-        <version>${spring-cloud.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+  </dependencies>
 
   <build>
     <finalName>${project.artifactId}</finalName>
@@ -125,7 +159,7 @@
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
-        <version>1.8.0</version>
+        <version>1.10.0</version>
         <executions>
           <execution>
             <id>install node and npm</id>
@@ -160,7 +194,7 @@
         </executions>
         <configuration>
           <workingDirectory>src/frontend</workingDirectory>
-          <nodeVersion>v12.16.3</nodeVersion>
+          <nodeVersion>${node.version}</nodeVersion>
         </configuration>
       </plugin>
     </plugins>
