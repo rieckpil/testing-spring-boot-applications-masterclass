@@ -1,26 +1,25 @@
 package de.rieckpil.courses.book.review;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ReviewVerifierTest {
 
-  private ReviewVerifier cut;
+  private ReviewVerifier reviewVerifier;
 
   @BeforeEach
   public void setup() {
-    this.cut = new ReviewVerifier();
+    reviewVerifier = new ReviewVerifier();
   }
 
   @Test
-  public void testQualityStandard() {
-    assertTrue(cut.doesMeetQualityStandards("I am good person. I find this nice you good test"), "explain");
-    assertFalse(cut.doesMeetQualityStandards("I am good person. I find this nice I am good I like this really I hate this I good"), "explain");
-    assertFalse(cut.doesMeetQualityStandards("I am"), "explain");
-    assertFalse(cut.doesMeetQualityStandards("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt"), "explain");
+  void shouldFailWhenReviewContainsSwearWord() {
+    String review = "This book is shit";
+    System.out.println("Testing a review");
+
+    boolean result = reviewVerifier.doesMeetQualityStandards(review);
+    assertFalse(result, "ReviewVerifier did not detect swear word");
   }
 
 }
