@@ -17,8 +17,6 @@ cloud:
       auto: false
     region:
       static: eu-central-1
-    credentials:
-      profileName: local-development
 
 sqs:
-  book-synchronization-queue: book-sync-spring-boot
+  book-synchronization-queue: default

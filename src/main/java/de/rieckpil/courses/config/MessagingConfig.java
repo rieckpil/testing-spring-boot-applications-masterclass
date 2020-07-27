@@ -1,12 +1,34 @@
 package de.rieckpil.courses.config;
 
+import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSAsync;
+import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
+import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MessagingConfig {
+
+  @Bean
+  public AmazonSQS amazonSQS() {
+    return AmazonSQSClientBuilder
+      .standard()
+      .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(
+        "http://localhost:9324", "eu-central-1"
+      )).build();
+  }
+
+  @Bean
+  public AmazonSQSAsync amazonSQSAsync() {
+    return AmazonSQSAsyncClientBuilder
+      .standard()
+      .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(
+        "http://localhost:9324", "eu-central-1"
+      )).build();
+  }
 
   @Bean
   public QueueMessagingTemplate queueMessagingTemplate(AmazonSQSAsync amazonSQSAsync) {
