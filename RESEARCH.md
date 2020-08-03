@@ -39,3 +39,13 @@
 - JUnit creates a new instance of each test class before executingeach test method (`per-method` default)
 - test class will still be initiated even if the test is disabled
 - JUnit 5 requires single constructor
+
+## Victor Rentea - Integration Testing with Spring
+
+- Zero Tolerance for failed tests (no flakiness)
+- Fake time with Clock
+- TestConfiguration inside test to temporary "summon" a bean
+- P6SPY to detect database commits
+- Show that data remains in db without using @Transactional on test
+- WireMock mappings inside src/test/resurces/mappings
+- Nested RequiresNew transaction is still committed
