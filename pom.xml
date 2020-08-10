@@ -23,6 +23,7 @@
     <testcontainers.version>1.14.2</testcontainers.version>
     <wiremock.version>2.27.1</wiremock.version>
     <selenium.version>3.141.59</selenium.version>
+    <awaitility.version>4.0.3</awaitility.version>
   </properties>
 
   <dependencyManagement>
@@ -133,6 +134,12 @@
       <groupId>com.github.tomakehurst</groupId>
       <artifactId>wiremock</artifactId>
       <version>${wiremock.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.awaitility</groupId>
+      <artifactId>awaitility</artifactId>
+      <version>${awaitility.version}</version>
       <scope>test</scope>
     </dependency>
 
