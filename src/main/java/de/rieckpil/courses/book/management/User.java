@@ -1,7 +1,5 @@
 package de.rieckpil.courses.book.management;
 
-import org.springframework.data.annotation.CreatedDate;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 

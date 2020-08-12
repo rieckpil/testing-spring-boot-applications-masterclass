@@ -87,4 +87,17 @@ public class Review {
   public void setUser(User user) {
     this.user = user;
   }
+
+  @Override
+  public String toString() {
+    return "Review{" +
+      "id=" + id +
+      ", title='" + title + '\'' +
+      ", content='" + content + '\'' +
+      ", rating=" + rating +
+      ", createdAt=" + createdAt +
+      ", book=" + book +
+      ", user=" + user +
+      '}';
+  }
 }
