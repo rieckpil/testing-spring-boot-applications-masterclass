@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    password: test
+    username: test
+    url: jdbc:postgresql://localhost:5432/postgres
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: classpath:id_rsa.pub
+        #issuer-uri: http://localhost:8888/auth/realms/spring
+  jpa:
+    hibernate:
+      ddl-auto: validate
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: eu-central-1
+
+sqs:
+  book-synchronization-queue: default
