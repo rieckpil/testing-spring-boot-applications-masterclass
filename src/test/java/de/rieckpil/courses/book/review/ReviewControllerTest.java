@@ -9,13 +9,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ReviewController.class)
 class ReviewControllerTest {
@@ -76,4 +78,75 @@ class ReviewControllerTest {
     verify(reviewService).getReviewStatistics();
   }
 
+  @Test
+  void shouldCreateNewBookReviewForAuthenticatedUserWithValidPayload() throws Exception {
+
+    String requestBody = """
+        {
+          "reviewTitle": "Great Java Book!",
+          "reviewContent": "I really like this book!",
+          "rating": 4
+        }
+      """;
+
+    when(reviewService.createBookReview(eq("42"), any(BookReviewRequest.class),
+      eq("duke"), endsWith("spring.io")))
+      .thenReturn(84L);
+
+    this
+      .mockMvc
+      .perform(post("/api/books/{isbn}/reviews", 42)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(requestBody)
+        .with(jwt().jwt(builder -> builder
+          .claim("email", "duke@spring.io")
+          .claim("preferred_username", "duke"))))
+      .andExpect(status().isCreated())
+      .andExpect(header().exists("Location"))
+      .andExpect(header().string("Location", Matchers.containsString("/books/42/reviews/84")));
+  }
+
+  @Test
+  void shouldRejectNewBookReviewForAuthenticatedUsersWithInvalidPayload() throws Exception {
+
+    String requestBody = """
+        {
+          "reviewContent": "I really like this book!",
+          "rating": -1
+        }
+      """;
+
+    this
+      .mockMvc
+      .perform(post("/api/books/{isbn}/reviews", 42)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(requestBody)
+        .with(jwt().jwt(builder -> builder
+          .claim("email", "duke@spring.io")
+          .claim("preferred_username", "duke"))))
+      .andExpect(status().isBadRequest())
+      .andDo(MockMvcResultHandlers.print());
+  }
+
+  @Test
+  void shouldNotAllowDeletingReviewsWhenUserIsAuthenticatedWithoutModeratorRole() throws Exception {
+    this.mockMvc
+      .perform(delete("/api/books/{isbn}/reviews/{reviewId}", 42, 3)
+        .with(jwt()))
+      .andExpect(status().isForbidden());
+
+    verifyNoInteractions(reviewService);
+  }
+
+  @Test
+  @WithMockUser(roles = "moderator")
+  void shouldAllowDeletingReviewsWhenUserIsAuthenticatedAndHasModeratorRole() throws Exception {
+    this.mockMvc
+      .perform(delete("/api/books/{isbn}/reviews/{reviewId}", 42, 3)
+        // .with(jwt().authorities(new SimpleGrantedAuthority("ROLE_moderator")))
+      )
+      .andExpect(status().isOk());
+
+    verify(reviewService).deleteReview("42", 3L);
+  }
 }
