@@ -52,6 +52,11 @@ Assuming your local setups meets all requirments stated above, you can now start
 4. Access http://localhost:8080 for the application frontend
 5. (Optional) Access http://localhost:8888 for the Keycloak Admin interface
 
+Valid application users:
+
+* duke (password `dukeduke`)
+* mike (password `mikemike`)
+
 ## Further resources and links
 
 * [Course Landing Page with FAQ](rieckpil.de/testing-spring-boot-applications-masterclass/)
