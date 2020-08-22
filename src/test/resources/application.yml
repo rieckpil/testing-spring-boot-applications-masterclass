@@ -20,4 +20,4 @@ cloud:
       static: eu-central-1
 
 sqs:
-  book-synchronization-queue: default
+  book-synchronization-queue: test-default
