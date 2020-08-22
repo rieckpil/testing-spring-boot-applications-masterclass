@@ -8,7 +8,7 @@
 
 Mandatory requirements:
 
-* Java 14 (JDK flavour (OpenJDK/Azul/Oracle) does not matter)
+* Java 14 (JDK flavour (OpenJDK/Azul/Oracle) does not matter). For the correct Java version setup I can recommend [JEnv](https://www.youtube.com/watch?v=9FVZyeFDXo0) (Mac/Linux) and the [Maven Toolchains Plugin](https://maven.apache.org/plugins/maven-toolchains-plugin/toolchains/jdk.html) (Windows)
 
 ```
 $ java -version
