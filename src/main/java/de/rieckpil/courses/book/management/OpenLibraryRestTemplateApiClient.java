@@ -2,28 +2,29 @@ package de.rieckpil.courses.book.management;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestTemplate;
+
+import java.time.Duration;
 
 @Component
-public class OpenLibraryApiClient {
+public class OpenLibraryRestTemplateApiClient {
 
-  private final WebClient openLibraryWebClient;
+  private final RestTemplate restTemplate;
 
-  public OpenLibraryApiClient(WebClient openLibraryWebClient) {
-    this.openLibraryWebClient = openLibraryWebClient;
+  public OpenLibraryRestTemplateApiClient(RestTemplateBuilder restTemplateBuilder) {
+    this.restTemplate = restTemplateBuilder
+      .rootUri("https://openlibrary.org")
+      .setConnectTimeout(Duration.ofSeconds(2))
+      .setReadTimeout(Duration.ofSeconds(2))
+      .build();
   }
 
   public Book fetchMetadataForBook(String isbn) {
-
-    ObjectNode result = openLibraryWebClient.get().uri("/api/books",
-      uriBuilder -> uriBuilder.queryParam("jscmd", "data")
-        .queryParam("format", "json")
-        .queryParam("bibkeys", "ISBN:" + isbn)
-        .build())
-      .retrieve()
-      .bodyToMono(ObjectNode.class)
-      .block();
+    ObjectNode result = restTemplate
+      .getForObject("/api/books?jscmd=data&format=json&bibkeys={isbn}"
+        , ObjectNode.class, "ISBN:" + isbn);
 
     JsonNode content = result.get("ISBN:" + isbn);
 

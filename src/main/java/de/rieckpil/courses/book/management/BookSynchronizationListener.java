@@ -13,7 +13,8 @@ public class BookSynchronizationListener {
   private final BookRepository bookRepository;
   private final OpenLibraryApiClient openLibraryApiClient;
 
-  public BookSynchronizationListener(BookRepository bookRepository, OpenLibraryApiClient openLibraryApiClient) {
+  public BookSynchronizationListener(BookRepository bookRepository,
+                                     OpenLibraryApiClient openLibraryApiClient) {
     this.bookRepository = bookRepository;
     this.openLibraryApiClient = openLibraryApiClient;
   }
