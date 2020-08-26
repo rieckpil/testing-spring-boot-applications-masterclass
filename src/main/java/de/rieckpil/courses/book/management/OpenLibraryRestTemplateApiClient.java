@@ -3,10 +3,15 @@ package de.rieckpil.courses.book.management;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
+import java.util.Collections;
 
 @Component
 public class OpenLibraryRestTemplateApiClient {
@@ -22,9 +27,17 @@ public class OpenLibraryRestTemplateApiClient {
   }
 
   public Book fetchMetadataForBook(String isbn) {
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+    headers.set("X-Custom-Auth", "Duke42");
+    headers.set("X-Customer-Id", "42");
+
+    HttpEntity<Void> entity = new HttpEntity<>(headers);
+
     ObjectNode result = restTemplate
-      .getForObject("/api/books?jscmd=data&format=json&bibkeys={isbn}"
-        , ObjectNode.class, "ISBN:" + isbn);
+      .exchange("/api/books?jscmd=data&format=json&bibkeys={isbn}",
+        HttpMethod.GET, entity, ObjectNode.class, "ISBN:" + isbn).getBody();
 
     JsonNode content = result.get("ISBN:" + isbn);
 
