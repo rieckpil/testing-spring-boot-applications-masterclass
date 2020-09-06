@@ -6,6 +6,7 @@ import io.netty.handler.timeout.WriteTimeoutHandler;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -57,6 +58,11 @@ class OpenLibraryApiClientTest {
         .baseUrl(mockWebServer.url("/").toString())
         .build()
     );
+  }
+
+  @AfterEach
+  public void shutdown() throws IOException {
+    this.mockWebServer.shutdown();
   }
 
   @Test
@@ -166,6 +172,7 @@ class OpenLibraryApiClientTest {
       .addHeader("Content-Type", "application/json; charset=utf-8")
       .setResponseCode(200)
       .setBody(VALID_RESPONSE));
+
 
     Book result = cut.fetchMetadataForBook(ISBN);
 
