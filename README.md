@@ -1,12 +1,10 @@
-# Testing Spring Boot Applications [Masterclass](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
-
 [![Masterclass](https://rieckpil.de/wp-content/uploads/2020/09/testing-spring-boot-applications-masterclass-course-logo.png)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
 
-## Local Project Setup
+# Local Project Setup
 
 [![Build & Test Maven Project](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions)
 
-### Requirements
+## Requirements
 
 Mandatory requirements:
 
@@ -44,7 +42,7 @@ Optional requirements:
 * Maven 3.6 (Project includes also the Maven Wrapper)
 * IntelliJ IDEA or any IDE/Code Editor (Eclipse, NetBeans, Code, Atom, etc.)
 
-### Running the project
+## Running the project
 
 Assuming your local setups meets all requirments stated above, you can now start the application:
 
@@ -59,7 +57,7 @@ Valid application users:
 * duke (password `dukeduke`)
 * mike (password `mikemike`)
 
-## Further resources and links
+# Further resources and links
 
 * [Course Landing Page with FAQ](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
 * [Course overview](https://rieckpil.de/courses/testing-spring-boot-applications-masterclass/)
