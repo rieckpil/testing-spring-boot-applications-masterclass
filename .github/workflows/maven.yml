@@ -18,3 +18,8 @@ jobs:
           java-version: 14
       - name: Build & Test application
         run: ./mvnw verify
+      - name: Start Docker environment
+        run: |
+          docker-compose up
+          ./waitForUptime.sh
+          docker-compose down
