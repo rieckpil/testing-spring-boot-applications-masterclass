@@ -20,6 +20,6 @@ jobs:
         run: ./mvnw verify
       - name: Start Docker environment
         run: |
-          docker-compose up
+          docker-compose up -d
           ./waitForUptime.sh
           docker-compose down
