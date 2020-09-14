@@ -12,6 +12,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+  main:
+    allow-bean-definition-overriding: true
 cloud:
   aws:
     stack:

@@ -1,12 +1,14 @@
 package de.rieckpil.courses;
 
-import com.amazonaws.services.s3.model.AmazonS3Exception;
+import com.amazonaws.services.sqs.AmazonSQSAsync;
+import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 import de.rieckpil.courses.book.management.BookRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -22,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
 @SpringBootTest
-@Import(AwsTestConfig.class)
 @Testcontainers(disabledWithoutDocker = true)
 class ApplicationTests {
 
@@ -45,6 +46,18 @@ class ApplicationTests {
     registry.add("spring.datasource.username", container::getUsername);
   }
 
+  @TestConfiguration
+  static class TestConfig {
+
+    @Bean
+    public AmazonSQSAsync amazonSQSAsync() {
+      return AmazonSQSAsyncClientBuilder.standard()
+        .withCredentials(localStack.getDefaultCredentialsProvider())
+        .withEndpointConfiguration(localStack.getEndpointConfiguration(SQS))
+        .build();
+    }
+  }
+
   @BeforeAll
   static void beforeAll() throws IOException, InterruptedException {
     localStack.execInContainer("awslocal", "sqs", "create-queue", "--queue-name", "test-default");
@@ -56,10 +69,8 @@ class ApplicationTests {
   @Test
   void contextLoads() {
     given()
-      .ignoreException(AmazonS3Exception.class)
       .await()
       .atMost(5, SECONDS)
       .untilAsserted(() -> assertEquals(3, bookRepository.count()));
   }
-
 }
