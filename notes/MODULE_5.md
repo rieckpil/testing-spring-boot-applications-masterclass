@@ -25,3 +25,11 @@
 - Show Autoconfiguration with break point
 - always question if this requires a separated test or should be rather included in a bigger integration test
 - Step by step approach with failing steps in between to explain the concept
+
+## Use LocalStack to mock AWS services (SQS, SNS, S3, etc.)
+
+- Introduction to what LocalStack provides
+- Overriding our bean definitions
+- Dynamically create queues for each context (-> hint to upcoming Spring Context section)
+- The _problem_ with testing asychronous code (-> Awaitlity)
+- Running integration tests in parallel?
