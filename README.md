@@ -63,3 +63,24 @@ Valid application users:
 * [Course overview](https://rieckpil.de/courses/testing-spring-boot-applications-masterclass/)
 * [Course login](https://rieckpil.de/wp-login.php)
 * [Password reset](https://rieckpil.de/wp-login.php?action=lostpassword)
+
+# Troubleshooting setup issues
+
+## The Keycloak Docker container terminates during startup
+
+Adjust the `docker-compose.yml` file and remove the setup to import Keycloak configuration on the startup:
+
+```yaml
+version: '3'
+services:
+  # ...
+  keycloak:
+    image: jboss/keycloak:11.0.0
+    environment:
+      - KEYCLOAK_USER=keycloak
+      - KEYCLOAK_PASSWORD=keycloak
+    ports:
+    - 8888:8080
+```
+
+Next, start everything with `docker-compose up` and watch the following video to [configure Keycloak manually](https://vimeo.com/458246315).
