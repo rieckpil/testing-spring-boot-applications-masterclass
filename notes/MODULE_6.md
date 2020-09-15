@@ -6,6 +6,8 @@
 - overview of what is required during application startup and runtime (AWS services, Keycloak, database, remote services)
 - what is already covered with previous modules and what is missing
 - test/it-profile
+- bean definition override
+- rework HTTP client to inject URL from config file
 - introduction to WireMock (setup with an Initializer), good for initial calls, e.g. security, SalesForce
 - how to provide the remaining infrastructure?
     * Using WireMock to mock the initial OAuth2 call for the JWKS
