@@ -1,0 +1,38 @@
+{
+  "exp": 1600232483,
+  "iat": 1600230683,
+  "auth_time": 1600230683,
+  "jti": "ffa4f6c5-75fe-44be-acd5-a8fd38109f6b",
+  "iss": "http://localhost:8888/auth/realms/spring",
+  "aud": "account",
+  "sub": "a9afd45a-c3cc-4ecf-88ab-8718841bfcf6",
+  "typ": "Bearer",
+  "azp": "react-client",
+  "nonce": "3f4c2b35-369e-4d10-87ec-b52ade2c5006",
+  "session_state": "fde5265a-5a8c-43a3-b397-59100f5c0fa0",
+  "acr": "1",
+  "allowed-origins": [
+    "http://localhost:8080",
+    "http://localhost:3000"
+  ],
+  "realm_access": {
+    "roles": [
+      "offline_access",
+      "moderator",
+      "uma_authorization"
+    ]
+  },
+  "resource_access": {
+    "account": {
+      "roles": [
+        "manage-account",
+        "manage-account-links",
+        "view-profile"
+      ]
+    }
+  },
+  "scope": "openid email profile",
+  "email_verified": false,
+  "preferred_username": "duke",
+  "email": "duke@spring.io"
+}

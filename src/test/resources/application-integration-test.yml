@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    password: OVERRIDEN_BY_TEST
+    username: OVERRIDEN_BY_TEST
+    url: OVERRIDEN_BY_TEST
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: OVERRIDEN_BY_TEST
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  main:
+    allow-bean-definition-overriding: true
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: eu-central-1
+
+sqs:
+  book-synchronization-queue: OVERRIDEN_BY_TEST
