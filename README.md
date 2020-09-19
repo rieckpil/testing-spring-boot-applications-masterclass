@@ -79,6 +79,7 @@ services:
     environment:
       - KEYCLOAK_USER=keycloak
       - KEYCLOAK_PASSWORD=keycloak
+      - DB_VENDOR=h2
     ports:
     - 8888:8080
 ```
