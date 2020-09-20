@@ -28,7 +28,7 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 class ApplicationTests {
 
   @Container
-  static PostgreSQLContainer container = (PostgreSQLContainer) new PostgreSQLContainer("postgres:12")
+  static PostgreSQLContainer container = (PostgreSQLContainer) new PostgreSQLContainer("postgres:12.3")
     .withDatabaseName("test")
     .withUsername("duke")
     .withPassword("s3cret")

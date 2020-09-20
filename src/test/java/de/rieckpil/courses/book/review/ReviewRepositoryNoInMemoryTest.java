@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ReviewRepositoryNoInMemoryTest {
 
   // @Container
-  static PostgreSQLContainer container = (PostgreSQLContainer) new PostgreSQLContainer("postgres:12")
+  static PostgreSQLContainer container = (PostgreSQLContainer) new PostgreSQLContainer("postgres:12.3")
     .withDatabaseName("test")
     .withUsername("duke")
     .withPassword("s3cret")
