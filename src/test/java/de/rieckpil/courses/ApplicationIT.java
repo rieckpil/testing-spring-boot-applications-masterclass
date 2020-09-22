@@ -2,6 +2,7 @@ package de.rieckpil.courses;
 
 import de.rieckpil.courses.book.management.BookRepository;
 import de.rieckpil.courses.stubs.OpenLibraryStubs;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,11 @@ class ApplicationIT extends AbstractIntegrationTest {
 
   @BeforeEach
   public void init() {
+    this.bookRepository.deleteAll();
+  }
+
+  @AfterEach
+  public void cleanUp() {
     this.bookRepository.deleteAll();
   }
 
