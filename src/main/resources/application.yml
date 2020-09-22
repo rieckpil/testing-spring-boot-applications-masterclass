@@ -18,5 +18,9 @@ cloud:
     region:
       static: eu-central-1
 
+clients:
+  open-library:
+    base-url: https://openlibrary.org
+
 sqs:
   book-synchronization-queue: default

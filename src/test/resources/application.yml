@@ -21,5 +21,9 @@ cloud:
     region:
       static: eu-central-1
 
+clients:
+  open-library:
+    base-url: https://localhost:8080/shouldNotBeUsed
+
 sqs:
   book-synchronization-queue: test-default

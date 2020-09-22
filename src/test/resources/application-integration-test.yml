@@ -20,5 +20,9 @@ cloud:
     region:
       static: eu-central-1
 
+clients:
+  open-library:
+    base-url: OVERRIDEN_BY_TEST
+
 sqs:
   book-synchronization-queue: OVERRIDEN_BY_TEST

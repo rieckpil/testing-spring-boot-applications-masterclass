@@ -115,4 +115,9 @@ public class ReviewService {
     this.reviewRepository.deleteByIdAndBookIsbn(reviewId, isbn);
   }
 
+  public ObjectNode getReviewById(String isbn, Long reviewId) {
+    return this.reviewRepository.findByIdAndBookIsbn(reviewId, isbn)
+      .map(this::mapReview)
+      .orElseThrow(ReviewNotFoundException::new);
+  }
 }

@@ -3,6 +3,7 @@ package de.rieckpil.courses.config;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -16,7 +17,8 @@ import static reactor.netty.tcp.TcpClient.create;
 public class WebClientConfig {
 
   @Bean
-  public WebClient openLibraryWebClient(WebClient.Builder webClientBuilder) {
+  public WebClient openLibraryWebClient(@Value("${clients.open-library.base-url}") String openLibraryBaseUrl,
+                                        WebClient.Builder webClientBuilder) {
 
     TcpClient tcpClient = create()
       .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 2_000)
@@ -25,7 +27,7 @@ public class WebClientConfig {
           .addHandlerLast(new WriteTimeoutHandler(2)));
 
     return webClientBuilder
-      .baseUrl("https://openlibrary.org")
+      .baseUrl(openLibraryBaseUrl)
       .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
       .build();
   }

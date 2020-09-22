@@ -3,6 +3,7 @@ package de.rieckpil.courses.initializer;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import de.rieckpil.courses.stubs.OAuth2Stubs;
+import de.rieckpil.courses.stubs.OpenLibraryStubs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -31,8 +32,11 @@ public class WireMockInitializer implements ApplicationContextInitializer<Config
     oAuth2Stubs.stubForConfiguration();
     oAuth2Stubs.stubForJWKS();
 
+    OpenLibraryStubs openLibraryStubs = new OpenLibraryStubs(wireMockServer);
+
     applicationContext.getBeanFactory().registerSingleton("wireMockServer", wireMockServer);
     applicationContext.getBeanFactory().registerSingleton("oAuth2Stubs", oAuth2Stubs);
+    applicationContext.getBeanFactory().registerSingleton("openLibraryStubs", openLibraryStubs);
     applicationContext.getBeanFactory().registerSingleton("rsaKeyGenerator", rsaKeyGenerator);
 
     applicationContext.addApplicationListener(applicationEvent -> {
@@ -43,7 +47,9 @@ public class WireMockInitializer implements ApplicationContextInitializer<Config
     });
 
     TestPropertyValues
-      .of("spring.security.oauth2.resourceserver.jwt.issuer-uri=http://localhost:" + wireMockServer.port() + "/auth/realms/spring")
-      .applyTo(applicationContext);
+      .of(
+        "spring.security.oauth2.resourceserver.jwt.issuer-uri=http://localhost:" + wireMockServer.port() + "/auth/realms/spring",
+        "clients.open-library.base-url=http://localhost:" + wireMockServer.port() + "/openLibrary"
+      ).applyTo(applicationContext);
   }
 }
