@@ -41,11 +41,6 @@ class BookSynchronizationListenerRefactoredIT extends AbstractIntegrationTest {
   @Autowired
   private BookRepository bookRepository;
 
-  @BeforeEach
-  public void cleanUp() {
-    this.bookRepository.deleteAll();
-  }
-
   @Test
   public void shouldGetSuccessWhenClientIsAuthenticated() throws JOSEException {
     this.webTestClient
@@ -89,5 +84,4 @@ class BookSynchronizationListenerRefactoredIT extends AbstractIntegrationTest {
           .jsonPath("$[0].isbn").isEqualTo(ISBN);
       });
   }
-
 }

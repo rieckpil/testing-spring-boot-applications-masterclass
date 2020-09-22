@@ -10,11 +10,15 @@ import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import de.rieckpil.courses.book.management.BookRepository;
+import de.rieckpil.courses.book.review.ReviewRepository;
 import de.rieckpil.courses.initializer.RSAKeyGenerator;
 import de.rieckpil.courses.initializer.WireMockInitializer;
 import de.rieckpil.courses.stubs.OAuth2Stubs;
 import de.rieckpil.courses.stubs.OpenLibraryStubs;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -42,7 +46,7 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class AbstractIntegrationTest {
 
-  static PostgreSQLContainer database = (PostgreSQLContainer) new PostgreSQLContainer("postgres:12")
+  static PostgreSQLContainer database = (PostgreSQLContainer) new PostgreSQLContainer("postgres:12.3")
     .withDatabaseName("test")
     .withUsername("duke")
     .withPassword("s3cret")
@@ -80,10 +84,11 @@ public abstract class AbstractIntegrationTest {
     }
   }
 
-  @BeforeAll
-  static void beforeAll() throws IOException, InterruptedException {
-    localStack.execInContainer("awslocal", "sqs", "create-queue", "--queue-name", QUEUE_NAME);
-  }
+  @Autowired
+  private ReviewRepository reviewRepository;
+
+  @Autowired
+  private BookRepository bookRepository;
 
   @Autowired
   private RSAKeyGenerator rsaKeyGenerator;
@@ -96,6 +101,23 @@ public abstract class AbstractIntegrationTest {
 
   @Autowired
   private WireMockServer wireMockServer;
+
+  @BeforeAll
+  static void beforeAll() throws IOException, InterruptedException {
+    localStack.execInContainer("awslocal", "sqs", "create-queue", "--queue-name", QUEUE_NAME);
+  }
+
+  @BeforeEach
+  public void init() {
+    this.reviewRepository.deleteAll();
+    this.bookRepository.deleteAll();
+  }
+
+  @AfterEach
+  public void cleanUp() {
+    this.reviewRepository.deleteAll();
+    this.bookRepository.deleteAll();
+  }
 
   protected String getSignedJWT(String username, String email) throws JOSEException {
     return createJWT(username, email);

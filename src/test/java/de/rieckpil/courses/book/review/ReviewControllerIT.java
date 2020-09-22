@@ -4,7 +4,6 @@ import com.nimbusds.jose.JOSEException;
 import de.rieckpil.courses.AbstractIntegrationTest;
 import de.rieckpil.courses.book.management.Book;
 import de.rieckpil.courses.book.management.BookRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +22,6 @@ public class ReviewControllerIT extends AbstractIntegrationTest {
   @Autowired
   private BookRepository bookRepository;
 
-  @Autowired
-  private ReviewRepository reviewRepository;
-
   @BeforeEach
   public void setup() {
     Book book = new Book();
@@ -39,12 +35,6 @@ public class ReviewControllerIT extends AbstractIntegrationTest {
     book.setGenre("Software Development");
 
     this.bookRepository.save(book);
-  }
-
-  @AfterEach
-  public void cleanUp() {
-    this.reviewRepository.deleteAll();
-    this.bookRepository.deleteAll();
   }
 
   @Test

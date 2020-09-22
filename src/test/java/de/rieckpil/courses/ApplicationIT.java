@@ -14,7 +14,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ActiveProfiles({"integration-test", "default"})
+@ActiveProfiles("default")
 class ApplicationIT extends AbstractIntegrationTest {
 
   @Autowired
@@ -22,16 +22,6 @@ class ApplicationIT extends AbstractIntegrationTest {
 
   @Autowired
   private BookRepository bookRepository;
-
-  @BeforeEach
-  public void init() {
-    this.bookRepository.deleteAll();
-  }
-
-  @AfterEach
-  public void cleanUp() {
-    this.bookRepository.deleteAll();
-  }
 
   @Test
   void shouldLoadContextAndPrepopulateBooksWhenProfileIsDefault() throws IOException {
@@ -41,7 +31,7 @@ class ApplicationIT extends AbstractIntegrationTest {
 
     given()
       .await()
-      .atMost(10, SECONDS)
+      .atMost(5, SECONDS)
       .untilAsserted(() -> assertEquals(3, bookRepository.count()));
   }
 
