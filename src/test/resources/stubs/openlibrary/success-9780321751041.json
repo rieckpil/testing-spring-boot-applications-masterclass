@@ -1,0 +1,102 @@
+{
+  "ISBN:9780321751041": {
+    "publishers": [
+      {
+        "name": "O'Reilly"
+      }
+    ],
+    "pagination": "xxx, 619 p. :",
+    "identifiers": {
+      "lccn": [
+        "2003284332"
+      ],
+      "openlibrary": [
+        "OL3708637M"
+      ],
+      "isbn_10": [
+        "0596004656"
+      ],
+      "oclc": [
+        "52416688"
+      ],
+      "goodreads": [
+        "2111833"
+      ],
+      "librarything": [
+        "778893"
+      ]
+    },
+    "classifications": {
+      "dewey_decimal_class": [
+        "005.13/3"
+      ],
+      "lc_classifications": [
+        "QA76.73.J38 S535 2003"
+      ]
+    },
+    "links": [
+      {
+        "url": "http://oreilly.com/catalog/9780596009205",
+        "title": "Home page (second edition)"
+      },
+      {
+        "url": "http://oreilly.com/catalog/9780596004651",
+        "title": "Home page (first edition)"
+      },
+      {
+        "url": "http://loyalbookstore.com/shop/head-first-java-2nd-edition-9788173666025/",
+        "title": "Loyal Bookstore"
+      }
+    ],
+    "title": "Head first Java",
+    "url": "https://openlibrary.org/books/OL3708637M/Head_first_Java",
+    "notes": "Your brain on Java--a learner's guide--Cover.Includes index.",
+    "number_of_pages": 619,
+    "cover": {
+      "small": "https://covers.openlibrary.org/b/id/388761-S.jpg",
+      "large": "https://covers.openlibrary.org/b/id/388761-L.jpg",
+      "medium": "https://covers.openlibrary.org/b/id/388761-M.jpg"
+    },
+    "subjects": [
+      {
+        "url": "https://openlibrary.org/subjects/java_(computer_program_language)",
+        "name": "Java (Computer program language)"
+      },
+      {
+        "url": "https://openlibrary.org/subjects/programming",
+        "name": "programming"
+      },
+      {
+        "url": "https://openlibrary.org/subjects/java",
+        "name": "java"
+      },
+      {
+        "url": "https://openlibrary.org/subjects/java_(computer_program_language)",
+        "name": "Java (computer program language)"
+      }
+    ],
+    "publish_date": "2003",
+    "key": "/books/OL3708637M",
+    "authors": [
+      {
+        "url": "https://openlibrary.org/authors/OL1400543A/Kathy_Sierra",
+        "name": "Kathy Sierra"
+      }
+    ],
+    "by_statement": "Kathy Sierra, Bert Bates.",
+    "publish_places": [
+      {
+        "name": "Sebastopol, CA"
+      }
+    ],
+    "ebooks": [
+      {
+        "checkedout": true,
+        "formats": {},
+        "preview_url": "https://archive.org/details/headfirstjava00sier",
+        "borrow_url": "https://openlibrary.org/books/OL3708637M/Head_first_Java/borrow",
+        "availability": "borrow"
+      }
+    ]
+  }
+}
