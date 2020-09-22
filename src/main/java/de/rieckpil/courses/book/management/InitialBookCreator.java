@@ -30,11 +30,14 @@ public class InitialBookCreator implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
+    LOG.info("InitialBookCreator running ...");
     if (bookRepository.count() == 0) {
       LOG.info("Going to initialize first set of books");
       for (String isbn : List.of("9780321751041", "9780321160768", "9780596004651")) {
         queueMessagingTemplate.convertAndSend(bookSynchronizationQueueName, new BookSynchronization(isbn));
       }
+    } else {
+      LOG.info("No need to pre-populate books as database already contains some");
     }
   }
 }
