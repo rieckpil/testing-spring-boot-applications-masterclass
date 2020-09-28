@@ -28,6 +28,7 @@
     <mockwebserver.version>4.8.1</mockwebserver.version>
     <okhttp3.version>4.8.1</okhttp3.version>
     <okio.version>2.8.0</okio.version>
+    <selenide.version>5.15.0</selenide.version>
   </properties>
 
   <dependencyManagement>
@@ -140,6 +141,12 @@
       <groupId>org.testcontainers</groupId>
       <artifactId>selenium</artifactId>
       <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.codeborne</groupId>
+      <artifactId>selenide</artifactId>
+      <version>${selenide.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
