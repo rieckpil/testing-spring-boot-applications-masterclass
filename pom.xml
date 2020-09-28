@@ -29,6 +29,7 @@
     <okhttp3.version>4.8.1</okhttp3.version>
     <okio.version>2.8.0</okio.version>
     <selenide.version>5.15.0</selenide.version>
+    <guava.version>29.0-jre</guava.version>
   </properties>
 
   <dependencyManagement>
@@ -44,6 +45,11 @@
         <groupId>com.squareup.okio</groupId>
         <artifactId>okio</artifactId>
         <version>${okio.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
