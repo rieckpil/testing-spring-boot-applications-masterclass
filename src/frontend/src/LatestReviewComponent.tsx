@@ -25,6 +25,7 @@ const LatestReviewComponent: React.FC<Props> = ({recentReviews, bestRatedReviews
           {bestRatedReviews.map((review, index) =>
             <BookReviewComponent
               key={index}
+              elementId={index}
               isModerator={false}
               reviewId={review.reviewId}
               reviewContent={review.reviewContent}
@@ -52,6 +53,7 @@ const LatestReviewComponent: React.FC<Props> = ({recentReviews, bestRatedReviews
           {recentReviews.map((review, index) =>
             <BookReviewComponent
               key={index}
+              elementId={index}
               isModerator={false}
               reviewId={review.reviewId}
               reviewContent={review.reviewContent}

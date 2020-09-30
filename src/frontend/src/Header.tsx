@@ -27,6 +27,7 @@ const Header: React.FC<Props> = ({isAuthenticated}) => {
 
       <Menu.Item
         as={Link}
+        id='all-reviews'
         name='allReviews'
         active={activeItem === 'allReviews'}
         onClick={() => setActiveItem('allReviews')}
@@ -37,6 +38,7 @@ const Header: React.FC<Props> = ({isAuthenticated}) => {
         <Menu.Item>
           <Button
             as={Link}
+            id="submit-review"
             to="/submit-review"
             onClick={() => setActiveItem('submitReview')}
             secondary>
@@ -58,6 +60,7 @@ const Header: React.FC<Props> = ({isAuthenticated}) => {
             <Button
               primary
               animated
+              id="login"
               onClick={() => keycloakLogin()}>
               <Button.Content visible>Login</Button.Content>
               <Button.Content hidden>

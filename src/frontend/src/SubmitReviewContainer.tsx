@@ -49,7 +49,7 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
     setSuccess(false)
     setErrorMessage("")
 
-    fetch(`http://localhost:8080/api/books/${isbn}/reviews`, {
+    fetch(`/api/books/${isbn}/reviews`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
   }
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/books')
+    fetch('/api/books')
       .then(result => result.json())
       .then((result: Book[]) => {
         const formattedBooks = result.map((book: Book) => {
@@ -113,6 +113,7 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
           <Form.Dropdown
             loading={bookOptions == null}
             label='Select a book'
+            id='book-selection'
             required
             control={Dropdown}
             placeholder='Search for a book'
@@ -128,6 +129,7 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
           <Form.Input
             label='Title'
             placeholder='Enter the title of your review'
+            id='review-title'
             value={reviewTitle}
             onChange={(e: any) => setReviewTitle(e.target.value)}
             required
@@ -136,6 +138,7 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
           <Form.Field
             label='Your rating'
             control={Rating}
+            id='book-rating'
             icon='star'
             size='huge'
             rating={rating}
@@ -148,6 +151,7 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
           <Form.Field
             control={TextArea}
             label='Your review'
+            id='review-content'
             placeholder='Enter your book review...'
             value={reviewContent}
             onChange={(e: any) => setReviewContent(e.target.value)}
@@ -169,7 +173,10 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
             onChange={() => setConfirmation(!confirmation)}
             label='I hereby affirm that I have read the book'
           />
-          <Button type='submit'>Submit your review</Button>
+          <Button
+            id='review-submit'
+            type='submit'>Submit your review
+          </Button>
         </Form>
         :
         <Message

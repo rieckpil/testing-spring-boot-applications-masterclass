@@ -4,23 +4,24 @@ import {BookReview} from "./types";
 
 type Props = BookReview & {
   onDelete?: () => void,
-  isModerator: boolean
+  isModerator: boolean,
+  elementId: number
 }
 
-const BookReviewComponent: React.FC<Props> = ({bookTitle, bookIsbn, reviewTitle, bookThumbnailUrl, reviewContent, rating, submittedBy, submittedAt, onDelete, isModerator}) => {
+const BookReviewComponent: React.FC<Props> = ({elementId, bookTitle, bookIsbn, reviewTitle, bookThumbnailUrl, reviewContent, rating, submittedBy, submittedAt, onDelete, isModerator}) => {
   return (
-    <Item>
+    <Item id={'review-' + elementId}>
       <Item.Image size='mini' src={bookThumbnailUrl}/>
 
       <Item.Content>
-        <Item.Header>{reviewTitle}</Item.Header>
+        <Item.Header className='review-title'>{reviewTitle}</Item.Header>
         <Item.Meta>
           <span>{bookTitle}</span>
           <span> | </span>
           <span>ISBN: {bookIsbn}</span>
         </Item.Meta>
 
-        <Item.Description>{reviewContent}</Item.Description>
+        <Item.Description className='review-content'>{reviewContent}</Item.Description>
         <Item.Extra>
           <span>Rating: <Rating icon='star' rating={rating} maxRating={5} disabled/></span>
           <span><Icon color='green' name='check'/>Confirmed reader</span>

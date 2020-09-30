@@ -19,7 +19,7 @@ const AllReviewContainer: React.FC<Props> = ({token, isModerator}) => {
   const [reviews, setReviews] = useState<BookReview[]>([])
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/books/reviews`, {
+    fetch(`/api/books/reviews`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ const AllReviewContainer: React.FC<Props> = ({token, isModerator}) => {
   }, [])
 
   const deleteReview = (bookIsbn: string, reviewId: number) => {
-    fetch(`http://localhost:8080/api/books/${bookIsbn}/reviews/${reviewId}`, {
+    fetch(`/api/books/${bookIsbn}/reviews/${reviewId}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -52,16 +52,17 @@ const AllReviewContainer: React.FC<Props> = ({token, isModerator}) => {
             header='Sad news :('
             content={<span>There are no books reviews yet. Consider <Link to='/submit-review'>adding</Link> the first.</span>}
             /> : ''}
-          <Item.Group divided>
-            {reviews.map((review, index) =>
-              <BookReviewComponent
-                key={index}
-                isModerator={isModerator ? isModerator : false}
-                onDelete={() => deleteReview(review.bookIsbn, review.reviewId)}
-                reviewId={review.reviewId}
-                reviewContent={review.reviewContent}
-                reviewTitle={review.reviewTitle}
-                rating={review.rating}
+      <Item.Group id='reviews' divided>
+        {reviews.map((review, index) =>
+            <BookReviewComponent
+              key={index}
+              elementId={index}
+              isModerator={isModerator ? isModerator : false}
+              onDelete={() => deleteReview(review.bookIsbn, review.reviewId)}
+              reviewId={review.reviewId}
+              reviewContent={review.reviewContent}
+              reviewTitle={review.reviewTitle}
+              rating={review.rating}
                 bookIsbn={review.bookIsbn}
                 bookTitle={review.bookTitle}
                 bookThumbnailUrl={review.bookThumbnailUrl}

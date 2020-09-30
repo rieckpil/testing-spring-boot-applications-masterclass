@@ -22,7 +22,7 @@ const HomeContainer: React.FC<Props> = ({isAuthenticated, token}) => {
   const [reviewStatistics, setReviewStatistics] = useState<ReviewStatistic[]>([])
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/books/reviews?size=5`, {
+    fetch(`/api/books/reviews?size=5`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ const HomeContainer: React.FC<Props> = ({isAuthenticated, token}) => {
         setRecentReviews(result)
       })
 
-    fetch(`http://localhost:8080/api/books/reviews?orderBy=rating`, {
+    fetch(`/api/books/reviews?orderBy=rating`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ const HomeContainer: React.FC<Props> = ({isAuthenticated, token}) => {
         setBestRatedReviews(result)
       })
 
-    fetch(`http://localhost:8080/api/books`, {
+    fetch(`/api/books`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ const HomeContainer: React.FC<Props> = ({isAuthenticated, token}) => {
       })
 
     if (isAuthenticated) {
-      fetch(`http://localhost:8080/api/books/reviews/statistics`, {
+      fetch(`/api/books/reviews/statistics`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`
