@@ -22,7 +22,7 @@ public class FirstWT {
   public void startEnvironment() throws InterruptedException {
     // this.webDriverContainer.getWebDriver().get("http://host.docker.internal:" + port + "/");
     // this.webDriverContainer.getWebDriver().get(webDriverContainer.getTestHostIpAddress() + port + "/");
-    open("http://localhost:" + port + "/");
+    open("http://172.17.0.1:" + port + "/");
     $("#login").click();
 
     $("#kc-login").should(Condition.appear);
