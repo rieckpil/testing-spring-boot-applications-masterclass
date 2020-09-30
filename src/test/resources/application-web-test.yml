@@ -7,7 +7,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8888/auth/realms/spring
+          issuer-uri: http://172.17.0.1:8888/auth/realms/spring
   jpa:
     hibernate:
       ddl-auto: validate
