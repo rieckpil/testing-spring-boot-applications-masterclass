@@ -16,10 +16,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.BrowserWebDriverContainer;
+import org.testcontainers.containers.BrowserWebDriverContainer.VncRecordingMode;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.time.Duration;
 
 @ActiveProfiles("web-test")
@@ -40,11 +42,11 @@ public class AbstractWebTest {
         Wait.forListeningPort());
 
   protected static BrowserWebDriverContainer webDriverContainer = new BrowserWebDriverContainer()
+    .withRecordingMode(VncRecordingMode.RECORD_ALL, Paths.get(".", "target").toFile())
     .withCapabilities(new ChromeOptions()
       .addArguments("--no-sandbox")
       .addArguments("--disable-dev-shm-usage")
-      .setHeadless(true)
-      .setExperimentalOption("useAutomationExtension", false));
+      .setHeadless(true));
 
   static {
     environment.start();

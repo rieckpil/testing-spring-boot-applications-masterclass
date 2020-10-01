@@ -1,11 +1,13 @@
 package de.rieckpil.courses.book.review;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.WebDriverRunner;
 import de.rieckpil.courses.AbstractWebTest;
 import de.rieckpil.courses.book.management.Book;
 import de.rieckpil.courses.book.management.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.codeborne.selenide.Selenide.*;
@@ -36,6 +38,9 @@ public class ReviewCreationWT extends AbstractWebTest {
   public void shouldCreateReviewAndDisplayItInAllReviews() {
     // open("http://host.docker.internal:" + port + "/");
     // open(webDriverContainer.getTestHostIpAddress() + port + "/");
+
+    RemoteWebDriver remoteWebDriver = webDriverContainer.getWebDriver();
+    WebDriverRunner.setWebDriver(remoteWebDriver);
 
     open("http://172.17.0.1:" + port + "/");
 
