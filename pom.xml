@@ -234,6 +234,10 @@
         <version>3.0.0-M5</version>
         <configuration>
           <argLine>--enable-preview</argLine>
+          <includes>
+            <include>**/*WT.java</include>
+            <include>**/*IT.java</include>
+          </includes>
         </configuration>
         <executions>
           <execution>
