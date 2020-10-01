@@ -133,6 +133,4 @@ public class ReviewControllerIT extends AbstractIntegrationTest {
       .jsonPath("$[0].ratings").isEqualTo(3)
       .jsonPath("$[0].avg").isEqualTo(4.00);
   }
-
-
 }

@@ -13,6 +13,7 @@ import de.rieckpil.courses.initializer.RSAKeyGenerator;
 import de.rieckpil.courses.initializer.WireMockInitializer;
 import de.rieckpil.courses.stubs.OAuth2Stubs;
 import de.rieckpil.courses.stubs.OpenLibraryStubs;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -124,6 +125,11 @@ class BookSynchronizationListenerIT {
     this.bookRepository.deleteAll();
   }
 
+  @AfterEach
+  public void tearDown() {
+    this.bookRepository.deleteAll();
+  }
+
   @Test
   public void shouldGetSuccessWhenClientIsAuthenticated() throws JOSEException {
 
@@ -189,5 +195,4 @@ class BookSynchronizationListenerIT {
           .jsonPath("$[0].isbn").isEqualTo(ISBN);
       });
   }
-
 }
