@@ -40,7 +40,10 @@ public class AbstractWebTest {
         Wait.forListeningPort());
 
   protected static BrowserWebDriverContainer webDriverContainer = new BrowserWebDriverContainer()
-    .withCapabilities(new ChromeOptions().setHeadless(false));
+    .withCapabilities(new ChromeOptions()
+      .addArguments("--no-sandbox")
+      .addArguments("--headless")
+      .addArguments("--disable-dev-shm-usage"));
 
   static {
     environment.start();
