@@ -42,8 +42,9 @@ public class AbstractWebTest {
   protected static BrowserWebDriverContainer webDriverContainer = new BrowserWebDriverContainer()
     .withCapabilities(new ChromeOptions()
       .addArguments("--no-sandbox")
-      .addArguments("--headless")
-      .addArguments("--disable-dev-shm-usage"));
+      .addArguments("--disable-dev-shm-usage")
+      .setHeadless(true)
+      .setExperimentalOption("useAutomationExtension", false));
 
   static {
     environment.start();
