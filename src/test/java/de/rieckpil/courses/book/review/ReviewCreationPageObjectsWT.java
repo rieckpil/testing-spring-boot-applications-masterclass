@@ -9,13 +9,11 @@ import de.rieckpil.courses.pages.DashboardPage;
 import de.rieckpil.courses.pages.LoginPage;
 import de.rieckpil.courses.pages.NewReviewPage;
 import de.rieckpil.courses.pages.ReviewListPage;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Disabled
 public class ReviewCreationPageObjectsWT extends AbstractWebTest {
 
   DashboardPage dashboardPage = new DashboardPage();
