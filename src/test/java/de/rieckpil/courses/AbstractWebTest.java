@@ -5,9 +5,9 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.sqs.AmazonSQSAsync;
 import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
-import de.rieckpil.courses.extensions.ScreenshotOnFailureExtension;
+import com.codeborne.selenide.junit5.ScreenShooterExtension;
 import de.rieckpil.courses.initializer.WireMockInitializer;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -21,11 +21,9 @@ import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 
 import java.io.File;
-import java.nio.file.Paths;
 import java.time.Duration;
 
 @ActiveProfiles("web-test")
-@ExtendWith({ScreenshotOnFailureExtension.class})
 @ContextConfiguration(initializers = WireMockInitializer.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class AbstractWebTest {
@@ -42,11 +40,14 @@ public class AbstractWebTest {
         Wait.forListeningPort());
 
   protected static BrowserWebDriverContainer webDriverContainer = new BrowserWebDriverContainer()
-    .withRecordingMode(VncRecordingMode.RECORD_ALL, Paths.get(".", "target").toFile())
+    .withRecordingMode(VncRecordingMode.RECORD_ALL, new File("recordings"))
     .withCapabilities(new ChromeOptions()
       .addArguments("--no-sandbox")
-      .addArguments("--disable-dev-shm-usage")
-      .setHeadless(true));
+      .addArguments("--disable-dev-shm-usage"));
+
+  @RegisterExtension
+  static ScreenShooterExtension screenShooter = new ScreenShooterExtension()
+    .to("target/selenide-screenshots");
 
   static {
     environment.start();
