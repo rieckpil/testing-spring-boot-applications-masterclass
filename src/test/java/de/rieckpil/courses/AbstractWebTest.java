@@ -31,7 +31,6 @@ import java.time.Duration;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class AbstractWebTest {
 
-  @Container
   public static DockerComposeContainer<?> environment =
     new DockerComposeContainer<>(new File("docker-compose.yml"))
       .withExposedService("database_1", 5432,
@@ -49,6 +48,10 @@ public class AbstractWebTest {
     .withCapabilities(new ChromeOptions()
       .addArguments("--no-sandbox")
       .addArguments("--disable-dev-shm-usage"));
+
+  static {
+    environment.start();
+  }
 
   @RegisterExtension
   static ScreenShooterExtension screenShooter = new ScreenShooterExtension()

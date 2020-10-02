@@ -13,7 +13,6 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Disabled
 public class ReviewCreationPageObjectsWT extends AbstractWebTest {
 
   DashboardPage dashboardPage = new DashboardPage();
