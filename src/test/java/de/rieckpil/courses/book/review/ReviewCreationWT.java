@@ -20,6 +20,9 @@ public class ReviewCreationWT extends AbstractWebTest {
   @Autowired
   private BookRepository bookRepository;
 
+  @Autowired
+  private ReviewRepository reviewRepository;
+
   private static final String ISBN = "9780321751041";
 
   @BeforeAll
@@ -38,6 +41,8 @@ public class ReviewCreationWT extends AbstractWebTest {
   @AfterEach
   public void tearDown() {
     WebDriverRunner.closeWebDriver();
+    this.reviewRepository.deleteAll();
+    this.bookRepository.deleteAll();
   }
 
   @Test
