@@ -1,11 +1,14 @@
 package de.rieckpil.courses.book.review;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import de.rieckpil.courses.AbstractWebTest;
 import de.rieckpil.courses.book.management.Book;
 import de.rieckpil.courses.book.management.BookRepository;
+import de.rieckpil.courses.pages.DashboardPage;
+import de.rieckpil.courses.pages.LoginPage;
+import de.rieckpil.courses.pages.NewReviewPage;
+import de.rieckpil.courses.pages.ReviewListPage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,9 +16,12 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.codeborne.selenide.Selenide.*;
+public class ReviewCreationPageObjectsWT extends AbstractWebTest {
 
-public class ReviewCreationWT extends AbstractWebTest {
+  DashboardPage dashboardPage = new DashboardPage();
+  LoginPage loginPage = new LoginPage();
+  NewReviewPage newReviewPage = new NewReviewPage();
+  ReviewListPage reviewListPage = new ReviewListPage();
 
   @Autowired
   private BookRepository bookRepository;
@@ -43,47 +49,15 @@ public class ReviewCreationWT extends AbstractWebTest {
   @Test
   public void shouldCreateReviewAndDisplayItInReviewList() {
 
-    open("/");
+    String reviewTitle = "Great Book about Software Development with Java!";
+    String reviewContent = "I really enjoyed reading this book. It contains great examples and discusses also advanced topics.";
 
     createBook();
 
-    performLogin();
-    submitReview();
-    verifyReviewIsPartOfAllReviews();
-  }
-
-  private void verifyReviewIsPartOfAllReviews() {
-    $("#all-reviews").click();
-    $("#reviews").should(Condition.appear);
-    $$("#reviews > div").shouldHaveSize(1);
-    $("#review-0 .review-title").shouldHave(Condition.text("Great Book about Software Development with Java!"));
-    $("#review-0 .review-content").shouldHave(Condition.text("I really enjoyed reading this book. It contains great examples and discusses also advanced topics."));
-  }
-
-  private void submitReview() {
-    $("#submit-review").should(Condition.appear);
-    $("#submit-review").click();
-
-    $("#review-submit").should(Condition.appear);
-    $("#book-selection").click();
-    $$(".visible .menu > div").get(0).click();
-    $$("#book-rating > i").get(4).click();
-
-    $("#review-title").val("Great Book about Software Development with Java!");
-    $("#review-content").val("I really enjoyed reading this book. It contains great examples and discusses also advanced topics.");
-
-    screenshot("before_submit");
-
-    $("#review-submit").click();
-    $(".ui .success").should(Condition.appear);
-  }
-
-  private void performLogin() {
-    $("button.ui").click();
-    $("#kc-login").should(Condition.appear);
-    $("#username").val("duke");
-    $("#password").val("dukeduke");
-    $("#kc-login").click();
+    dashboardPage.open();
+    loginPage.performLogin("duke", "dukeduke");
+    newReviewPage.submitReview(reviewTitle, reviewContent, 0, 4);
+    reviewListPage.shouldContainExactlyOneReview(reviewTitle, reviewContent);
   }
 
   private void createBook() {
