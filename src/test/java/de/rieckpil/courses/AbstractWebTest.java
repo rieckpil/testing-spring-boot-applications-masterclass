@@ -19,17 +19,21 @@ import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.containers.BrowserWebDriverContainer.VncRecordingMode;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
 import java.time.Duration;
 
 @ActiveProfiles("web-test")
+@Testcontainers(disabledWithoutDocker = true)
 @ContextConfiguration(initializers = WireMockInitializer.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class AbstractWebTest {
 
-  protected static DockerComposeContainer environment =
-    new DockerComposeContainer(new File("docker-compose.yml"))
+  @Container
+  public static DockerComposeContainer<?> environment =
+    new DockerComposeContainer<>(new File("docker-compose.yml"))
       .withExposedService("database_1", 5432,
         Wait.forListeningPort())
       .withExposedService("keycloak_1", 8080,
@@ -39,8 +43,9 @@ public class AbstractWebTest {
       .withExposedService("sqs_1", 9324,
         Wait.forListeningPort());
 
-  protected static BrowserWebDriverContainer webDriverContainer = new BrowserWebDriverContainer()
-    .withRecordingMode(VncRecordingMode.RECORD_ALL, new File("recordings"))
+  @Container
+  public static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>()
+    .withRecordingMode(VncRecordingMode.RECORD_ALL, new File("./target"))
     .withCapabilities(new ChromeOptions()
       .addArguments("--no-sandbox")
       .addArguments("--disable-dev-shm-usage"));
@@ -48,11 +53,6 @@ public class AbstractWebTest {
   @RegisterExtension
   static ScreenShooterExtension screenShooter = new ScreenShooterExtension()
     .to("target/selenide-screenshots");
-
-  static {
-    environment.start();
-    webDriverContainer.start();
-  }
 
   @LocalServerPort
   protected int port;
