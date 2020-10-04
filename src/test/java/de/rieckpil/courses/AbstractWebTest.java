@@ -8,18 +8,14 @@ import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 import com.codeborne.selenide.junit5.ScreenShooterExtension;
 import de.rieckpil.courses.initializer.WireMockInitializer;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.testcontainers.containers.BrowserWebDriverContainer;
-import org.testcontainers.containers.BrowserWebDriverContainer.VncRecordingMode;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
@@ -29,7 +25,7 @@ import java.time.Duration;
 @Testcontainers(disabledWithoutDocker = true)
 @ContextConfiguration(initializers = WireMockInitializer.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class AbstractWebTest {
+public abstract class AbstractWebTest {
 
   public static DockerComposeContainer<?> environment =
     new DockerComposeContainer<>(new File("docker-compose.yml"))
