@@ -31,6 +31,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.localstack.LocalStackContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.IOException;
@@ -50,16 +51,16 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BookSynchronizationListenerIT {
 
-  static PostgreSQLContainer database = (PostgreSQLContainer) new PostgreSQLContainer("postgres:12.3")
+  @Container
+  static PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:12.3")
     .withDatabaseName("test")
     .withUsername("duke")
-    .withPassword("s3cret")
-    .withReuse(true);
+    .withPassword("s3cret");
 
+  @Container
   static LocalStackContainer localStack = new LocalStackContainer("0.10.0")
     .withServices(SQS)
-    .withEnv("DEFAULT_REGION", "eu-central-1")
-    .withReuse(true);
+    .withEnv("DEFAULT_REGION", "eu-central-1");
 
   private static final String QUEUE_NAME = UUID.randomUUID().toString();
   private static final String ISBN = "9780596004651";
@@ -90,8 +91,6 @@ class BookSynchronizationListenerIT {
   }
 
   static {
-    database.start();
-    localStack.start();
     try {
       VALID_RESPONSE = new String(BookSynchronizationListenerIT.class
         .getClassLoader()

@@ -46,8 +46,7 @@ public class AbstractWebTest {
   public static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>()
     .withRecordingMode(VncRecordingMode.RECORD_ALL, new File("./target"))
     .withCapabilities(new ChromeOptions()
-      .addArguments("--no-sandbox")
-      .addArguments("--disable-dev-shm-usage"));
+      .addArguments("--no-sandbox"));
 
   static {
     environment.start();
