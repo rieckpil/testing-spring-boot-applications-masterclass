@@ -40,8 +40,7 @@ class BookSynchronizationListenerSliceTest {
   @Container
   static LocalStackContainer localStack = new LocalStackContainer("0.10.0")
     .withServices(LocalStackContainer.Service.SQS)
-    .withEnv("DEFAULT_REGION", "eu-central-1")
-    .withReuse(true);
+    .withEnv("DEFAULT_REGION", "eu-central-1");
 
   private static final String QUEUE_NAME = UUID.randomUUID().toString();
   private static final String ISBN = "9780596004651";
