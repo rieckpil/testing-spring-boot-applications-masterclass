@@ -29,7 +29,6 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.localstack.LocalStackContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.IOException;
@@ -47,16 +46,21 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class AbstractIntegrationTest {
 
-  @Container
-  static PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:12.3")
+  static PostgreSQLContainer database = (PostgreSQLContainer) new PostgreSQLContainer("postgres:12.3")
     .withDatabaseName("test")
     .withUsername("duke")
-    .withPassword("s3cret");
+    .withPassword("s3cret")
+    .withReuse(true);
 
-  @Container
   static LocalStackContainer localStack = new LocalStackContainer("0.10.0")
     .withServices(SQS)
-    .withEnv("DEFAULT_REGION", "eu-central-1");
+    .withEnv("DEFAULT_REGION", "eu-central-1")
+    .withReuse(true);
+
+  static {
+    database.start();
+    localStack.start();
+  }
 
   protected static final String QUEUE_NAME = UUID.randomUUID().toString();
 

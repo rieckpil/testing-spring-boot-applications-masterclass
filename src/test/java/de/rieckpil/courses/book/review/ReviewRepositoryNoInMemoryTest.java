@@ -8,7 +8,6 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.math.BigDecimal;
@@ -21,11 +20,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class ReviewRepositoryNoInMemoryTest {
 
-  @Container
-  static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:12.3")
+  // @Container
+  static PostgreSQLContainer container = (PostgreSQLContainer) new PostgreSQLContainer("postgres:12.3")
     .withDatabaseName("test")
     .withUsername("duke")
-    .withPassword("s3cret");
+    .withPassword("s3cret")
+    .withReuse(true);
+
+  static {
+    container.start();
+  }
 
   @DynamicPropertySource
   static void properties(DynamicPropertyRegistry registry) {
@@ -52,6 +56,7 @@ class ReviewRepositoryNoInMemoryTest {
       System.out.println(reviewStatistic.getAvg());
       System.out.println(reviewStatistic.getIsbn());
       System.out.println(reviewStatistic.getRatings());
+      System.out.println("");
     });
 
     assertEquals(2, result.get(0).getRatings());
