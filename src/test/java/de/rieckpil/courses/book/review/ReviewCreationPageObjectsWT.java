@@ -10,8 +10,13 @@ import de.rieckpil.courses.pages.LoginPage;
 import de.rieckpil.courses.pages.NewReviewPage;
 import de.rieckpil.courses.pages.ReviewListPage;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.testcontainers.containers.BrowserWebDriverContainer;
+import org.testcontainers.junit.jupiter.Container;
+
+import java.io.File;
 
 public class ReviewCreationPageObjectsWT extends AbstractWebTest {
 
@@ -25,6 +30,13 @@ public class ReviewCreationPageObjectsWT extends AbstractWebTest {
 
   @Autowired
   private ReviewRepository reviewRepository;
+
+  @Container
+  public static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>()
+    .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target"))
+    .withCapabilities(new ChromeOptions()
+      .addArguments("--no-sandbox")
+      .addArguments("--disable-dev-shm-usage"));
 
   private static final String ISBN = "9780321751041";
 

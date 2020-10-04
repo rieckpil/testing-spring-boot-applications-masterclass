@@ -42,13 +42,6 @@ public class AbstractWebTest {
       .withExposedService("sqs_1", 9324,
         Wait.forListeningPort());
 
-  @Container
-  public static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>()
-    .withRecordingMode(VncRecordingMode.RECORD_ALL, new File("./target"))
-    .withCapabilities(new ChromeOptions()
-      .addArguments("--no-sandbox")
-      .addArguments("--disable-dev-shm-usage"));
-
   static {
     environment.start();
   }

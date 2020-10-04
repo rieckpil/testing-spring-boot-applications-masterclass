@@ -10,12 +10,23 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.testcontainers.containers.BrowserWebDriverContainer;
+import org.testcontainers.junit.jupiter.Container;
+
+import java.io.File;
 
 import static com.codeborne.selenide.Selenide.*;
 
 public class ReviewCreationWT extends AbstractWebTest {
+
+  @Container
+  public static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>()
+    .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target"))
+    .withCapabilities(new FirefoxOptions());
 
   @Autowired
   private BookRepository bookRepository;
