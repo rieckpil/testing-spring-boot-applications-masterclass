@@ -8,6 +8,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.math.BigDecimal;
@@ -20,16 +21,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class ReviewRepositoryNoInMemoryTest {
 
-  // @Container
-  static PostgreSQLContainer container = (PostgreSQLContainer) new PostgreSQLContainer("postgres:12.3")
+  @Container
+  static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:12.3")
     .withDatabaseName("test")
     .withUsername("duke")
-    .withPassword("s3cret")
-    .withReuse(true);
-
-  static {
-    container.start();
-  }
+    .withPassword("s3cret");
 
   @DynamicPropertySource
   static void properties(DynamicPropertyRegistry registry) {
