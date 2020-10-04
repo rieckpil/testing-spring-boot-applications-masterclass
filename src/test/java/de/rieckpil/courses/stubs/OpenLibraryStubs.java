@@ -22,5 +22,4 @@ public class OpenLibraryStubs {
           .withBody(response))
     );
   }
-
 }

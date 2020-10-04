@@ -10,9 +10,12 @@ import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 
 import java.util.Arrays;
 
+@Order(Ordered.LOWEST_PRECEDENCE - 1000)
 public class WireMockInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
   private static final Logger LOG = LoggerFactory.getLogger(WireMockInitializer.class);
