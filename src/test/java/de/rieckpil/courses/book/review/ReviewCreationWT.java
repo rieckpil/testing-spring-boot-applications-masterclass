@@ -7,11 +7,9 @@ import de.rieckpil.courses.AbstractWebTest;
 import de.rieckpil.courses.book.management.Book;
 import de.rieckpil.courses.book.management.BookRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testcontainers.containers.BrowserWebDriverContainer;
@@ -20,13 +18,9 @@ import org.testcontainers.junit.jupiter.Container;
 import java.io.File;
 
 import static com.codeborne.selenide.Selenide.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ReviewCreationWT extends AbstractWebTest {
-
-  @Container
-  public static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>()
-    .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target"))
-    .withCapabilities(new FirefoxOptions());
 
   @Autowired
   private BookRepository bookRepository;
@@ -34,34 +28,36 @@ public class ReviewCreationWT extends AbstractWebTest {
   @Autowired
   private ReviewRepository reviewRepository;
 
-  private static final String ISBN = "9780321751041";
+  @Container
+  static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>()
+    .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target"))
+    .withCapabilities(new ChromeOptions()
+      .addArguments("--no-sandbox")
+      .addArguments("--disable-dev-shm-usage"));
 
-  @BeforeAll
-  static void config() {
-    Configuration.timeout = 2000;
-  }
+  private static final String ISBN = "9780321751041";
 
   @BeforeEach
   public void setup() {
+    Configuration.timeout = 2000;
+    Configuration.baseUrl = "http://172.17.0.1:8080";
+
     RemoteWebDriver remoteWebDriver = webDriverContainer.getWebDriver();
     WebDriverRunner.setWebDriver(remoteWebDriver);
 
-    Configuration.baseUrl = "http://172.17.0.1:" + port;
+    createBook();
   }
 
   @AfterEach
   public void tearDown() {
-    WebDriverRunner.closeWebDriver();
     this.reviewRepository.deleteAll();
     this.bookRepository.deleteAll();
   }
 
   @Test
   public void shouldCreateReviewAndDisplayItInReviewList() {
-
+    assertNotNull(bookRepository);
     open("/");
-
-    createBook();
 
     performLogin();
     submitReview();
@@ -88,7 +84,7 @@ public class ReviewCreationWT extends AbstractWebTest {
     $("#review-title").val("Great Book about Software Development with Java!");
     $("#review-content").val("I really enjoyed reading this book. It contains great examples and discusses also advanced topics.");
 
-    screenshot("before_submit");
+    screenshot("before_submit_review");
 
     $("#review-submit").click();
     $(".ui .success").should(Condition.appear);
@@ -99,6 +95,9 @@ public class ReviewCreationWT extends AbstractWebTest {
     $("#kc-login").should(Condition.appear);
     $("#username").val("duke");
     $("#password").val("dukeduke");
+
+    screenshot("before_submit");
+
     $("#kc-login").click();
   }
 

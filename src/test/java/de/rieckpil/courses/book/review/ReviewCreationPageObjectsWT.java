@@ -9,8 +9,10 @@ import de.rieckpil.courses.pages.DashboardPage;
 import de.rieckpil.courses.pages.LoginPage;
 import de.rieckpil.courses.pages.NewReviewPage;
 import de.rieckpil.courses.pages.ReviewListPage;
-import org.junit.jupiter.api.*;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testcontainers.containers.BrowserWebDriverContainer;
@@ -20,53 +22,45 @@ import java.io.File;
 
 public class ReviewCreationPageObjectsWT extends AbstractWebTest {
 
-  DashboardPage dashboardPage = new DashboardPage();
-  LoginPage loginPage = new LoginPage();
-  NewReviewPage newReviewPage = new NewReviewPage();
-  ReviewListPage reviewListPage = new ReviewListPage();
-
   @Autowired
   private BookRepository bookRepository;
 
   @Autowired
   private ReviewRepository reviewRepository;
 
+  DashboardPage dashboardPage = new DashboardPage();
+  LoginPage loginPage = new LoginPage();
+  NewReviewPage newReviewPage = new NewReviewPage();
+  ReviewListPage reviewListPage = new ReviewListPage();
+
   @Container
-  public static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>()
+  static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>()
     .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target"))
-    .withCapabilities(new ChromeOptions()
-      .addArguments("--no-sandbox")
-      .addArguments("--disable-dev-shm-usage"));
+    .withCapabilities(new FirefoxOptions());
 
   private static final String ISBN = "9780321751041";
 
-  @BeforeAll
-  static void config() {
-    Configuration.timeout = 2000;
-  }
-
   @BeforeEach
   public void setup() {
+    Configuration.timeout = 2000;
+    Configuration.baseUrl = "http://172.17.0.1:8080";
+
     RemoteWebDriver remoteWebDriver = webDriverContainer.getWebDriver();
     WebDriverRunner.setWebDriver(remoteWebDriver);
-
-    Configuration.baseUrl = "http://172.17.0.1:" + port;
   }
 
   @AfterEach
   public void tearDown() {
-    WebDriverRunner.closeWebDriver();
     this.reviewRepository.deleteAll();
     this.bookRepository.deleteAll();
   }
 
   @Test
   public void shouldCreateReviewAndDisplayItInReviewList() {
+    createBook();
 
     String reviewTitle = "Great Book about Software Development with Java!";
     String reviewContent = "I really enjoyed reading this book. It contains great examples and discusses also advanced topics.";
-
-    createBook();
 
     dashboardPage.open();
     loginPage.performLogin("duke", "dukeduke");
