@@ -73,7 +73,7 @@ To run **all tests** together:
 
 # Further resources and links
 
-* [Course Landing Page with FAQ](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
+* [Course Landing Page with FAQ](https://rieckpil.de/testing-spring-boot-applications-masterclass/#FAQ)
 * [Course overview](https://rieckpil.de/courses/testing-spring-boot-applications-masterclass/)
 * [Course login](https://rieckpil.de/wp-login.php)
 * [Password reset](https://rieckpil.de/wp-login.php?action=lostpassword)
