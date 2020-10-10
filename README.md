@@ -82,7 +82,7 @@ To run **all tests** together:
 
 ## The tests are failing, but I still want to build the project
 
-You can pass `-DskipTests` to `mvn clean verify` if you experience test failures: `mvn clean verify -DskipTests
+You can pass `-DskipTests` to `mvn clean verify` if you experience test failures: `mvn clean verify -DskipTests`
 
 Next, make sure you have the latest version of this project (run `git pull`) and ensure the [build status is green](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions).
 
