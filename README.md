@@ -44,7 +44,7 @@ Optional requirements:
 
 ## Running the project
 
-Assuming your local setups meets all requirments stated above, you can now start the application:
+Assuming your local setups meets all requirements stated above, you can now start the application:
 
 1. Make sure your Docker Engine is up- and running
 2. Start the required infrastructure components with `docker-compose up`
