@@ -26,10 +26,12 @@
 - Working with Time (no direct call to System.currentTimeMillis() or LocalDateTime.now()) -> use Clock or TimeProvider
 - Avoid static method calls (workarounds -> possible solution with Mockito)
 - Outsource test data creation to utility class
+- Use GitHub actions for your public projects on GitHub
 
 ## Final thank you and further resources
 
 - Outline the updates for this Masterclass
+- More courses on Testing in the pipeline, make sure to join the Newsletter or follow me on YouTube/Twitter for updates
 - Join Slack Workspace if you haven't already
 - Feel free to provide feedback via any channel (Twitter, Email, Slack, etc.)
 
