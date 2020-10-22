@@ -1,27 +1,30 @@
-# Best practices for testing
+# Best practices for testing (max 10 - 15 videos)
 
-## Test Strategy
+## Test Strategy (2 - Pyramid + Naming // Arrange Act Assert + Variables)
 
 - Show the final overview of our testing strategy (show video with Pyramid and tree-like structure)
 - Use a common naming convention in your team (unit, unit + Spring, integration, web tests)
 - Following test name convention and setup // arrange act assert or given when then
 - Naming variables matters: E.g. mockedUserService, expected, actual
 
-## Build tool configuration
+## Build tool configuration (2 - Maven Naming/Tagging + Plugin + Reports for CI)
 
 - Naming strategies (*Test, *IT, *WT)
 - Tagging tests with Tags (similar to Categories in JUnit 4)
 - Maven Surefire vs. Failsafe Plugin
+- Custom Maven Profile for Failsafe Plugin to run only WT
 - Test reports for CI server
-- Gradle Configuration to separate the test
 
-## Optimizing test execution time
+
+- Same Setup for Gradle
+
+## Optimizing test execution time (2 - Intro + Logging // What to avoid)
 
 - Spring Context caching mechanism explained
 - Avoiding @DirtiesContext at much as possible
 - Show reasons that result why Spring starts a new context
 
-## General tips
+## General tips (4 - Time, Static Mocks, Utility, GH)
 
 - Working with Time (no direct call to System.currentTimeMillis() or LocalDateTime.now()) -> use Clock or TimeProvider
 - Avoid static method calls (workarounds -> possible solution with Mockito)
