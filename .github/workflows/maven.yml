@@ -18,10 +18,3 @@ jobs:
           java-version: 14
       - name: Build & Test application
         run: ./mvnw verify
-      - name: Start Docker environment
-        run: |
-          docker stop $(docker ps -a -q)
-          docker rm $(docker ps -a -q)
-          docker-compose up -d
-          ./waitForUptime.sh
-          docker-compose down
