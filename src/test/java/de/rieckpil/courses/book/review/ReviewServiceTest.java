@@ -4,6 +4,7 @@ import de.rieckpil.courses.book.management.Book;
 import de.rieckpil.courses.book.management.BookRepository;
 import de.rieckpil.courses.book.management.User;
 import de.rieckpil.courses.book.management.UserService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.*;
 class ReviewServiceTest {
 
   @Mock
-  private ReviewVerifier reviewVerifier;
+  private ReviewVerifier mockedReviewVerifier;
 
   @Mock
   private UserService userService;
@@ -39,13 +40,14 @@ class ReviewServiceTest {
   @Test
   public void shouldNotBeNull() {
     assertNotNull(reviewRepository);
-    assertNotNull(reviewVerifier);
+    assertNotNull(mockedReviewVerifier);
     assertNotNull(userService);
     assertNotNull(bookRepository);
     assertNotNull(cut);
   }
 
   @Test
+  @DisplayName("Write english sentence")
   public void shouldThrowExceptionWhenReviewedBookIsNotExisting() {
     when(bookRepository.findByIsbn(ISBN)).thenReturn(null);
 
@@ -55,16 +57,17 @@ class ReviewServiceTest {
 
   @Test
   public void shouldRejectReviewWhenReviewQualityIsBad() {
-
+    // arrange - given
     BookReviewRequest bookReviewRequest =
       new BookReviewRequest("Title", "BADCONTENT!", 1);
-
     when(bookRepository.findByIsbn(ISBN)).thenReturn(new Book());
-    when(reviewVerifier.doesMeetQualityStandards(bookReviewRequest.getReviewContent())).thenReturn(false);
+    when(mockedReviewVerifier.doesMeetQualityStandards(bookReviewRequest.getReviewContent())).thenReturn(false);
 
+    // act - when
     assertThrows(BadReviewQualityException.class,
       () -> cut.createBookReview(ISBN, bookReviewRequest, USERNAME, EMAIL));
 
+    // assert - then
     verify(reviewRepository, times(0)).save(ArgumentMatchers.any(Review.class));
   }
 
@@ -75,7 +78,7 @@ class ReviewServiceTest {
       new BookReviewRequest("Title", "GOOD CONTENT!", 1);
 
     when(bookRepository.findByIsbn(ISBN)).thenReturn(new Book());
-    when(reviewVerifier.doesMeetQualityStandards(bookReviewRequest.getReviewContent())).thenReturn(true);
+    when(mockedReviewVerifier.doesMeetQualityStandards(bookReviewRequest.getReviewContent())).thenReturn(true);
     when(userService.getOrCreateUser(USERNAME, EMAIL)).thenReturn(new User());
     when(reviewRepository.save(any(Review.class))).thenAnswer(invocation -> {
       Review reviewToSave = invocation.getArgument(0);
@@ -85,6 +88,7 @@ class ReviewServiceTest {
 
     Long result = cut.createBookReview(ISBN, bookReviewRequest, USERNAME, EMAIL);
 
-    assertEquals(42, result);
+    Long expected = 42L;
+    assertEquals(expected, result);
   }
 }
