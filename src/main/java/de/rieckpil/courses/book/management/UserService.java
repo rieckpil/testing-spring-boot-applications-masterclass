@@ -20,7 +20,7 @@ public class UserService {
       user = new User();
       user.setName(name);
       user.setEmail(email);
-      user.setCreatedAt(LocalDateTime.now());
+      user.setCreatedAt(LocalDateTime.now()); // UUID.randomUUID();
       user = userRepository.save(user);
     }
 
