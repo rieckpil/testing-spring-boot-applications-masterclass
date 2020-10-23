@@ -27,3 +27,10 @@ clients:
 
 sqs:
   book-synchronization-queue: test-default
+logging:
+  level:
+    org:
+      springframework:
+        test:
+          context:
+            cache: DEBUG
