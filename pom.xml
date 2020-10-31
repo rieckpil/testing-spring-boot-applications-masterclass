@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.3.0.RELEASE</version>
+    <version>2.3.5.RELEASE</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
@@ -19,9 +19,9 @@
   <properties>
     <java.version>14</java.version>
     <node.version>v12.18.3</node.version>
-    <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
-    <testcontainers.version>1.14.2</testcontainers.version>
-    <wiremock.version>2.27.1</wiremock.version>
+    <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
+    <testcontainers.version>1.15.0-rc2</testcontainers.version>
+    <wiremock.version>2.27.2</wiremock.version>
     <selenium.version>3.141.59</selenium.version>
     <awaitility.version>4.0.3</awaitility.version>
     <p6spy.version>3.9.1</p6spy.version>
