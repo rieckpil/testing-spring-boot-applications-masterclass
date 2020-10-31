@@ -33,4 +33,4 @@ logging:
       springframework:
         test:
           context:
-            cache: DEBUG
+            cache: INFO # change to DEBUG for Spring Context Cache insights
