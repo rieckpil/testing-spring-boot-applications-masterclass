@@ -22,7 +22,7 @@ public class RSAKeyGenerator {
       .algorithm(JWSAlgorithm.RS256)
       .keyID(KEY_ID);
 
-    return new JWKSet(builder.build()).toJSONObject().toJSONString();
+    return new JWKSet(builder.build()).toString();
   }
 
   public void initializeKeys() {
