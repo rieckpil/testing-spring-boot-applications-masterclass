@@ -20,7 +20,7 @@
     <java.version>14</java.version>
     <node.version>v12.18.3</node.version>
     <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
-    <testcontainers.version>1.15.0-rc2</testcontainers.version>
+    <testcontainers.version>1.15.0</testcontainers.version>
     <wiremock.version>2.27.2</wiremock.version>
     <selenium.version>3.141.59</selenium.version>
     <awaitility.version>4.0.3</awaitility.version>
