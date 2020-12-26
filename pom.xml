@@ -201,6 +201,7 @@
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>mockwebserver</artifactId>
       <version>${mockwebserver.version}</version>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>
