@@ -1,5 +1,9 @@
 name: Build & Test Maven Project
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 5 * * SUN'
 jobs:
   build-and-test:
     runs-on: ubuntu-20.04
