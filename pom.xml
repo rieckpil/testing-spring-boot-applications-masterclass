@@ -168,6 +168,13 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna</artifactId>
+      <version>5.8.0</version>
+      <scope>test</scope>
+      <!-- https://github.com/testcontainers/testcontainers-java/issues/3834#issuecomment-788995236 -->
+    </dependency>
+    <dependency>
       <groupId>com.codeborne</groupId>
       <artifactId>selenide</artifactId>
       <version>${selenide.version}</version>
