@@ -28,7 +28,7 @@
     <mockwebserver.version>4.9.0</mockwebserver.version>
     <mockito.version>3.10.0</mockito.version>
     <okhttp3.version>4.9.0</okhttp3.version>
-    <okio.version>2.9.0</okio.version>
+    <okio.version>2.10.0</okio.version>
     <selenide.version>5.21.0</selenide.version>
     <guava.version>29.0-jre</guava.version>
   </properties>
