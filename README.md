@@ -8,27 +8,38 @@
 
 Mandatory requirements:
 
-* Java 14 (JDK flavour (OpenJDK/Azul/Oracle) does not matter). For the correct Java version setup I can recommend [JEnv](https://www.youtube.com/watch?v=9FVZyeFDXo0) (Mac/Linux) and the [Maven Toolchains Plugin](https://maven.apache.org/plugins/maven-toolchains-plugin/toolchains/jdk.html) (Windows)
+* Java 16 (JDK flavour (OpenJDK/Azul/Oracle) does not matter). For the correct Java version setup I can recommend [JEnv](https://www.youtube.com/watch?v=9FVZyeFDXo0) (Mac/Linux) and the [Maven Toolchains Plugin](https://maven.apache.org/plugins/maven-toolchains-plugin/toolchains/jdk.html) (Windows)
 
 ```
 $ java -version
-openjdk version "14.0.1" 2020-04-14
-OpenJDK Runtime Environment AdoptOpenJDK (build 14.0.1+7)
-OpenJDK 64-Bit Server VM AdoptOpenJDK (build 14.0.1+7, mixed mode, sharing)
+openjdk version "16.0.1" 2021-04-20
+OpenJDK Runtime Environment AdoptOpenJDK-16.0.1+9 (build 16.0.1+9)
+OpenJDK 64-Bit Server VM AdoptOpenJDK-16.0.1+9 (build 16.0.1+9, mixed mode, sharing)
 ```
 
-* Docker Engine (Community Edition is enough) and Docker Compose
+* Docker Engine (Community Edition is enough) and Docker Compose:
 
 ```
 $ docker version
 Client: Docker Engine - Community
- Version:           19.03.12
- API version:       1.40
- Go version:        go1.13.10
- Git commit:        48a66213fe
- Built:             Mon Jun 22 15:41:33 2020
- OS/Arch:           darwin/amd64
- Experimental:      false
+ Version:           20.10.6
+ API version:       1.41
+ Go version:        go1.13.15
+ Git commit:        370c289
+ Built:             Fri Apr  9 22:47:17 2021
+ OS/Arch:           linux/amd64
+ Context:           default
+ Experimental:      true
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          20.10.6
+  API version:      1.41 (minimum version 1.12)
+  Go version:       go1.13.15
+  Git commit:       8728dd2
+  Built:            Fri Apr  9 22:45:28 2021
+  OS/Arch:          linux/amd64
+  Experimental:     false
 
 $ docker-compose version
 docker-compose version 1.26.2, build eefe0d31
@@ -39,7 +50,20 @@ OpenSSL version: OpenSSL 1.1.1g  21 Apr 2020
 
 Optional requirements:
 
-* Maven 3.6 (Project includes also the Maven Wrapper)
+* Maven 3.6 (the project also includes the Maven Wrapper).
+
+When using Maven from the command line, make sure `mvn -version` reports the correct Java version:
+
+```
+$ mvn -version
+
+Apache Maven 3.6.3 (cecedd343002696d0abb50b32b541b8a6ba2883f)
+Maven home: /home/rieckpil/.m2/wrapper/dists/apache-maven-3.6.3-bin/1iopthnavndlasol9gbrbg6bf2/apache-maven-3.6.3
+Java version: 16.0.1, vendor: AdoptOpenJDK, runtime: /usr/lib/jvm/jdk-16.0.1+9
+Default locale: en_US, platform encoding: UTF-8
+OS name: "linux", version: "5.4.0-73-generic", arch: "amd64", family: "unix"
+```
+
 * IntelliJ IDEA or any IDE/Code Editor (Eclipse, NetBeans, Code, Atom, etc.)
 
 ## Running the project
