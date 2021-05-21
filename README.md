@@ -68,7 +68,7 @@ OS name: "linux", version: "5.4.0-73-generic", arch: "amd64", family: "unix"
 
 ## Running the project
 
-Assuming your local setups meets all requirements stated above, you can now start the application:
+Assuming your local setups meets all requirements as stated above, you can now start the application:
 
 1. Make sure your Docker Engine is up- and running
 2. Start the required infrastructure components with `docker-compose up`
@@ -87,8 +87,8 @@ To run all **unit** tests: `mvn test`
 
 To run all **integration & web** tests:
 
-1. Make sure no Docker container is currently running: `docker ps`
-2. Execute `mvn failsafe:integration-test && mvn failsafe:verify`
+1. Make sure no Docker containers are currently running: `docker ps`
+2. Execute `mvn failsafe:integration-test failsafe:verify`
 
 To run **all tests** together:
 
@@ -98,9 +98,9 @@ To run **all tests** together:
 # Further resources and links
 
 * [Course Landing Page with FAQ](https://rieckpil.de/testing-spring-boot-applications-masterclass/#FAQ)
-* [Course overview](https://rieckpil.de/courses/testing-spring-boot-applications-masterclass/)
-* [Course login](https://rieckpil.de/wp-login.php)
-* [Password reset](https://rieckpil.de/wp-login.php?action=lostpassword)
+* [Course Overview](https://rieckpil.de/courses/testing-spring-boot-applications-masterclass/)
+* [Course Login](https://rieckpil.de/wp-login.php)
+* [Password Reset](https://rieckpil.de/wp-login.php?action=lostpassword)
 
 # Troubleshooting setup issues
 
