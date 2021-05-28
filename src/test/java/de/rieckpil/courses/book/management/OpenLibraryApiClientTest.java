@@ -12,13 +12,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
-import reactor.netty.tcp.TcpClient;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static reactor.netty.tcp.TcpClient.create;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class OpenLibraryApiClientTest {
 
@@ -43,7 +44,7 @@ class OpenLibraryApiClientTest {
   @BeforeEach
   public void setup() throws IOException {
 
-    TcpClient tcpClient = create()
+    HttpClient httpClient = HttpClient.create()
       .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 1_000)
       .doOnConnected(connection ->
         connection.addHandlerLast(new ReadTimeoutHandler(1))
@@ -54,7 +55,7 @@ class OpenLibraryApiClientTest {
 
     this.cut = new OpenLibraryApiClient(
       WebClient.builder()
-        .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
+        .clientConnector(new ReactorClientHttpConnector(httpClient))
         .baseUrl(mockWebServer.url("/").toString())
         .build()
     );

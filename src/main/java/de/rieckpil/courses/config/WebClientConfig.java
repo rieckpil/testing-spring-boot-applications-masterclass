@@ -9,9 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
-import reactor.netty.tcp.TcpClient;
-
-import static reactor.netty.tcp.TcpClient.create;
 
 @Configuration
 public class WebClientConfig {
@@ -20,7 +17,7 @@ public class WebClientConfig {
   public WebClient openLibraryWebClient(@Value("${clients.open-library.base-url}") String openLibraryBaseUrl,
                                         WebClient.Builder webClientBuilder) {
 
-    TcpClient tcpClient = create()
+    HttpClient httpClient = HttpClient.create()
       .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 2_000)
       .doOnConnected(connection ->
         connection.addHandlerLast(new ReadTimeoutHandler(2))
@@ -28,7 +25,7 @@ public class WebClientConfig {
 
     return webClientBuilder
       .baseUrl(openLibraryBaseUrl)
-      .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
+      .clientConnector(new ReactorClientHttpConnector(httpClient))
       .build();
   }
 }
