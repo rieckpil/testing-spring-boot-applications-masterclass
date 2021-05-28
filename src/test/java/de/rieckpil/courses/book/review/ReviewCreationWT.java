@@ -1,5 +1,6 @@
 package de.rieckpil.courses.book.review;
 
+import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
@@ -67,7 +68,7 @@ public class ReviewCreationWT extends AbstractWebTest {
   private void verifyReviewIsPartOfAllReviews() {
     $("#all-reviews").click();
     $("#reviews").should(Condition.appear);
-    $$("#reviews > div").shouldHaveSize(1);
+    $$("#reviews > div").shouldHave(CollectionCondition.size(1));
     $("#review-0 .review-title").shouldHave(Condition.text("Great Book about Software Development with Java!"));
     $("#review-0 .review-content").shouldHave(Condition.text("I really enjoyed reading this book. It contains great examples and discusses also advanced topics."));
   }
