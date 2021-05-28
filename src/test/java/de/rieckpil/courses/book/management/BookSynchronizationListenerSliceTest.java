@@ -20,6 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -38,7 +39,7 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 class BookSynchronizationListenerSliceTest {
 
   @Container
-  static LocalStackContainer localStack = new LocalStackContainer("0.10.0")
+  static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.10.0"))
     .withServices(LocalStackContainer.Service.SQS)
     .withEnv("DEFAULT_REGION", "eu-central-1");
 

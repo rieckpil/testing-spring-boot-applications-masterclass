@@ -19,6 +19,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -41,7 +42,7 @@ class ApplicationIT {
     .withPassword("s3cret");
 
   @Container
-  static LocalStackContainer localStack = new LocalStackContainer("0.10.0")
+  static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.10.0"))
     .withServices(SQS)
     .withEnv("DEFAULT_REGION", "eu-central-1");
 
