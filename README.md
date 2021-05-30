@@ -9,13 +9,17 @@
 
 The Testing Spring Boot Applications Masterclass is a deep-dive course on testing your Spring Boot applications. You'll learn how to effectively write unit, integration, and end-to-end tests while utilizing Spring Boot's excellent test support.
 
-In short:
+TL;DR:
 
-- testing recipes for several layers of your application (e.g. database, messaging, HTTP communication)
+- testing recipes for several layers of your application (e.g., database, messaging, HTTP communication)
 - simple and straightforward explanations
 - real-world course application with up-to-date testing library versions
 
-After working through the online course your technical testing skills will improve, you'll deploy to production with more confidence (even on Friday afternoons) and sleep better at night thanks to a sophisticated test suite.
+After working through the online course ...
+
+- your technical testing skills will improve by understanding the ins-and-outs of 1testing Spring Boot applications
+- you'll deploy to production with more confidence (even on Friday afternoons)
+- sleep better at night thanks to a sophisticated test suite.
 
 Enroll [here](https://github.com/rieckpil/testing-spring-boot-applications-masterclass) for the Testing Spring Boot Applications Masterclass.
 
