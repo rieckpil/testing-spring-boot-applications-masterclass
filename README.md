@@ -1,8 +1,38 @@
 [![Masterclass](https://rieckpil.de/wp-content/uploads/2020/09/testing-spring-boot-applications-masterclass-course-logo.png)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
 
-# Local Project Setup
+# About the Masterclass
+
 
 [![Build & Test Maven Project](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions)
+
+## Introduction
+
+The Testing Spring Boot Applications Masterclass is a deep-dive course on testing your Spring Boot applications. You'll learn how to effectively write unit, integration, and end-to-end tests while utilizing Spring Boot's excellent test support.
+
+In short:
+
+- testing recipes for several layers of your application (e.g. database, messaging, HTTP communication)
+- simple and straightforward explanations
+- real-world course application with up-to-date testing library versions
+
+After working through the online course your technical testing skills will improve, you'll deploy to production with more confidence (even on Friday afternoons) and sleep better at night thanks to a sophisticated test suite.
+
+Enroll [here](https://github.com/rieckpil/testing-spring-boot-applications-masterclass) for the Testing Spring Boot Applications Masterclass.
+
+PS: You can watch four preview lessons by [subscribing to the mailing list](https://rieckpil.de/tsbam-preview-lessons/).
+
+## Course Application Architecture
+
+[![Course Application Architecture](https://rieckpil.de/wp-content/uploads/2020/06/book-reviewr-application-architecture.png)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
+
+## Further Resources and Links
+
+* [Course Landing Page with FAQ](https://rieckpil.de/testing-spring-boot-applications-masterclass/#FAQ)
+* [Course Overview](https://rieckpil.de/courses/testing-spring-boot-applications-masterclass/)
+* [Course Login](https://rieckpil.de/wp-login.php)
+* [Password Reset](https://rieckpil.de/wp-login.php?action=lostpassword)
+
+# Local Project Setup
 
 ## Requirements
 
@@ -66,7 +96,7 @@ OS name: "linux", version: "5.4.0-73-generic", arch: "amd64", family: "unix"
 
 * IntelliJ IDEA or any IDE/Code Editor (Eclipse, NetBeans, Code, Atom, etc.)
 
-## Running the project
+## Running the Project Locally
 
 Assuming your local setups meets all requirements as stated above, you can now start the application:
 
@@ -81,7 +111,7 @@ Valid application users:
 * duke (password `dukeduke`)
 * mike (password `mikemike`)
 
-## Running the tests
+## Running the Tests
 
 To run all **unit** tests: `mvn test`
 
@@ -95,14 +125,7 @@ To run **all tests** together:
 1. Make sure no Docker container is currently running: `docker ps`
 2. Execute `mvn verify`
 
-# Further resources and links
-
-* [Course Landing Page with FAQ](https://rieckpil.de/testing-spring-boot-applications-masterclass/#FAQ)
-* [Course Overview](https://rieckpil.de/courses/testing-spring-boot-applications-masterclass/)
-* [Course Login](https://rieckpil.de/wp-login.php)
-* [Password Reset](https://rieckpil.de/wp-login.php?action=lostpassword)
-
-# Troubleshooting setup issues
+# Troubleshooting Setup Issues
 
 ## The tests are failing, but I still want to build the project
 
