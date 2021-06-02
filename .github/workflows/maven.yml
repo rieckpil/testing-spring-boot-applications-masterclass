@@ -28,7 +28,7 @@ jobs:
           java-package: jdk
 
       - name: Build & Test application
-        run: ./mvnw verify
+        run: ./mvnw verify -Dit.test=ReviewCreationPageObjectsWT
 
       - name: Archive Selenide Outcome on Failure
         uses: actions/upload-artifact@v2
