@@ -34,5 +34,5 @@ jobs:
         uses: actions/upload-artifact@v2
         if: ${{ failure() }}
         with:
-          name: selenide-screenshots.zip
+          name: selenide-screenshots
           path: target/selenide-screenshots
