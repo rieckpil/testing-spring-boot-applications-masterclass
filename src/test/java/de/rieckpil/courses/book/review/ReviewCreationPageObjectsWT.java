@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.junit.jupiter.Container;
 
@@ -28,6 +29,9 @@ public class ReviewCreationPageObjectsWT extends AbstractWebTest {
 
   @Autowired
   private ReviewRepository reviewRepository;
+
+  @Autowired
+  private WebTestClient webTestClient;
 
   DashboardPage dashboardPage = new DashboardPage();
   LoginPage loginPage = new LoginPage();
@@ -45,6 +49,13 @@ public class ReviewCreationPageObjectsWT extends AbstractWebTest {
   public void setup() {
     Configuration.timeout = 2000;
     Configuration.baseUrl = SystemUtils.IS_OS_WINDOWS ? "http://host.docker.internal:8080" : "http://172.17.0.1:8080";
+
+    System.out.println(SystemUtils.IS_OS_WINDOWS ? "http://host.docker.internal:8080" : "http://172.17.0.1:8080");
+
+    System.out.println(this.webTestClient
+      .get()
+      .exchange()
+      .returnResult(Object.class));
 
     RemoteWebDriver remoteWebDriver = webDriverContainer.getWebDriver();
     WebDriverRunner.setWebDriver(remoteWebDriver);
