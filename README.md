@@ -137,23 +137,27 @@ Valid application users:
 
 ## Running the Tests
 
-To run all **unit** tests: `mvn test`
+Run all **unit** tests with: `mvn test`
 
-To run all **integration & web** tests:
+Run all **integration & web** tests:
 
 1. Make sure no Docker containers are currently running: `docker ps`
 2. Execute `mvn failsafe:integration-test failsafe:verify`
 
-To run **all tests** together:
+Run **all tests** together:
 
 1. Make sure no Docker container is currently running: `docker ps`
 2. Execute `mvn verify`
+
+Skip all tests (don't do this at home):
+
+1. Execute `mvn -Dmaven.test.skip=true verify`
 
 # Troubleshooting Setup Issues
 
 ## The tests are failing, but I still want to build the project
 
-You can pass `-DskipTests` to `mvn clean verify` if you experience test failures: `mvn clean verify -DskipTests`
+You can pass `-DskipTests` to `mvn clean package` if you experience test failures: `mvn clean package -DskipTests` to build the application without running any unit test.
 
 Next, make sure you have the latest version of this project (run `git pull`) and ensure the [build status is green](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions).
 
