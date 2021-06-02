@@ -15,6 +15,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.shaded.org.apache.commons.lang.SystemUtils;
 
 import java.io.File;
 
@@ -41,7 +42,7 @@ public class ReviewCreationWT extends AbstractWebTest {
   @BeforeEach
   public void setup() {
     Configuration.timeout = 2000;
-    Configuration.baseUrl = "http://172.17.0.1:8080";
+    Configuration.baseUrl = SystemUtils.IS_OS_WINDOWS ? "http://host.docker.internal:8080" : "http://172.17.0.1:8080";
 
     RemoteWebDriver remoteWebDriver = webDriverContainer.getWebDriver();
     WebDriverRunner.setWebDriver(remoteWebDriver);

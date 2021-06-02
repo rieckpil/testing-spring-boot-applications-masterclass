@@ -9,6 +9,7 @@ import de.rieckpil.courses.pages.DashboardPage;
 import de.rieckpil.courses.pages.LoginPage;
 import de.rieckpil.courses.pages.NewReviewPage;
 import de.rieckpil.courses.pages.ReviewListPage;
+import org.apache.commons.lang3.SystemUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +44,7 @@ public class ReviewCreationPageObjectsWT extends AbstractWebTest {
   @BeforeEach
   public void setup() {
     Configuration.timeout = 2000;
-    Configuration.baseUrl = "http://172.17.0.1:8080";
+    Configuration.baseUrl = SystemUtils.IS_OS_WINDOWS ? "http://host.docker.internal:8080" : "http://172.17.0.1:8080";
 
     RemoteWebDriver remoteWebDriver = webDriverContainer.getWebDriver();
     WebDriverRunner.setWebDriver(remoteWebDriver);
