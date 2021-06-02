@@ -29,3 +29,10 @@ jobs:
 
       - name: Build & Test application
         run: ./mvnw verify
+
+      - name: Archive Selenide Outcome on Failure
+        uses: actions/upload-artifact@v2
+        if: ${{ failure() }}
+        with:
+          name: selenide-screenshots.zip
+          path: target/selenide-screenshots
