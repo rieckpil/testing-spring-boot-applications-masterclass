@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.3'
 services:
   database:
     image: postgres:12.3
@@ -15,10 +15,7 @@ services:
       - DB_VENDOR=h2
       - JAVA_OPTS=-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/keycloak-dump.json
     volumes:
-      - type: bind
-        source: ./tmp/keycloak-dump.json
-        target: /tmp/keycloak-dump.json
-        read_only: true
+      - ./tmp/keycloak-dump.json:/tmp/keycloak-dump.json
     ports:
     - 8888:8080
   sqs:

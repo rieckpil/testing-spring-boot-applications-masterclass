@@ -31,8 +31,7 @@ public abstract class AbstractWebTest {
       .withExposedService("database_1", 5432, Wait.forListeningPort())
       .withExposedService("keycloak_1", 8080, Wait.forHttp("/auth").forStatusCode(200)
         .withStartupTimeout(Duration.ofSeconds(30)))
-      .withExposedService("sqs_1", 9324, Wait.forListeningPort())
-      .withLocalCompose(true);
+      .withExposedService("sqs_1", 9324, Wait.forListeningPort());
 
   @RegisterExtension
   static ScreenShooterExtension screenShooterExtension = new ScreenShooterExtension()
