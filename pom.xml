@@ -31,6 +31,7 @@
     <okio.version>2.10.0</okio.version>
     <selenide.version>5.21.0</selenide.version>
     <guava.version>30.1.1-jre</guava.version>
+    <commons-lang3.version>3.12.0</commons-lang3.version>
   </properties>
 
   <dependencyManagement>
@@ -188,6 +189,12 @@
       <version>${mockwebserver.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <scope>test</scope>
+      <version>${commons-lang3.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -254,14 +261,14 @@
             <goals>
               <goal>install-node-and-npm</goal>
             </goals>
-            <phase>generate-resources</phase>
+            <phase>prepare-package</phase>
           </execution>
           <execution>
             <id>npm install</id>
             <goals>
               <goal>npm</goal>
             </goals>
-            <phase>generate-resources</phase>
+            <phase>prepare-package</phase>
             <configuration>
               <arguments>install</arguments>
             </configuration>
@@ -271,7 +278,7 @@
             <goals>
               <goal>npm</goal>
             </goals>
-            <phase>generate-resources</phase>
+            <phase>prepare-package</phase>
             <configuration>
               <environmentVariables>
                 <CI>true</CI>
