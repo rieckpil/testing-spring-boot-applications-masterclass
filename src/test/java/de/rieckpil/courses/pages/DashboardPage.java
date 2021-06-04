@@ -4,7 +4,7 @@ import com.codeborne.selenide.Selenide;
 
 public class DashboardPage {
   public DashboardPage open() {
-    Selenide.open("/index.html");
+    Selenide.open("/");
     return this;
   }
 }
