@@ -261,14 +261,14 @@
             <goals>
               <goal>install-node-and-npm</goal>
             </goals>
-            <phase>generate-resource</phase>
+            <phase>generate-resources</phase>
           </execution>
           <execution>
             <id>npm install</id>
             <goals>
               <goal>npm</goal>
             </goals>
-            <phase>generate-resource</phase>
+            <phase>generate-resources</phase>
             <configuration>
               <arguments>install</arguments>
             </configuration>
@@ -278,7 +278,7 @@
             <goals>
               <goal>npm</goal>
             </goals>
-            <phase>generate-resource</phase>
+            <phase>generate-resources</phase>
             <configuration>
               <environmentVariables>
                 <CI>true</CI>
