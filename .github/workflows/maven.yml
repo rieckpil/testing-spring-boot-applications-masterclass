@@ -28,7 +28,7 @@ jobs:
           java-package: jdk
 
       - name: Build & Test application
-        run: ./mvnw verify -Dit.test=ReviewCreationPageObjectsWT
+        run: ./mvnw verify
 
       - name: Flatten Selenide Screenshots and Source on Failure
         if: ${{ failure() }}
@@ -42,5 +42,5 @@ jobs:
         uses: actions/upload-artifact@v2
         if: ${{ failure() }}
         with:
-          name: selenide-screenshots
+          name: selenide-failure-captures
           path: target/aggregated-outcome
