@@ -35,8 +35,8 @@ jobs:
         working-directory: target
         run: |
          mkdir aggregated-outcome
-         mv selenide-screenshots/**/*.png /aggregated-outcome
-         mv selenide-screenshots/**/*.html /aggregated-outcome
+         find selenide-screenshots -type f -name '*.png' -exec mv -i {} aggregated-outcome  \;
+         find selenide-screenshots -type f -name '*.html' -exec mv -i {} aggregated-outcome  \;
 
       - name: Archive Selenide Outcome on Failure
         uses: actions/upload-artifact@v2
