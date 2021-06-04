@@ -30,9 +30,17 @@ jobs:
       - name: Build & Test application
         run: ./mvnw verify -Dit.test=ReviewCreationPageObjectsWT
 
+      - name: Flatten Selenide Screenshots and Source on Failure
+        if: ${{ failure() }}
+        working-directory: target
+        run: |
+         mkdir aggregated-outcome
+         mv selenide-screenshots/**/*.png /aggregated-outcome
+         mv selenide-screenshots/**/*.html /aggregated-outcome
+
       - name: Archive Selenide Outcome on Failure
         uses: actions/upload-artifact@v2
         if: ${{ failure() }}
         with:
           name: selenide-screenshots
-          path: target/selenide-screenshots
+          path: target/aggregated-outcome
