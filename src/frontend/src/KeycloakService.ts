@@ -4,7 +4,7 @@ import {login} from "./actions";
 
 export const keycloak = Keycloak({
     "realm": "spring",
-    "url": "http://" + window.location.hostname + ":8888/auth",
+    "url": window.location.href.includes("localhost") ? "http://localhost:8888/auth" : "http://172.17.0.1:8888/auth",
     "clientId": "react-client"
   }
 );
