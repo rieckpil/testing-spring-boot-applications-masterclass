@@ -195,6 +195,14 @@
       <scope>test</scope>
       <version>${commons-lang3.version}</version>
     </dependency>
+
+    <!-- Mac M1 Support https://github.com/testcontainers/testcontainers-java/issues/3834#issuecomment-788995236 -->
+    <dependency>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna</artifactId>
+      <version>5.8.0</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
