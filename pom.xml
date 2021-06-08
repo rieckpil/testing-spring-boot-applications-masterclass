@@ -26,7 +26,7 @@
     <awaitility.version>4.1.0</awaitility.version>
     <p6spy.version>3.9.1</p6spy.version>
     <mockwebserver.version>4.9.1</mockwebserver.version>
-    <mockito.version>3.10.0</mockito.version>
+    <mockito.version>3.11.0</mockito.version>
     <okhttp3.version>4.9.0</okhttp3.version>
     <okio.version>2.10.0</okio.version>
     <selenide.version>5.21.0</selenide.version>
