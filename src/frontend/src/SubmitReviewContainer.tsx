@@ -71,10 +71,10 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
       } else if (result.status === 418) {
         setErrorMessage('Your review does not meet the quality standards, please read them carefully and submit again.')
       } else {
-        setErrorMessage('We could not store your review, please try again later.')
+        setErrorMessage(`We could not store your review, please try again later: ${result.status}`)
       }
     }).catch(error => {
-      setErrorMessage('We could not store your review, please try again later.')
+      setErrorMessage(`We could not store your review, please try again later: ${error}`)
     });
   }
 
