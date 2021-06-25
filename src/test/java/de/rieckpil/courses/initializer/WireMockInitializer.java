@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import de.rieckpil.courses.stubs.OAuth2Stubs;
 import de.rieckpil.courses.stubs.OpenLibraryStubs;
+import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -44,6 +45,14 @@ public class WireMockInitializer implements ApplicationContextInitializer<Config
       TestPropertyValues
         .of(
           "spring.security.oauth2.resourceserver.jwt.issuer-uri=http://localhost:" + wireMockServer.port() + "/auth/realms/spring"
+        ).applyTo(applicationContext);
+
+    } else if (Arrays.asList(applicationContext.getEnvironment().getActiveProfiles()).contains("web-test")) {
+      TestPropertyValues
+        .of(
+          String.format(
+            "spring.security.oauth2.resourceserver.jwt.issuer-uri=http://%s:8888/auth/realms/spring",
+            SystemUtils.IS_OS_WINDOWS ? "localhost" : "172.17.0.1")
         ).applyTo(applicationContext);
     }
 
