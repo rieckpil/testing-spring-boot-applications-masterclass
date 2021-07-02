@@ -52,7 +52,7 @@ public class WireMockInitializer implements ApplicationContextInitializer<Config
         .of(
           String.format(
             "spring.security.oauth2.resourceserver.jwt.issuer-uri=http://%s:8888/auth/realms/spring",
-            SystemUtils.IS_OS_WINDOWS ? "localhost" : "172.17.0.1")
+            SystemUtils.IS_OS_WINDOWS ? "host.docker.internal" : "172.17.0.1")
         ).applyTo(applicationContext);
     }
 
