@@ -29,7 +29,7 @@ import java.time.Duration;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public abstract class AbstractWebTest {
 
-  private static Logger LOG = LoggerFactory.getLogger(AbstractWebTest.class);
+  protected static Logger LOG = LoggerFactory.getLogger(AbstractWebTest.class);
 
   public static DockerComposeContainer<?> environment =
     new DockerComposeContainer<>(new File("docker-compose.yml"))

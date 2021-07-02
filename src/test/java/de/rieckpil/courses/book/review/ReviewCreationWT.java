@@ -11,6 +11,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testcontainers.containers.BrowserWebDriverContainer;
@@ -18,8 +21,10 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.shaded.org.apache.commons.lang.SystemUtils;
 
 import java.io.File;
+import java.util.logging.Level;
 
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ReviewCreationWT extends AbstractWebTest {
@@ -30,12 +35,24 @@ public class ReviewCreationWT extends AbstractWebTest {
   @Autowired
   private ReviewRepository reviewRepository;
 
+  private static final LoggingPreferences LOG_PREFERENCES;
+  private static final ChromeOptions CHROME_OPTIONS;
+
+  static {
+    LOG_PREFERENCES = new LoggingPreferences();
+    LOG_PREFERENCES.enable(LogType.BROWSER, Level.ALL);
+
+    CHROME_OPTIONS = new ChromeOptions();
+    CHROME_OPTIONS.addArguments("--no-sandbox");
+    CHROME_OPTIONS.addArguments("--disable-dev-shm-usage");
+
+    CHROME_OPTIONS.setCapability("goog:loggingPrefs", LOG_PREFERENCES);
+  }
+
   @Container
   static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>()
     .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target"))
-    .withCapabilities(new ChromeOptions()
-      .addArguments("--no-sandbox")
-      .addArguments("--disable-dev-shm-usage"));
+    .withCapabilities(CHROME_OPTIONS);
 
   private static final String ISBN = "9780321751041";
 
@@ -54,6 +71,10 @@ public class ReviewCreationWT extends AbstractWebTest {
   public void tearDown() {
     this.reviewRepository.deleteAll();
     this.bookRepository.deleteAll();
+
+    for (LogEntry logEntry : getWebDriver().manage().logs().get(LogType.BROWSER)) {
+      LOG.info(logEntry.getMessage());
+    }
   }
 
   @Test
