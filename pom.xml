@@ -154,6 +154,7 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
@@ -192,8 +193,8 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <scope>test</scope>
       <version>${commons-lang3.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <!-- Apple M1 Processor Support https://github.com/testcontainers/testcontainers-java/issues/3834#issuecomment-788995236 -->
