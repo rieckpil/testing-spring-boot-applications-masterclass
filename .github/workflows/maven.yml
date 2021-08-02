@@ -13,12 +13,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup for Maven Repository Cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-jdk16-${{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
-            ${{ runner.os }}-maven-jdk16-
+            ${{ runner.os }}-maven-
 
       - name: Setup for JDK 16
         uses: actions/setup-java@v2
