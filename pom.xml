@@ -21,7 +21,7 @@
     <node.version>v14.15.3</node.version>
     <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
     <testcontainers.version>1.16.0</testcontainers.version>
-    <wiremock.version>2.29.1</wiremock.version>
+    <wiremock.version>2.30.0</wiremock.version>
     <selenium.version>3.141.59</selenium.version>
     <awaitility.version>4.1.0</awaitility.version>
     <p6spy.version>3.9.1</p6spy.version>
