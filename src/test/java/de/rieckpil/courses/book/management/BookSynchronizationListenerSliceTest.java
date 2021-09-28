@@ -1,5 +1,8 @@
 package de.rieckpil.courses.book.management;
 
+import java.io.IOException;
+import java.util.UUID;
+
 import com.amazonaws.services.sqs.AmazonSQSAsync;
 import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,14 +28,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import java.io.IOException;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import static org.awaitility.Awaitility.given;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
 @ExtendWith(SpringExtension.class)
@@ -97,21 +92,9 @@ class BookSynchronizationListenerSliceTest {
 
   @Test
   public void shouldStartSQS() {
-    assertNotNull(cut);
-    assertNotNull(queueMessagingTemplate);
-    assertNotNull(messageListenerContainer);
   }
 
   @Test
   public void shouldConsumeMessageWhenPayloadIsCorrect() {
-    queueMessagingTemplate.convertAndSend(QUEUE_NAME, new BookSynchronization(ISBN));
-
-    when(bookRepository.findByIsbn(ISBN)).thenReturn(new Book());
-
-    given()
-      .await()
-      .atMost(5, TimeUnit.SECONDS)
-      .untilAsserted(() -> verify(bookRepository).findByIsbn(ISBN));
   }
-
 }

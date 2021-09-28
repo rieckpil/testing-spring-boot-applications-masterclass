@@ -29,22 +29,5 @@ class UserServiceRefactoredTest {
 
   @Test
   void shouldIncludeCurrentDateTimeWhenCreatingNewUser() {
-
-    when(userRepository.findByNameAndEmail("duke", "duke@spring.io")).thenReturn(null);
-    when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
-      User user = invocation.getArgument(0);
-      user.setId(1L);
-      return user;
-    });
-
-    LocalDateTime defaultLocalDateTime = LocalDateTime.of(2020, 1, 1, 12, 0);
-    Clock fixedClock = Clock.fixed(defaultLocalDateTime.toInstant(ZoneOffset.UTC), ZoneId.of("UTC"));
-    when(clock.instant()).thenReturn(fixedClock.instant());
-    when(clock.getZone()).thenReturn(fixedClock.getZone());
-
-    User result = cut.getOrCreateUser("duke", "duke@spring.io");
-
-    assertEquals(defaultLocalDateTime, result.getCreatedAt());
   }
-
 }

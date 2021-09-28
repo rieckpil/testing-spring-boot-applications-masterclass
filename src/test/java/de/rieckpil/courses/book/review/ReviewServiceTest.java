@@ -39,56 +39,18 @@ class ReviewServiceTest {
 
   @Test
   public void shouldNotBeNull() {
-    assertNotNull(reviewRepository);
-    assertNotNull(mockedReviewVerifier);
-    assertNotNull(userService);
-    assertNotNull(bookRepository);
-    assertNotNull(cut);
   }
 
   @Test
   @DisplayName("Write english sentence")
   public void shouldThrowExceptionWhenReviewedBookIsNotExisting() {
-    when(bookRepository.findByIsbn(ISBN)).thenReturn(null);
-
-    assertThrows(IllegalArgumentException.class,
-      () -> cut.createBookReview(ISBN, null, USERNAME, EMAIL));
   }
 
   @Test
   public void shouldRejectReviewWhenReviewQualityIsBad() {
-    // arrange - given
-    BookReviewRequest bookReviewRequest =
-      new BookReviewRequest("Title", "BADCONTENT!", 1);
-    when(bookRepository.findByIsbn(ISBN)).thenReturn(new Book());
-    when(mockedReviewVerifier.doesMeetQualityStandards(bookReviewRequest.getReviewContent())).thenReturn(false);
-
-    // act - when
-    assertThrows(BadReviewQualityException.class,
-      () -> cut.createBookReview(ISBN, bookReviewRequest, USERNAME, EMAIL));
-
-    // assert - then
-    verify(reviewRepository, times(0)).save(ArgumentMatchers.any(Review.class));
   }
 
   @Test
   public void shouldStoreReviewWhenReviewQualityIsGoodAndBookIsPresent() {
-
-    BookReviewRequest bookReviewRequest =
-      new BookReviewRequest("Title", "GOOD CONTENT!", 1);
-
-    when(bookRepository.findByIsbn(ISBN)).thenReturn(new Book());
-    when(mockedReviewVerifier.doesMeetQualityStandards(bookReviewRequest.getReviewContent())).thenReturn(true);
-    when(userService.getOrCreateUser(USERNAME, EMAIL)).thenReturn(new User());
-    when(reviewRepository.save(any(Review.class))).thenAnswer(invocation -> {
-      Review reviewToSave = invocation.getArgument(0);
-      reviewToSave.setId(42L);
-      return reviewToSave;
-    });
-
-    Long result = cut.createBookReview(ISBN, bookReviewRequest, USERNAME, EMAIL);
-
-    Long expected = 42L;
-    assertEquals(expected, result);
   }
 }

@@ -7,6 +7,8 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
+import java.util.logging.Level;
+
 import de.rieckpil.courses.AbstractWebTest;
 import de.rieckpil.courses.book.management.Book;
 import de.rieckpil.courses.book.management.BookRepository;
@@ -90,49 +92,6 @@ class ReviewCreationWT extends AbstractWebTest {
 
   @Test
   void shouldCreateReviewAndDisplayItInReviewList() {
-    assertNotNull(bookRepository);
-    open("/");
-
-    performLogin();
-    submitReview();
-    verifyReviewIsPartOfAllReviews();
-  }
-
-  private void verifyReviewIsPartOfAllReviews() {
-    $("#all-reviews").click();
-    $("#reviews").should(Condition.appear);
-    $$("#reviews > div").shouldHave(CollectionCondition.size(1));
-    $("#review-0 .review-title").shouldHave(Condition.text("Great Book about Software Development with Java!"));
-    $("#review-0 .review-content").shouldHave(Condition.text("I really enjoyed reading this book. It contains great examples and discusses also advanced topics."));
-  }
-
-  private void submitReview() {
-    $("#submit-review").should(Condition.appear);
-    $("#submit-review").click();
-
-    $("#review-submit").should(Condition.appear);
-    $("#book-selection").click();
-    $$(".visible .menu > div").get(0).click();
-    $$("#book-rating > i").get(4).click();
-
-    $("#review-title").val("Great Book about Software Development with Java!");
-    $("#review-content").val("I really enjoyed reading this book. It contains great examples and discusses also advanced topics.");
-
-    screenshot("before_submit_review");
-
-    $("#review-submit").click();
-    $(".ui .success").should(Condition.appear);
-  }
-
-  private void performLogin() {
-    $("button.ui").click();
-    $("#kc-login").should(Condition.appear);
-    $("#username").val("duke");
-    $("#password").val("dukeduke");
-
-    screenshot("before_submit");
-
-    $("#kc-login").click();
   }
 
   private void createBook() {
