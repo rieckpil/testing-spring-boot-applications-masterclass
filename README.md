@@ -36,7 +36,11 @@ To mirror a typical microservice architecture, the demo application uses the fol
 - Spring Boot backend with Java
 - Dependency on a remote REST API
 
-[![Course Application Architecture](https://rieckpil.de/wp-content/uploads/2021/11/book-reviewr-application-architecture-750x666-1.png)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
+<p align="center">
+  <a href="https://rieckpil.de/testing-spring-boot-applications-masterclass/">
+    <img src="https://rieckpil.de/wp-content/uploads/2021/11/book-reviewr-application-architecture-750x666-1.png" alt="Testing Spring Boot Applications Technical Architecture">
+  </a>
+</p>
 
 Even though the technical setup for your day-to-day projects might differ, the testing recipes you'll learn are generic, and you can easily apply them for your tech stacks.
 
