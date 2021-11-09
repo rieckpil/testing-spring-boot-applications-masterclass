@@ -62,13 +62,13 @@ _P.S. The application that is tested in the course is quite complex and covers a
 
 Mandatory requirements:
 
-* Java 16 (JDK flavour (OpenJDK/Azul/Oracle) does not matter). For the correct Java version setup I can recommend [JEnv](https://www.youtube.com/watch?v=9FVZyeFDXo0) (Mac/Linux) and the [Maven Toolchains Plugin](https://maven.apache.org/plugins/maven-toolchains-plugin/toolchains/jdk.html) (Windows)
+* Java 17 (JDK flavour (OpenJDK/Azul/Oracle) does not matter). For the correct Java version setup I can recommend [JEnv](https://www.youtube.com/watch?v=9FVZyeFDXo0) (Mac/Linux) and the [Maven Toolchains Plugin](https://maven.apache.org/plugins/maven-toolchains-plugin/toolchains/jdk.html) (Windows)
 
 ```
 $ java -version
-openjdk version "16.0.1" 2021-04-20
-OpenJDK Runtime Environment AdoptOpenJDK-16.0.1+9 (build 16.0.1+9)
-OpenJDK 64-Bit Server VM AdoptOpenJDK-16.0.1+9 (build 16.0.1+9, mixed mode, sharing)
+openjdk version "17" 2021-09-14 LTS
+OpenJDK Runtime Environment Zulu17.28+13-CA (build 17+35-LTS)
+OpenJDK 64-Bit Server VM Zulu17.28+13-CA (build 17+35-LTS, mixed mode, sharing)
 ```
 
 * Docker Engine (Community Edition is enough) and Docker Compose:
@@ -104,7 +104,7 @@ OpenSSL version: OpenSSL 1.1.1g  21 Apr 2020
 
 Optional requirements:
 
-* Maven 3.6 (the project also includes the Maven Wrapper).
+* Maven >= 3.6 (the project also includes the Maven Wrapper).
 
 When using Maven from the command line, make sure `mvn -version` reports the correct Java version:
 
@@ -113,9 +113,9 @@ $ mvn -version
 
 Apache Maven 3.6.3 (cecedd343002696d0abb50b32b541b8a6ba2883f)
 Maven home: /home/rieckpil/.m2/wrapper/dists/apache-maven-3.6.3-bin/1iopthnavndlasol9gbrbg6bf2/apache-maven-3.6.3
-Java version: 16.0.1, vendor: AdoptOpenJDK, runtime: /usr/lib/jvm/jdk-16.0.1+9
-Default locale: en_US, platform encoding: UTF-8
-OS name: "linux", version: "5.4.0-73-generic", arch: "amd64", family: "unix"
+Java version: 17, vendor: Azul Systems, Inc., runtime: /Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+Default locale: en_DE, platform encoding: US-ASCII
+OS name: "mac os x", version: "11.5.1", arch: "aarch64", family: "mac"
 ```
 
 * IntelliJ IDEA or any IDE/Code Editor (Eclipse, NetBeans, Code, Atom, etc.)
