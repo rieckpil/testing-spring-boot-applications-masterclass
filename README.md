@@ -19,7 +19,7 @@ After working through the online course ...
 
 - your technical testing skills will improve by understanding the ins-and-outs of testing Spring Boot applications
 - you'll deploy to production with more confidence (even on Friday afternoons)
-- sleep better at night thanks to a sophisticated test suite.
+- sleep better at night thanks to a sophisticated test suite
 
 Enroll [here](https://github.com/rieckpil/testing-spring-boot-applications-masterclass) for the Testing Spring Boot Applications Masterclass.
 
@@ -27,7 +27,18 @@ PS: You can watch four preview lessons by [subscribing to the mailing list](http
 
 ## Course Application Architecture
 
-[![Course Application Architecture](https://rieckpil.de/wp-content/uploads/2020/06/book-reviewr-application-architecture.png)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
+To mirror a typical microservice architecture, the demo application uses the following tech stack:
+
+- Keycloak (open source identity and access management solution) to secure parts of the frontend and backend
+- Amazon SQS (Simple Queuing Service) for asynchronous message processing
+- PostgreSQL (RDBMS) to store data in a relational database
+- Single Page Application Frontend with React and TypeScript
+- Spring Boot backend with Java
+- Dependency on a remote REST API
+
+[![Course Application Architecture](https://rieckpil.de/wp-content/uploads/2021/11/book-reviewr-application-architecture-750x666-1.png)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
+
+Even though the technical setup for your day-to-day projects might differ, the testing recipes you'll learn are generic, and you can easily apply them for your tech stacks.
 
 ## Testimonials
 
