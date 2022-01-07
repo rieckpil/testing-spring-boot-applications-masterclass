@@ -159,7 +159,8 @@ Run all **unit** tests with: `./mvnw test`
 Run all **integration & web** tests:
 
 1. Make sure no Docker containers are currently running: `docker ps`
-2. Execute `./mvnw failsafe:integration-test failsafe:verify`
+2. Make sure the frontend has been build and is part of the `target/classes/public` folder: `./mvnw package -DskipTest`
+3. Execute `./mvnw failsafe:integration-test failsafe:verify`
 
 Run **all tests** together:
 
