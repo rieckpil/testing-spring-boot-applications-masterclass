@@ -5,6 +5,8 @@
 [![Build & Test Maven Project](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions)
 [![](https://img.shields.io/badge/Spring%20Boot%20Version-2.6.2-orange)](/pom.xml)
 [![](https://img.shields.io/badge/Java%20Version-17-orange)](/pom.xml)
+[![](https://img.shields.io/badge/Enroll-Now-orange)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
+
 
 ## Introduction
 
