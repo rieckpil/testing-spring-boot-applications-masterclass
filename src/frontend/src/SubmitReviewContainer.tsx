@@ -123,7 +123,7 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
             selection
             value={isbn}
             onChange={(event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => setIsbn(data.value)}
-            options={bookOptions}
+            options={bookOptions || []}
           />
 
           <Form.Input
@@ -165,6 +165,11 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
               <Message.Item>Swear words are not allowed</Message.Item>
               <Message.Item>Don't use 'I' or 'good' too often</Message.Item>
             </Message.List>
+            <Button
+              type="button"
+              style={{marginTop: "5px"}}
+              onClick={() => setReviewContent("This is an excellent book. I've learned quite a lot and can recommend it to every CS student.")}>
+              Prefill review content</Button>
           </Message>
 
           <Form.Field
@@ -175,6 +180,7 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
           />
           <Button
             id='review-submit'
+            secondary
             type='submit'>Submit your review
           </Button>
         </Form>
