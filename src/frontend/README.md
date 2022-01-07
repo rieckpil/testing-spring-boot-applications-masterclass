@@ -13,7 +13,6 @@
 
 Please note that the frontend application is automatically build as part of the Maven build lifecycle using the `frontend-maven-plugin`.
 
-
 ## Run the frontend in development mode.
 
 Make sure the Spring Boot backend and the required infrastructure is up- and running.

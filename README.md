@@ -157,24 +157,28 @@ Valid application users:
 
 _Replace `./mvnw` with `mvnw.cmd` if you're running on Windows._
 
-Run all **unit** tests with: `./mvnw test`
+Run all **unit** tests (Maven Surefire Plugin): `./mvnw test`
 
-Run all **integration & web** tests:
+Run all **integration & web** tests (Maven Failsafe plugin):
 
-1. Make sure no Docker containers are currently running: `docker ps`
+1. Make sure no conflicting Docker containers are currently running: `docker ps`
 2. Make sure the test classes have been compiled and the frontend has been build and is part of the `target/classes/public` folder: `./mvnw package -DskipTest`
 3. Execute `./mvnw failsafe:integration-test failsafe:verify`
 
 Run **all tests** together:
 
-1. Make sure no Docker container is currently running: `docker ps`
+1. Make sure no conflicting Docker container is currently running: `docker ps`
 2. Execute `./mvnw verify`
 
 Skip all tests (don't do this at home):
 
-1. Execute `./mvnw -Dmaven.test.skip=true verify`
+1. Execute `./mvnw -DskipTests=true verify`
 
 # Troubleshooting Setup Issues
+
+## How to skip the Frontend Maven Plugin execution?
+
+For skipping the frontend build, add `-Dskip.installnodenpm -Dskip.npm` to your Maven command, e.g., `./mvnw test -Dskip.installnodenpm -Dskip.npm`.
 
 ## The tests are failing, but I still want to build the project
 
