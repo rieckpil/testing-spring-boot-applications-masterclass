@@ -22,7 +22,7 @@ services:
     ports:
     - "8888:8080"
   sqs:
-    image: roribio16/alpine-sqs:latest
+    image: softwaremill/elasticmq-native # more active development than 'roribio16/alpine-sqs:latest'
     ports:
       - "9324:9324"
       - "9325:9325"
