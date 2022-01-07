@@ -46,7 +46,6 @@ import static org.awaitility.Awaitility.given;
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
 @ActiveProfiles("integration-test")
-@Testcontainers(disabledWithoutDocker = true)
 @ContextConfiguration(initializers = WireMockInitializer.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BookSynchronizationListenerIT {
