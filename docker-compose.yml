@@ -6,9 +6,9 @@ services:
       - POSTGRES_USER=test
       - POSTGRES_PASSWORD=test
     ports:
-      - 5432:5432
+      - "5432:5432"
   keycloak:
-    image: jboss/keycloak:11.0.0
+    image: jboss/keycloak:16.1.0
     environment:
       - KEYCLOAK_USER=keycloak
       - KEYCLOAK_PASSWORD=keycloak
@@ -20,9 +20,9 @@ services:
         target: /tmp/keycloak-dump.json
         read_only: true
     ports:
-    - 8888:8080
+    - "8888:8080"
   sqs:
     image: roribio16/alpine-sqs:latest
     ports:
-      - 9324:9324
-      - 9325:9325
+      - "9324:9324"
+      - "9325:9325"
