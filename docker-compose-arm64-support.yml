@@ -23,6 +23,11 @@ services:
     - "8888:8080"
   sqs:
     image: softwaremill/elasticmq-native
+    volumes:
+      - type: bind
+        source: ./tmp/sqs-queue-definition.conf
+        target: /opt/elasticmq.conf
+        read_only: true
     ports:
       - "9324:9324"
       - "9325:9325"
