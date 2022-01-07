@@ -28,9 +28,8 @@ import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
 @DisabledIfSystemProperty(named = "os.arch", matches = "aarch64", disabledReason = "Selenium Docker image doesn't support ARM64 (yet)")
-class ReviewCreationTest extends AbstractWebTest {
+class ReviewCreationWT extends AbstractWebTest {
 
   @Autowired
   private BookRepository bookRepository;
