@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {HashRouter, Route, Switch} from "react-router-dom";
 import {Container, Grid} from "semantic-ui-react";
 
 import Header from "./Header";
@@ -14,7 +14,7 @@ const App: React.FC = () => {
 
       <Grid centered>
         <Grid.Column width={10}>
-          <BrowserRouter>
+          <HashRouter>
             <Switch>
               <Route exact path="/">
                 <HomeContainer/>
@@ -28,7 +28,7 @@ const App: React.FC = () => {
                 <SubmitReviewContainer/>
               </Route>
             </Switch>
-          </BrowserRouter>
+          </HashRouter>
         </Grid.Column>
       </Grid>
     </Container>
