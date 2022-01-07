@@ -1,5 +1,8 @@
 package de.rieckpil.courses;
 
+import java.io.File;
+import java.time.Duration;
+
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
@@ -18,13 +21,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
-import org.testcontainers.junit.jupiter.Testcontainers;
-
-import java.io.File;
-import java.time.Duration;
 
 @ActiveProfiles("web-test")
-@Testcontainers(disabledWithoutDocker = true)
 @ContextConfiguration(initializers = WireMockInitializer.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public abstract class AbstractWebTest {
@@ -47,7 +45,11 @@ public abstract class AbstractWebTest {
     .to("target/selenide-screenshots");
 
   static {
-    environment.start();
+    if (System.getProperty("os.arch").equals("aarch64")) {
+      LOG.warn("Not starting the Docker Compose environment as the web tests will fail due to missing ARM64 support for the Selenium images.");
+    } else {
+      environment.start();
+    }
   }
 
   @TestConfiguration

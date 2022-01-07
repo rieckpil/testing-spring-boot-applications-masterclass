@@ -1,5 +1,7 @@
 package de.rieckpil.courses.book.review;
 
+import java.io.File;
+
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import de.rieckpil.courses.AbstractWebTest;
@@ -13,15 +15,15 @@ import org.apache.commons.lang3.SystemUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-import java.io.File;
-
-public class ReviewCreationPageObjectsWT extends AbstractWebTest {
+@DisabledIfSystemProperty(named = "os.arch", matches = "aarch64", disabledReason = "Selenium Docker image doesn't support ARM64 (yet)")
+class ReviewCreationPageObjectsWT extends AbstractWebTest {
 
   @Autowired
   private BookRepository bookRepository;
