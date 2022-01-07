@@ -263,16 +263,29 @@
             <goals>
               <goal>install-node-and-npm</goal>
             </goals>
-            <phase>generate-resources</phase>
+            <phase>prepare-package</phase>
           </execution>
           <execution>
             <id>npm install</id>
             <goals>
               <goal>npm</goal>
             </goals>
-            <phase>generate-resources</phase>
+            <phase>prepare-package</phase>
             <configuration>
               <arguments>install</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm test</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <phase>prepare-package</phase>
+            <configuration>
+              <environmentVariables>
+                <CI>true</CI>
+              </environmentVariables>
+              <arguments>test</arguments>
             </configuration>
           </execution>
           <execution>
@@ -280,7 +293,7 @@
             <goals>
               <goal>npm</goal>
             </goals>
-            <phase>generate-resources</phase>
+            <phase>prepare-package</phase>
             <configuration>
               <environmentVariables>
                 <CI>true</CI>
