@@ -42,9 +42,10 @@ class ApplicationIT {
     .withPassword("s3cret");
 
   @Container
-  static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.10.0"))
-    .withServices(SQS)
-    .withEnv("DEFAULT_REGION", "eu-central-1");
+  static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.13.3"))
+    .withServices(SQS);
+  // can be removed with version 0.12.17 as LocalStack now has multi-region support https://docs.localstack.cloud/localstack/configuration/#deprecated
+  // .withEnv("DEFAULT_REGION", "eu-central-1")
 
   protected static final String QUEUE_NAME = UUID.randomUUID().toString();
 

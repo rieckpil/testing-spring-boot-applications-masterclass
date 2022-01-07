@@ -1,5 +1,12 @@
 package de.rieckpil.courses;
 
+import java.io.IOException;
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import com.amazonaws.services.sqs.AmazonSQSAsync;
 import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -32,13 +39,6 @@ import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import java.io.IOException;
-import java.time.Instant;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
 @ActiveProfiles("integration-test")
@@ -52,9 +52,10 @@ public abstract class AbstractIntegrationTest {
     .withUsername("duke")
     .withPassword("s3cret");
 
-  static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.10.0"))
-    .withServices(SQS)
-    .withEnv("DEFAULT_REGION", "eu-central-1");
+  static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.13.3"))
+    .withServices(SQS);
+  // can be removed with version 0.12.17 as LocalStack now has multi-region support https://docs.localstack.cloud/localstack/configuration/#deprecated
+  // .withEnv("DEFAULT_REGION", "eu-central-1");
 
   static {
     database.start();
