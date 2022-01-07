@@ -15,6 +15,7 @@ const LatestBookListComponent: React.FC<Props> = ({availableBooks, reviewStatist
       <Card.Group itemsPerRow='1'>
         {availableBooks.map((book, index) =>
           <BookComponent
+            key={index}
             metadata={book}
             statistics={reviewStatistics.length === 0 ? undefined : reviewStatistics.find(statistic => statistic.isbn === book.isbn) || {
               ratings: 0,
