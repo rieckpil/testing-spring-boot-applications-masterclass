@@ -129,11 +129,11 @@ When using Maven from the command line, make sure `mvn -version` reports the cor
 ```
 $ mvn -version
 
-Apache Maven 3.6.3 (cecedd343002696d0abb50b32b541b8a6ba2883f)
-Maven home: /home/rieckpil/.m2/wrapper/dists/apache-maven-3.6.3-bin/1iopthnavndlasol9gbrbg6bf2/apache-maven-3.6.3
-Java version: 17, vendor: Azul Systems, Inc., runtime: /Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
-Default locale: en_DE, platform encoding: US-ASCII
-OS name: "mac os x", version: "11.5.1", arch: "aarch64", family: "mac"
+Apache Maven 3.8.4 (9b656c72d54e5bacbed989b64718c159fe39b537)
+Maven home: /home/rieckpil/.m2/wrapper/dists/apache-maven-3.8.4-bin/52ccbt68d252mdldqsfsn03jlf/apache-maven-3.8.4
+Java version: 17.0.1, vendor: Eclipse Adoptium, runtime: /usr/lib/jvm/jdk-17.0.1+12
+Default locale: en_US, platform encoding: UTF-8
+OS name: "linux", version: "5.4.0-92-generic", arch: "amd64", family: "unix"
 ```
 
 * IntelliJ IDEA or any IDE/Code Editor (Eclipse, NetBeans, Code, Atom, etc.)
