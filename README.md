@@ -140,6 +140,8 @@ OS name: "linux", version: "5.4.0-92-generic", arch: "amd64", family: "unix"
 
 ## Running the Project Locally
 
+*When trying to run the application and the tests on an ARM64 processor, there's a [small tweak](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/issues/31) required.*
+
 Assuming your local setups meets all requirements as stated above, you can now start the application:
 
 1. Make sure your Docker Engine is up- and running
@@ -175,6 +177,10 @@ Skip all tests (don't do this at home):
 1. Execute `./mvnw -DskipTests=true verify`
 
 # Troubleshooting Setup Issues
+
+## The application fails to start on ARM64 (e.g. MacBook Pro M1)
+
+See this [GitHub issue](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/issues/31) for resolving it.
 
 ## How to skip the Frontend Maven Plugin execution?
 
