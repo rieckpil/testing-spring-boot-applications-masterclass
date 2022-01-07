@@ -152,27 +152,29 @@ Valid application users:
 
 ## Running the Tests
 
-Run all **unit** tests with: `mvn test`
+_Replace `./mvnw` with `mvnw.cmd` if you're running on Windows._
+
+Run all **unit** tests with: `./mvnw test`
 
 Run all **integration & web** tests:
 
 1. Make sure no Docker containers are currently running: `docker ps`
-2. Execute `mvn failsafe:integration-test failsafe:verify`
+2. Execute `./mvnw failsafe:integration-test failsafe:verify`
 
 Run **all tests** together:
 
 1. Make sure no Docker container is currently running: `docker ps`
-2. Execute `mvn verify`
+2. Execute `./mvnw verify`
 
 Skip all tests (don't do this at home):
 
-1. Execute `mvn -Dmaven.test.skip=true verify`
+1. Execute `./mvnw -Dmaven.test.skip=true verify`
 
 # Troubleshooting Setup Issues
 
 ## The tests are failing, but I still want to build the project
 
-You can pass `-DskipTests` to `mvn clean package` if you experience test failures: `mvn clean package -DskipTests` to build the application without running any unit test.
+You can pass `-DskipTests` to `./mvnw clean package` if you experience test failures: `./mvnw clean package -DskipTests` to build the application without running any unit test.
 
 Next, make sure you have the latest version of this project (run `git pull`) and ensure the [build status is green](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions).
 
@@ -183,17 +185,17 @@ If you still encounter any test failures, please [create an issue](https://githu
 Adjust the `docker-compose.yml` file and remove the setup to import Keycloak configuration on the startup:
 
 ```yaml
-version: '3'
+version: '3.8'
 services:
   # ...
   keycloak:
-    image: jboss/keycloak:11.0.0
+    image: jboss/keycloak:16.1.0
     environment:
       - KEYCLOAK_USER=keycloak
       - KEYCLOAK_PASSWORD=keycloak
       - DB_VENDOR=h2
     ports:
-    - 8888:8080
+    - "8888:8080"
 ```
 
 Next, start everything with `docker-compose up` and watch the following video to [configure Keycloak manually](https://vimeo.com/458246315).
