@@ -10,11 +10,10 @@ import AllReviewContainer from "./AllReviewContainer";
 const App: React.FC = () => {
   return (
     <Container>
-      <Header/>
-
-      <Grid centered>
-        <Grid.Column width={10}>
-          <HashRouter>
+      <HashRouter>
+        <Header/>
+        <Grid centered>
+          <Grid.Column width={10}>
             <Switch>
               <Route exact path="/">
                 <HomeContainer/>
@@ -28,9 +27,9 @@ const App: React.FC = () => {
                 <SubmitReviewContainer/>
               </Route>
             </Switch>
-          </HashRouter>
-        </Grid.Column>
-      </Grid>
+          </Grid.Column>
+        </Grid>
+      </HashRouter>
     </Container>
   );
 }

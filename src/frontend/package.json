@@ -8,7 +8,7 @@
     "@types/react-dom": "^16.9.13",
     "@types/react-redux": "^7.1.16",
     "@types/react-router-dom": "^5.1.7",
-    "keycloak-js": "^10.0.2",
+    "keycloak-js": "^16.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.4",
@@ -18,11 +18,13 @@
     "typescript": "^4.2.4"
   },
   "devDependencies": {
-    "react-scripts": "^4.0.3",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.4.0"
+    "@types/jest": "^27.4.0",
+    "@types/redux-mock-store": "^1.0.3",
+    "react-scripts": "^4.0.3",
+    "redux-mock-store": "^1.5.4"
   },
   "scripts": {
     "start": "react-scripts start",
