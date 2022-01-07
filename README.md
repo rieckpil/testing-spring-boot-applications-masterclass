@@ -144,7 +144,7 @@ Assuming your local setups meets all requirements as stated above, you can now s
 
 1. Make sure your Docker Engine is up- and running
 2. Start the required infrastructure components with `docker-compose up`
-3. Run the application with `mvn spring-boot:run` or inside your IDE
+3. Run the application with `./mvnw spring-boot:run` or inside your IDE
 4. Access http://localhost:8080 for the application frontend
 5. (Optional) Access http://localhost:8888 for the Keycloak Admin interface
 
