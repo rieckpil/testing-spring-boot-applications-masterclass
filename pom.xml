@@ -30,7 +30,7 @@
     <okhttp3.version>4.9.3</okhttp3.version>
     <okio.version>2.10.0</okio.version>
     <selenide.version>6.1.2</selenide.version>
-    <guava.version>30.1.1-jre</guava.version>
+    <guava.version>31.0.1-jre</guava.version>
     <commons-lang3.version>3.12.0</commons-lang3.version>
   </properties>
 
