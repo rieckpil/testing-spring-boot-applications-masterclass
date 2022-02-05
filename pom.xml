@@ -151,6 +151,14 @@
       <artifactId>flyway-core</artifactId>
     </dependency>
 
+    <!-- Fix noisy ERROR log on M1 processors during startup. See https://github.com/netty/netty/issues/11020 -->
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-resolver-dns-native-macos</artifactId>
+      <version>4.1.72.Final</version>
+      <classifier>osx-aarch_64</classifier>
+    </dependency>
+
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
