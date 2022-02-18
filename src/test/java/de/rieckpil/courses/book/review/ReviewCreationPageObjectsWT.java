@@ -21,6 +21,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.utility.DockerImageName;
 
 @DisabledIfSystemProperty(named = "os.arch", matches = "aarch64", disabledReason = "Selenium Docker image doesn't support ARM64 (yet)")
 class ReviewCreationPageObjectsWT extends AbstractWebTest {
@@ -37,7 +38,7 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
   ReviewListPage reviewListPage = new ReviewListPage();
 
   @Container
-  static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>()
+  static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>(DockerImageName.parse("selenium/standalone-firefox-debug"))
     .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target"))
     .withCapabilities(new FirefoxOptions());
 
@@ -59,7 +60,7 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
   }
 
   @Test
-  public void shouldCreateReviewAndDisplayItInReviewList() {
+  void shouldCreateReviewAndDisplayItInReviewList() {
     createBook();
 
     String reviewTitle = "Great Book about Software Development with Java!";
