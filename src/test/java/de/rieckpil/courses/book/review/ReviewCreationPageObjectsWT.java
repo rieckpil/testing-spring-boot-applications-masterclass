@@ -23,7 +23,7 @@ import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
 
-@DisabledIfSystemProperty(named = "os.arch", matches = "aarch64", disabledReason = "Selenium Docker image doesn't support ARM64 (yet)")
+@DisabledIfSystemProperty(named = "os.arch", matches = "aarch64", disabledReason = "Selenium Docker image doesn't support ARM64 (yet), see https://github.com/rieckpil/testing-spring-boot-applications-masterclass/issues/31")
 class ReviewCreationPageObjectsWT extends AbstractWebTest {
 
   @Autowired
@@ -38,7 +38,7 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
   ReviewListPage reviewListPage = new ReviewListPage();
 
   @Container
-  static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>(DockerImageName.parse("selenium/standalone-firefox-debug"))
+  static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>()
     .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target"))
     .withCapabilities(new FirefoxOptions());
 
