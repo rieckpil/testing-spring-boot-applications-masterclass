@@ -10,4 +10,7 @@
     <appender-ref ref="STDOUT"/>
   </root>
   <logger name="com.amazonaws" level="error"/>
+
+  <!-- Noisy logs when shutting down the context, connection refuse messages for LocalStack⁄ -->
+  <logger name="org.springframework.cloud.aws.messaging.listener" level="error"/>
 </configuration>
