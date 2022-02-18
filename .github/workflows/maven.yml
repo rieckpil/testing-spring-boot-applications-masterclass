@@ -12,20 +12,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Setup for Maven Repository Cache
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
       - name: Setup for JDK 17
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
-          java-version: '17'
+          distribution: temurin
+          java-version: 17
           java-package: jdk
+          cache: maven
 
       - name: Build & Test application
         run: ./mvnw verify
@@ -33,13 +26,21 @@ jobs:
       - name: Ensure unit tests can be parallelized
         run: ./mvnw test -Djunit.jupiter.execution.parallel.enabled=true -Djunit.jupiter.execution.parallel.mode.default=same_thread -Djunit.jupiter.execution.parallel.mode.classes.default=concurrent
 
-      - name: Flatten Selenide Screenshots and Source on Failure
+      - name: Flatten Selenide Screenshots and HTML Source Code on Failure
         if: ${{ failure() }}
         working-directory: target
+        env:
+          SOURCE_FOLDER: selenide-screenshots
+          DESTINATION_FOLDER: aggregated-outcome
         run: |
-         mkdir aggregated-outcome
-         find selenide-screenshots -type f -name '*.png' -exec mv -i {} aggregated-outcome  \;
-         find selenide-screenshots -type f -name '*.html' -exec mv -i {} aggregated-outcome  \;
+          mkdir "$DESTINATION_FOLDER"
+
+          if [ -d "$SOURCE_FOLDER" ]; then
+            find "$SOURCE_FOLDER" -type f -name '*.png' -exec mv -i {} "$DESTINATION_FOLDER" \;
+            find "$SOURCE_FOLDER" -type f -name '*.html' -exec mv -i {} "$DESTINATION_FOLDER" \;
+          else
+            echo "No Selenide failure artifacts found in folder $SOURCE_FOLDER"
+          fi
 
       - name: Archive Selenide Outcome on Failure
         uses: actions/upload-artifact@v2

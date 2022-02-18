@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.shaded.org.apache.commons.lang.SystemUtils;
+import org.testcontainers.utility.DockerImageName;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -28,7 +29,7 @@ import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@DisabledIfSystemProperty(named = "os.arch", matches = "aarch64", disabledReason = "Selenium Docker image doesn't support ARM64 (yet)")
+@DisabledIfSystemProperty(named = "os.arch", matches = "aarch64", disabledReason = "Selenium Docker image doesn't support ARM64 (yet), see Selenium Docker image doesn't support ARM64 (yet), see https://github.com/rieckpil/testing-spring-boot-applications-masterclass/issues/31")
 class ReviewCreationWT extends AbstractWebTest {
 
   @Autowired
@@ -80,7 +81,7 @@ class ReviewCreationWT extends AbstractWebTest {
   }
 
   @Test
-  public void shouldCreateReviewAndDisplayItInReviewList() {
+  void shouldCreateReviewAndDisplayItInReviewList() {
     assertNotNull(bookRepository);
     open("/");
 
