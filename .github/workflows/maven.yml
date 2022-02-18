@@ -29,14 +29,17 @@ jobs:
       - name: Flatten Selenide Screenshots and HTML Source Code on Failure
         if: ${{ failure() }}
         working-directory: target
+        env:
+          SOURCE_FOLDER: selenide-screenshots
+          DESTINATION_FOLDER: aggregated-outcome
         run: |
-          mkdir aggregated-outcome
+          mkdir "$DESTINATION_FOLDER"
 
-          if [ -d "selenide-screenshots" ]; then
-            find selenide-screenshots -type f -name '*.png' -exec mv -i {} aggregated-outcome  \;
-            find selenide-screenshots -type f -name '*.html' -exec mv -i {} aggregated-outcome  \;
+          if [ -d "$SOURCE_FOLDER" ]; then
+            find "$SOURCE_FOLDER" -type f -name '*.png' -exec mv -i {} "$DESTINATION_FOLDER" \;
+            find "$SOURCE_FOLDER" -type f -name '*.html' -exec mv -i {} "$DESTINATION_FOLDER" \;
           else
-            echo "No Selenide screenshots found"
+            echo "No Selenide failure artifacts found in folder $SOURCE_FOLDER"
           fi
 
       - name: Archive Selenide Outcome on Failure
