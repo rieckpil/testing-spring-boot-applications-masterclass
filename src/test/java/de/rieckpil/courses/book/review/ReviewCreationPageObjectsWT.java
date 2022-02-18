@@ -21,7 +21,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.utility.DockerImageName;
 
 @DisabledIfSystemProperty(named = "os.arch", matches = "aarch64", disabledReason = "Selenium Docker image doesn't support ARM64 (yet), see https://github.com/rieckpil/testing-spring-boot-applications-masterclass/issues/31")
 class ReviewCreationPageObjectsWT extends AbstractWebTest {
