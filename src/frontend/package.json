@@ -9,7 +9,7 @@
     "@types/react-dom": "^16.9.13",
     "@types/react-redux": "^7.1.22",
     "@types/react-router-dom": "^5.1.7",
-    "keycloak-js": "^16.1.0",
+    "keycloak-js": "^17.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
