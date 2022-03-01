@@ -102,6 +102,16 @@
         <artifactId>checker-qual</artifactId>
         <version>3.8.0</version>
       </dependency>
+      <dependency>
+        <groupId>org.jboss.logging</groupId>
+        <artifactId>jboss-logging-processor</artifactId>
+        <version>2.2.1.Final</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.logging</groupId>
+        <artifactId>jboss-logging-annotations</artifactId>
+        <version>2.2.1.Final</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -155,7 +165,7 @@
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-resolver-dns-native-macos</artifactId>
-      <version>4.1.72.Final</version>
+      <version>${netty.version}</version>
       <classifier>osx-aarch_64</classifier>
     </dependency>
 
