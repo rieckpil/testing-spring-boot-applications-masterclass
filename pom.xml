@@ -23,7 +23,7 @@
     <testcontainers.version>1.16.3</testcontainers.version>
     <wiremock.version>2.32.0</wiremock.version>
     <selenium.version>4.1.2</selenium.version>
-    <awaitility.version>4.1.1</awaitility.version>
+    <awaitility.version>4.2.0</awaitility.version>
     <p6spy.version>3.9.1</p6spy.version>
     <mockwebserver.version>4.9.3</mockwebserver.version>
     <mockito.version>4.3.1</mockito.version>
