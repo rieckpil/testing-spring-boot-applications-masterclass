@@ -32,7 +32,7 @@ public abstract class AbstractWebTest {
   protected static Logger LOG = LoggerFactory.getLogger(AbstractWebTest.class);
 
   public static DockerComposeContainer<?> environment =
-    new DockerComposeContainer<>(new File("docker-compose.yml"))
+    new DockerComposeContainer<>(new File(System.getProperty("os.arch").equals("aarch64") ? "docker-compose-arm64-support.yml" : "docker-compose.yml"))
       .withExposedService("database_1", 5432, Wait.forListeningPort())
       .withExposedService("keycloak_1", 8080, Wait.forHttp("/auth").forStatusCode(200)
         .withStartupTimeout(Duration.ofSeconds(45)))
@@ -47,11 +47,7 @@ public abstract class AbstractWebTest {
     .to("target/selenide-screenshots");
 
   static {
-    if (System.getProperty("os.arch").equals("aarch64")) {
-      LOG.warn("Not starting the Docker Compose environment as the web tests will fail due to missing ARM64 support for the Selenium images. See https://github.com/rieckpil/testing-spring-boot-applications-masterclass/issues/31 for more information.");
-    } else {
-      environment.start();
-    }
+    environment.start();
   }
 
   @TestConfiguration
