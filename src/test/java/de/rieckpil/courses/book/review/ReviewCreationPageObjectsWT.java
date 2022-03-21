@@ -15,14 +15,13 @@ import org.apache.commons.lang3.SystemUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.utility.DockerImageName;
 
-@DisabledIfSystemProperty(named = "os.arch", matches = "aarch64", disabledReason = "Selenium Docker image doesn't support ARM64 (yet), see https://github.com/rieckpil/testing-spring-boot-applications-masterclass/issues/31")
 class ReviewCreationPageObjectsWT extends AbstractWebTest {
 
   @Autowired
@@ -37,7 +36,13 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
   ReviewListPage reviewListPage = new ReviewListPage();
 
   @Container
-  static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>()
+  static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>(
+    // Workaround to allow running the tests on an Apple M1
+    System.getProperty("os.arch").equals("aarch64") ?
+      DockerImageName.parse("seleniarm/standalone-chromium")
+        .asCompatibleSubstituteFor("selenium/standalone-chrome")
+      : DockerImageName.parse("selenium/standalone-chrome")
+  )
     .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target"))
     .withCapabilities(new FirefoxOptions());
 
