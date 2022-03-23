@@ -69,7 +69,8 @@ class ReviewCreationWT extends AbstractWebTest {
   @BeforeEach
   public void setup() {
     Configuration.timeout = 2000;
-    Configuration.baseUrl = SystemUtils.IS_OS_WINDOWS ? "http://host.docker.internal:8080" : "http://172.17.0.1:8080";
+    // TODO: Improve platform independence, see Testcontainers.exposeHostPorts https://rieckpil.de/write-concise-web-tests-with-selenide-for-java-projects/
+    Configuration.baseUrl = SystemUtils.IS_OS_LINUX ? "http://172.17.0.1:8080" : "http://host.docker.internal:8080";
 
     RemoteWebDriver remoteWebDriver = webDriverContainer.getWebDriver();
     WebDriverRunner.setWebDriver(remoteWebDriver);
