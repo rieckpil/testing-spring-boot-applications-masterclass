@@ -1,0 +1,24 @@
+name: Check for broken links
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 5 * * SUN'
+
+jobs:
+  broken-link-check:
+    runs-on: ubuntu-20.04
+    name: Check for broken links in README.md
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Check for broken links
+        run: |
+          npm install -g markdown-link-check
+          find README.md -type f | xargs -L1 npx markdown-link-check -c .broken-link-config.json --quiet
