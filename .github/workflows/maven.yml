@@ -43,7 +43,7 @@ jobs:
           fi
 
       - name: Archive Selenide Outcome on Failure
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: ${{ failure() }}
         with:
           name: selenide-failure-captures
