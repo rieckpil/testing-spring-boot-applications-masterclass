@@ -1,0 +1,13 @@
+{
+  "ignorePatterns": [
+    {
+      "pattern": "localhost:"
+    },
+    {
+      "pattern": "/pom.xml"
+    },
+    {
+      "pattern": "https://www.linkedin.com/*"
+    }
+  ]
+}
