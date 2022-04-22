@@ -10,6 +10,7 @@ import com.codeborne.selenide.WebDriverRunner;
 import de.rieckpil.courses.AbstractWebTest;
 import de.rieckpil.courses.book.management.Book;
 import de.rieckpil.courses.book.management.BookRepository;
+import org.apache.commons.lang3.SystemUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.shaded.org.apache.commons.lang.SystemUtils;
 import org.testcontainers.utility.DockerImageName;
 
 import static com.codeborne.selenide.Selenide.$;
