@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import {Provider} from 'react-redux';
 import {createStore, StoreEnhancer} from 'redux';
 import 'semantic-ui-css/semantic.min.css';
@@ -17,11 +17,13 @@ declare global {
 
 const store = createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
-const renderApp = () => ReactDOM.render(
+
+const root = ReactDOM.createRoot(document.getElementById('root')!!);
+
+const renderApp = () => root.render(
   <Provider store={store}>
     <App/>
-  </Provider>,
-  document.getElementById('root')
+  </Provider>
 );
 
 initKeycloak(renderApp, store);
