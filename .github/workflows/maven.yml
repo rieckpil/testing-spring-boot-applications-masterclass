@@ -1,7 +1,6 @@
 name: Build & Test Maven Project
 on:
   push:
-  pull_request:
   schedule:
     - cron: '0 15 * * *' # daily at 3pm
 jobs:
