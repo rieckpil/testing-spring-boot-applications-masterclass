@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.6.6</version>
+    <version>2.6.7</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
@@ -20,17 +20,15 @@
     <java.version>17</java.version>
     <node.version>v16.13.0</node.version>
     <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
-    <testcontainers.version>1.16.3</testcontainers.version>
-    <wiremock.version>2.32.0</wiremock.version>
+    <testcontainers.version>1.17.1</testcontainers.version>
+    <wiremock.version>2.33.0</wiremock.version>
     <selenium.version>4.1.2</selenium.version>
     <awaitility.version>4.2.0</awaitility.version>
     <p6spy.version>3.9.1</p6spy.version>
     <mockwebserver.version>4.9.3</mockwebserver.version>
     <mockito.version>4.4.0</mockito.version>
     <okhttp3.version>4.9.3</okhttp3.version>
-    <okio.version>2.10.0</okio.version>
-    <selenide.version>6.3.5</selenide.version>
-    <guava.version>31.0.1-jre</guava.version>
+    <selenide.version>6.4.0</selenide.version>
     <commons-lang3.version>3.12.0</commons-lang3.version>
   </properties>
 
@@ -50,67 +48,59 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <dependency>
-        <groupId>com.squareup.okio</groupId>
-        <artifactId>okio</artifactId>
-        <version>${okio.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>${guava.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-core</artifactId>
-        <version>${mockito.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-inline</artifactId>
-        <version>${mockito.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.google.code.findbugs</groupId>
-        <artifactId>jsr305</artifactId>
-        <version>3.0.2</version>
-      </dependency>
+      <!-- handlebars-helpers vs. commons-fileupload -->
       <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>servlet-api</artifactId>
         <version>2.5</version>
       </dependency>
-      <dependency>
-        <groupId>org.jetbrains</groupId>
-        <artifactId>annotations</artifactId>
-        <version>21.0.1</version>
-      </dependency>
-      <dependency>
-        <groupId>org.osgi</groupId>
-        <artifactId>org.osgi.core</artifactId>
-        <version>6.0.0</version>
-      </dependency>
+      <!-- accessors-smart vs. wiremock-jre8 -->
       <dependency>
         <groupId>org.ow2.asm</groupId>
         <artifactId>asm</artifactId>
         <version>9.2</version>
       </dependency>
+      <!-- wildfly-common vs. hibernate-validator -->
       <dependency>
-        <groupId>org.checkerframework</groupId>
-        <artifactId>checker-qual</artifactId>
-        <version>3.8.0</version>
+        <groupId>org.jboss.logging</groupId>
+        <artifactId>jboss-logging-annotations</artifactId>
+        <version>2.2.1.Final</version>
       </dependency>
+      <!-- wildfly-common vs. hibernate-validator -->
       <dependency>
         <groupId>org.jboss.logging</groupId>
         <artifactId>jboss-logging-processor</artifactId>
         <version>2.2.1.Final</version>
       </dependency>
+      <!-- many conflicting dependencies -->
       <dependency>
-        <groupId>org.jboss.logging</groupId>
-        <artifactId>jboss-logging-annotations</artifactId>
-        <version>2.2.1.Final</version>
+        <groupId>org.jetbrains</groupId>
+        <artifactId>annotations</artifactId>
+        <version>23.0.0</version>
+      </dependency>
+      <!-- annotations vs. guava -->
+      <dependency>
+        <groupId>com.google.code.findbugs</groupId>
+        <artifactId>jsr305</artifactId>
+        <version>3.0.2</version>
+      </dependency>
+      <!-- log4j-api vs. commons-compress -->
+      <dependency>
+        <groupId>org.osgi</groupId>
+        <artifactId>org.osgi.core</artifactId>
+        <version>6.0.0</version>
+      </dependency>
+      <!-- Selenium 4 -->
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>31.0.1-jre</version>
+      </dependency>
+      <!-- guava vs. postgresql -->
+      <dependency>
+        <groupId>org.checkerframework</groupId>
+        <artifactId>checker-qual</artifactId>
+        <version>3.12.0</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
