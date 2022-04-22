@@ -96,6 +96,12 @@
         <artifactId>guava</artifactId>
         <version>31.0.1-jre</version>
       </dependency>
+      <!-- guava vs. postgresql -->
+      <dependency>
+        <groupId>org.checkerframework</groupId>
+        <artifactId>checker-qual</artifactId>
+        <version>3.12.0</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
