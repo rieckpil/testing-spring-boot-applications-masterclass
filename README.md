@@ -207,7 +207,7 @@ version: '3.8'
 services:
   # ...
   keycloak:
-    image: quay.io/keycloak/keycloak:18.0.0
+    image: quay.io/keycloak/keycloak:18.0.0-legacy
     environment:
       - KEYCLOAK_USER=keycloak
       - KEYCLOAK_PASSWORD=keycloak
