@@ -146,8 +146,6 @@ OS name: "linux", version: "5.4.0-92-generic", arch: "amd64", family: "unix"
 
 ## Running the Project Locally
 
-*When trying to run the application and the tests on an ARM64 processor, there's a [small tweak](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/issues/31) required.*
-
 Assuming your local setups meets all requirements as stated above, you can now start the application:
 
 1. Make sure your Docker Engine is up- and running
@@ -209,7 +207,7 @@ version: '3.8'
 services:
   # ...
   keycloak:
-    image: jboss/keycloak:16.1.0
+    image: quay.io/keycloak/keycloak:18.0.0-legacy
     environment:
       - KEYCLOAK_USER=keycloak
       - KEYCLOAK_PASSWORD=keycloak

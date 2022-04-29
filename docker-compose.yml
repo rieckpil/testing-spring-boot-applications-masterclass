@@ -8,7 +8,7 @@ services:
     ports:
       - "5432:5432"
   keycloak:
-    image: jboss/keycloak:16.1.0
+    image: quay.io/keycloak/keycloak:18.0.0-legacy
     environment:
       - KEYCLOAK_USER=keycloak
       - KEYCLOAK_PASSWORD=keycloak
@@ -21,8 +21,14 @@ services:
         read_only: true
     ports:
     - "8888:8080"
+  # Drop-in replacement for the previous roribio16/alpine-sqs:latest (no arm64 support)
   sqs:
-    image: roribio16/alpine-sqs:latest
+    image: softwaremill/elasticmq-native
+    volumes:
+      - type: bind
+        source: ./tmp/sqs-queue-definition.conf
+        target: /opt/elasticmq.conf
+        read_only: true
     ports:
       - "9324:9324"
       - "9325:9325"
