@@ -23,8 +23,9 @@ class ReviewVerifierTest {
   private ReviewVerifier reviewVerifier;
 
   @BeforeEach
-  public void setup() {
+  public void setup() throws InterruptedException {
     reviewVerifier = new ReviewVerifier();
+    System.out.printf("Thread name - %s%n", Thread.currentThread().getName());
   }
 
   @Test
