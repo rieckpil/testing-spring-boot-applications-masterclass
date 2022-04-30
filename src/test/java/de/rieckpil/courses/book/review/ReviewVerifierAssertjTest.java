@@ -1,8 +1,6 @@
 package de.rieckpil.courses.book.review;
 
-import org.assertj.core.api.Assertions;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
+import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
@@ -18,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(RandomReviewParameterResolverExtension.class)
-class ReviewVerifierTest {
+class ReviewVerifierAssertjTest implements WithAssertions {
 
   private ReviewVerifier reviewVerifier;
 
@@ -79,12 +77,11 @@ class ReviewVerifierTest {
       "who is interested in learning how to write Java code!";
 
     boolean result = reviewVerifier.doesMeetQualityStandards(review);
-    // assertTrue(result, "ReviewVerifier did not pass a good review"); JUnit 5
 
-    MatcherAssert.assertThat("ReviewVerifier did not pass a good review", result, Matchers.equalTo(true));
-    MatcherAssert.assertThat("Lorem ipsum", Matchers.endsWith("ipsum"));
-    MatcherAssert.assertThat(List.of(1, 2, 3, 4, 5), Matchers.hasSize(5));
-    MatcherAssert.assertThat(List.of(1, 2, 3, 4, 5), Matchers.anyOf(Matchers.hasSize(5), Matchers.emptyIterable()));
+    assertThat(result).withFailMessage("ReviewVerifier did not pass a good review").isEqualTo(true);
+    assertThat("Lorem ipsum").endsWith("ipsum");
+    assertThat(List.of(1, 2, 3, 4, 5)).hasSize(5);
+    assertThat(List.of(1, 2, 3, 4, 5)).hasSizeBetween(0, 5);
   }
 
   @Test
@@ -95,13 +92,13 @@ class ReviewVerifierTest {
     boolean result = reviewVerifier.doesMeetQualityStandards(review);
     // assertTrue(result, "ReviewVerifier did not pass a good review");
 
-    Assertions.assertThat(result)
+    assertThat(result)
       .withFailMessage("ReviewVerifier did not pass a good review")
       .isEqualTo(true)
       .isTrue();
 
-    Assertions.assertThat(List.of(1, 2, 3, 4, 5)).hasSizeBetween(1, 10);
-    Assertions.assertThat(List.of(1, 2, 3, 4, 5)).contains(3).isNotEmpty();
+    assertThat(List.of(1, 2, 3, 4, 5)).hasSizeBetween(1, 10);
+    assertThat(List.of(1, 2, 3, 4, 5)).contains(3).isNotEmpty();
   }
 
 }
