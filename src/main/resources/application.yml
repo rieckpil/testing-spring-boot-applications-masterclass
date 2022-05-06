@@ -1,7 +1,7 @@
 spring:
   datasource:
     hikari:
-      auto-commit: true
+      auto-commit: false
     password: test
     username: test
     url: jdbc:postgresql://localhost:5432/postgres
@@ -31,4 +31,4 @@ sqs:
 logging:
     level:
       org.hibernate.SQL: DEBUG
-      org.hibernate.resource.jdbc.internal: TRACE
+      org.hibernate.resource.jdbc.internal.AbstractLogicalConnectionImplementor: TRACE
