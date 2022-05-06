@@ -29,6 +29,13 @@ public class ReviewController {
     return reviewService.getAllReviews(size, orderBy);
   }
 
+  @GetMapping("/reviews/page")
+  public ArrayNode fetchPage(@RequestParam(name = "page", defaultValue = "0") Integer page,
+    @RequestParam(name = "size", defaultValue = "2") Integer size,
+                                 @RequestParam(name = "orderBy", defaultValue = "createdAt") String orderBy) {
+    return reviewService.fetchPage(page, size, orderBy);
+  }
+
   @GetMapping("/reviews/statistics")
   public ArrayNode getReviewStatistics() {
     return reviewService.getReviewStatistics();

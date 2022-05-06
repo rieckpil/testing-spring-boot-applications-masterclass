@@ -1,5 +1,7 @@
 spring:
   datasource:
+    hikari:
+      auto-commit: true
     password: test
     username: test
     url: jdbc:postgresql://localhost:5432/postgres
@@ -9,6 +11,7 @@ spring:
         jwt:
           issuer-uri: http://localhost:8888/auth/realms/spring
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: validate
 cloud:
@@ -24,3 +27,8 @@ clients:
 
 sqs:
   book-synchronization-queue: default
+
+logging:
+    level:
+      org.hibernate.SQL: DEBUG
+      org.hibernate.resource.jdbc.internal: TRACE

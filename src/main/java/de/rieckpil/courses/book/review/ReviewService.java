@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.rieckpil.courses.book.management.Book;
 import de.rieckpil.courses.book.management.BookRepository;
 import de.rieckpil.courses.book.management.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,21 +71,22 @@ public class ReviewService {
   }
 
   public ArrayNode getAllReviews(Integer size, String orderBy) {
-    ArrayNode result = objectMapper.createArrayNode();
-
     List<Review> requestedReviews;
-
     if (orderBy.equals("rating")) {
       requestedReviews = reviewRepository.findTop5ByOrderByRatingDescCreatedAtDesc();
     } else {
       requestedReviews = reviewRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(0, size));
     }
 
+    return convert(requestedReviews);
+  }
+
+  private ArrayNode convert(List<Review> requestedReviews) {
+    ArrayNode result = objectMapper.createArrayNode();
     requestedReviews
       .stream()
       .map(this::mapReview)
       .forEach(result::add);
-
     return result;
   }
 
@@ -119,5 +122,11 @@ public class ReviewService {
     return this.reviewRepository.findByIdAndBookIsbn(reviewId, isbn)
       .map(this::mapReview)
       .orElseThrow(ReviewNotFoundException::new);
+  }
+
+  public ArrayNode fetchPage(int page, int size, String orderBy) {
+    PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, orderBy));
+    final Page<Review> reviews = reviewRepository.fetchPage(pageRequest);
+    return convert(reviews.getContent());
   }
 }

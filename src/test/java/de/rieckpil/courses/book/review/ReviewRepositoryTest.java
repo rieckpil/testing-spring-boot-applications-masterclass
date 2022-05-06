@@ -59,8 +59,8 @@ class ReviewRepositoryTest {
     review.setBook(null);
     review.setUser(null);
 
-    Review result = cut.save(review);
-    // Review result = testEntityManager.persistFlushFind(review);
+//    Review result = cut.save(review);
+     Review result = testEntityManager.persistFlushFind(review);
 
     System.out.println(result);
     assertNotNull(result.getId());

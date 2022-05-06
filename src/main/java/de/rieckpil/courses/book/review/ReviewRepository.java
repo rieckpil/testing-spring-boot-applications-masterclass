@@ -1,5 +1,7 @@
 package de.rieckpil.courses.book.review;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,4 +27,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
   void deleteByIdAndBookIsbn(Long reviewId, String isbn);
 
   Optional<Review> findByIdAndBookIsbn(Long reviewId, String isbn);
+
+  @Query(value = "SELECT r FROM Review r",
+    countQuery = "SELECT COUNT(r) FROM Review r")
+  Page<Review> fetchPage(PageRequest pageRequest);
 }
