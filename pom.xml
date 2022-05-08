@@ -21,7 +21,7 @@
     <node.version>v16.13.0</node.version>
     <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
     <testcontainers.version>1.17.1</testcontainers.version>
-    <wiremock.version>2.33.1</wiremock.version>
+    <wiremock.version>2.33.2</wiremock.version>
     <selenium.version>4.1.2</selenium.version>
     <awaitility.version>4.2.0</awaitility.version>
     <p6spy.version>3.9.1</p6spy.version>
@@ -162,6 +162,7 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>p6spy</groupId>
@@ -263,13 +264,6 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M6</version>
         <configuration>
-          <!--<properties>
-            <configurationParameters>
-              junit.jupiter.execution.parallel.enabled = true
-              junit.jupiter.execution.parallel.mode.default = same_thread
-              junit.jupiter.execution.parallel.mode.classes.default = concurrent
-            </configurationParameters>
-          </properties> -->
         </configuration>
       </plugin>
       <plugin>
@@ -350,7 +344,7 @@
         <artifactId>maven-enforcer-plugin</artifactId>
         <configuration>
           <rules>
-            <dependencyConvergence />
+            <dependencyConvergence/>
           </rules>
         </configuration>
         <executions>
