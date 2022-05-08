@@ -100,7 +100,7 @@ class ReviewVerifierTest {
       .isTrue();
 
     Assertions.assertThat(List.of(1, 2, 3, 4, 5)).hasSizeBetween(1, 10);
-    Assertions.assertThat(List.of(1, 2, 3, 4, 5)).contains(3).isNotEmpty();
+    Assertions.assertThat(List.of(1, 2, 3, 4, 5)).isNotEmpty().contains(3);
   }
 
 }
