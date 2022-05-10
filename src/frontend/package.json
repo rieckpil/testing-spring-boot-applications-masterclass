@@ -5,7 +5,7 @@
   "dependencies": {
     "@semantic-ui-react/css-patch": "^1.0.0",
     "@types/node": "^17.0.25",
-    "@types/react": "^17.0.44",
+    "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.2",
     "@types/react-router-dom": "^5.3.3",
     "keycloak-js": "^18.0.0",
