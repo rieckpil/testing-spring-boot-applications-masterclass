@@ -14,6 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,18 +32,17 @@ class OpenLibraryApiClientTest {
   private static String VALID_RESPONSE;
 
   static {
-    try {
-      VALID_RESPONSE = new String(OpenLibraryApiClientTest.class
-        .getClassLoader()
-        .getResourceAsStream("stubs/openlibrary/success-" + ISBN + ".json")
-        .readAllBytes());
+    try (InputStream is = OpenLibraryApiClientTest.class.getClassLoader()
+      .getResourceAsStream("stubs/openlibrary/success-" + ISBN + ".json")) {
+      byte[] payload = is != null ? is.readAllBytes() : new byte[]{};
+      VALID_RESPONSE = new String(payload);
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
   @BeforeEach
-  public void setup() throws IOException {
+  void setup() throws IOException {
 
     HttpClient httpClient = HttpClient.create()
       .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 1_000)
@@ -62,7 +62,7 @@ class OpenLibraryApiClientTest {
   }
 
   @AfterEach
-  public void shutdown() throws IOException {
+  void shutdown() throws IOException {
     this.mockWebServer.shutdown();
   }
 
