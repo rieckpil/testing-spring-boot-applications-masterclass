@@ -4,7 +4,6 @@ import de.rieckpil.courses.book.management.Book;
 import de.rieckpil.courses.book.management.BookRepository;
 import de.rieckpil.courses.book.management.User;
 import de.rieckpil.courses.book.management.UserService;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -47,7 +46,6 @@ class ReviewServiceTest {
   }
 
   @Test
-  @DisplayName("Write english sentence")
   void shouldThrowExceptionWhenReviewedBookIsNotExisting() {
     when(bookRepository.findByIsbn(ISBN)).thenReturn(null);
 
