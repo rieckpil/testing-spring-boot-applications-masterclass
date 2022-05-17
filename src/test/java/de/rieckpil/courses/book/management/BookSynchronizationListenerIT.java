@@ -1,13 +1,5 @@
 package de.rieckpil.courses.book.management;
 
-import java.io.IOException;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import com.amazonaws.services.sqs.AmazonSQSAsync;
 import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 import com.nimbusds.jose.JOSEException;
@@ -39,8 +31,16 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.localstack.LocalStackContainer;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import static org.awaitility.Awaitility.given;
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
@@ -50,12 +50,12 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BookSynchronizationListenerIT {
 
-  static PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:12.3")
+  private static final PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:12.3")
     .withDatabaseName("test")
     .withUsername("duke")
     .withPassword("s3cret");
 
-  static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.13.3"))
+  private static final LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.13.3"))
     .withServices(SQS);
   // can be removed with version 0.12.17 as LocalStack now has multi-region support https://docs.localstack.cloud/localstack/configuration/#deprecated
   // .withEnv("DEFAULT_REGION", "eu-central-1")
@@ -91,11 +91,11 @@ class BookSynchronizationListenerIT {
   static {
     database.start();
     localStack.start();
-    try {
-      VALID_RESPONSE = new String(BookSynchronizationListenerIT.class
-        .getClassLoader()
-        .getResourceAsStream("stubs/openlibrary/success-" + ISBN + ".json")
-        .readAllBytes());
+    try (InputStream is = BookSynchronizationListenerIT.class
+      .getClassLoader()
+      .getResourceAsStream("stubs/openlibrary/success-" + ISBN + ".json")) {
+      byte[] payload = is != null ? is.readAllBytes() : new byte[]{};
+      VALID_RESPONSE = new String(payload);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -130,7 +130,7 @@ class BookSynchronizationListenerIT {
   }
 
   @Test
-  public void shouldGetSuccessWhenClientIsAuthenticated() throws JOSEException {
+  void shouldGetSuccessWhenClientIsAuthenticated() throws JOSEException {
 
     JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256)
       .type(JOSEObjectType.JWT)
@@ -162,7 +162,7 @@ class BookSynchronizationListenerIT {
   }
 
   @Test
-  public void shouldReturnBookFromAPIWhenApplicationConsumesNewSyncRequest() {
+  void shouldReturnBookFromAPIWhenApplicationConsumesNewSyncRequest() {
 
     this.webTestClient
       .get()
@@ -183,15 +183,13 @@ class BookSynchronizationListenerIT {
     given()
       .atMost(Duration.ofSeconds(5))
       .await()
-      .untilAsserted(() -> {
-        this.webTestClient
-          .get()
-          .uri("/api/books")
-          .exchange()
-          .expectStatus().isOk()
-          .expectBody()
-          .jsonPath("$.size()").isEqualTo(1)
-          .jsonPath("$[0].isbn").isEqualTo(ISBN);
-      });
+      .untilAsserted(() -> this.webTestClient
+        .get()
+        .uri("/api/books")
+        .exchange()
+        .expectStatus().isOk()
+        .expectBody()
+        .jsonPath("$.size()").isEqualTo(1)
+        .jsonPath("$[0].isbn").isEqualTo(ISBN));
   }
 }
