@@ -2,7 +2,6 @@ package de.rieckpil.courses.book.management;
 
 import com.nimbusds.jose.JOSEException;
 import de.rieckpil.courses.AbstractIntegrationTest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
@@ -11,10 +10,12 @@ import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.Duration;
 import java.util.Map;
 
 import static org.awaitility.Awaitility.given;
+import static org.springframework.test.web.reactive.server.WebTestClient.BodyContentSpec;
 
 class BookSynchronizationListenerRefactoredIT extends AbstractIntegrationTest {
 
@@ -22,11 +23,11 @@ class BookSynchronizationListenerRefactoredIT extends AbstractIntegrationTest {
   private static String VALID_RESPONSE;
 
   static {
-    try {
-      VALID_RESPONSE = new String(BookSynchronizationListenerRefactoredIT.class
-        .getClassLoader()
-        .getResourceAsStream("stubs/openlibrary/success-" + ISBN + ".json")
-        .readAllBytes());
+    try (InputStream is = BookSynchronizationListenerRefactoredIT.class
+      .getClassLoader()
+      .getResourceAsStream("stubs/openlibrary/success-" + ISBN + ".json")) {
+      byte[] payload = is != null ? is.readAllBytes() : new byte[]{};
+      VALID_RESPONSE = new String(payload);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -42,7 +43,7 @@ class BookSynchronizationListenerRefactoredIT extends AbstractIntegrationTest {
   private BookRepository bookRepository;
 
   @Test
-  public void shouldGetSuccessWhenClientIsAuthenticated() throws JOSEException {
+  void shouldGetSuccessWhenClientIsAuthenticated() throws JOSEException {
     this.webTestClient
       .get()
       .uri("/api/books/reviews/statistics")
@@ -52,14 +53,8 @@ class BookSynchronizationListenerRefactoredIT extends AbstractIntegrationTest {
   }
 
   @Test
-  public void shouldReturnBookFromAPIWhenApplicationConsumesNewSyncRequest() {
-
-    this.webTestClient
-      .get()
-      .uri("/api/books")
-      .exchange()
-      .expectStatus().isOk()
-      .expectBody().jsonPath("$.size()").isEqualTo(0);
+  void shouldReturnBookFromAPIWhenApplicationConsumesNewSyncRequest() {
+    assertNonExistingRecord();
 
     this.openLibraryStubs.stubForSuccessfulBookResponse(ISBN, VALID_RESPONSE);
 
@@ -73,15 +68,26 @@ class BookSynchronizationListenerRefactoredIT extends AbstractIntegrationTest {
     given()
       .atMost(Duration.ofSeconds(5))
       .await()
-      .untilAsserted(() -> {
-        this.webTestClient
-          .get()
-          .uri("/api/books")
-          .exchange()
-          .expectStatus().isOk()
-          .expectBody()
-          .jsonPath("$.size()").isEqualTo(1)
-          .jsonPath("$[0].isbn").isEqualTo(ISBN);
-      });
+      .untilAsserted(this::assertExistingRecord);
+  }
+
+  private void assertNonExistingRecord() {
+    fetchOpenLibraryResponse()
+      .jsonPath("$.size()").isEqualTo(0);
+  }
+
+  private void assertExistingRecord() {
+    fetchOpenLibraryResponse()
+      .jsonPath("$.size()").isEqualTo(1)
+      .jsonPath("$[0].isbn").isEqualTo(ISBN);
+  }
+
+  private BodyContentSpec fetchOpenLibraryResponse() {
+    return this.webTestClient
+      .get()
+      .uri("/api/books")
+      .exchange()
+      .expectStatus().isOk()
+      .expectBody();
   }
 }

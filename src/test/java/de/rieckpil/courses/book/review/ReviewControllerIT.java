@@ -12,7 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-public class ReviewControllerIT extends AbstractIntegrationTest {
+import java.util.Objects;
+
+class ReviewControllerIT extends AbstractIntegrationTest {
 
   private static final String ISBN = "9780596004651";
 
@@ -38,7 +40,7 @@ public class ReviewControllerIT extends AbstractIntegrationTest {
   }
 
   @Test
-  public void shouldReturnCreatedReviewWhenBookExistsAndReviewHasGoodQuality() throws JOSEException {
+  void shouldReturnCreatedReviewWhenBookExistsAndReviewHasGoodQuality() throws JOSEException {
 
     String reviewPayload = """
       {
@@ -63,7 +65,7 @@ public class ReviewControllerIT extends AbstractIntegrationTest {
 
     this.webTestClient
       .get()
-      .uri(responseHeaders.getLocation())
+      .uri(Objects.requireNonNull(responseHeaders.getLocation()))
       .header(HttpHeaders.AUTHORIZATION, "Bearer " + validJWT)
       .exchange()
       .expectStatus().isOk()
@@ -74,52 +76,27 @@ public class ReviewControllerIT extends AbstractIntegrationTest {
   }
 
   @Test
-  public void shouldReturnReviewStatisticWhenMultipleReviewsForBookFromDifferentUsersExist() throws JOSEException {
+  void shouldReturnReviewStatisticWhenMultipleReviewsForBookFromDifferentUsersExist() throws JOSEException {
+    postBookReview("mike", "mike@spring.io", """
+      {
+        "reviewTitle" : "Great book with lots of tips & tricks",
+        "reviewContent" : "I can really recommend reading this book. It includes up-to-date library versions and real-world examples",
+        "rating": 5
+      }""");
 
-    this.webTestClient
-      .post()
-      .uri("/api/books/{isbn}/reviews", ISBN)
-      .header(HttpHeaders.AUTHORIZATION, "Bearer " + getSignedJWT("mike", "mike@spring.io"))
-      .contentType(MediaType.APPLICATION_JSON)
-      .bodyValue("""
-        {
-          "reviewTitle" : "Great book with lots of tips & tricks",
-          "reviewContent" : "I can really recommend reading this book. It includes up-to-date library versions and real-world examples",
-          "rating": 5
-        }
-        """)
-      .exchange()
-      .expectStatus().isCreated();
+    postBookReview("duke", "duke@spring.io", """
+      {
+        "reviewTitle" : "This book is okay",
+        "reviewContent" : "I can recommend reading this book for everyone who wants to get started with testing",
+        "rating": 3
+      }""");
 
-    this.webTestClient
-      .post()
-      .uri("/api/books/{isbn}/reviews", ISBN)
-      .header(HttpHeaders.AUTHORIZATION, "Bearer " + getSignedJWT("duke", "duke@spring.io"))
-      .contentType(MediaType.APPLICATION_JSON)
-      .bodyValue("""
-        {
-          "reviewTitle" : "This book is okay",
-          "reviewContent" : "I can recommend reading this book for everyone who wants to get started with testing",
-          "rating": 3
-        }
-        """)
-      .exchange()
-      .expectStatus().isCreated();
-
-    this.webTestClient
-      .post()
-      .uri("/api/books/{isbn}/reviews", ISBN)
-      .header(HttpHeaders.AUTHORIZATION, "Bearer " + getSignedJWT("mandy", "mandy@spring.io"))
-      .contentType(MediaType.APPLICATION_JSON)
-      .bodyValue("""
-        {
-          "reviewTitle" : "This book is great",
-          "reviewContent" : "Good content, great example and most of all up-to-date frameworks and libraries",
-          "rating": 4
-        }
-        """)
-      .exchange()
-      .expectStatus().isCreated();
+    postBookReview("mandy", "mandy@spring.io", """
+      {
+        "reviewTitle" : "This book is great",
+        "reviewContent" : "Good content, great example and most of all up-to-date frameworks and libraries",
+        "rating": 4
+      }""");
 
     this.webTestClient
       .get()
@@ -132,5 +109,16 @@ public class ReviewControllerIT extends AbstractIntegrationTest {
       .jsonPath("$[0].isbn").isEqualTo(ISBN)
       .jsonPath("$[0].ratings").isEqualTo(3)
       .jsonPath("$[0].avg").isEqualTo(4.00);
+  }
+
+  private void postBookReview(String mandy, String email, String body) throws JOSEException {
+    this.webTestClient
+      .post()
+      .uri("/api/books/{isbn}/reviews", ISBN)
+      .header(HttpHeaders.AUTHORIZATION, "Bearer " + getSignedJWT(mandy, email))
+      .contentType(MediaType.APPLICATION_JSON)
+      .bodyValue(body)
+      .exchange()
+      .expectStatus().isCreated();
   }
 }

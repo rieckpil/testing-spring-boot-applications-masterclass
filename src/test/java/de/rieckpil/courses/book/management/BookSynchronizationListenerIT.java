@@ -29,6 +29,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.reactive.server.WebTestClient.BodyContentSpec;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.utility.DockerImageName;
@@ -163,13 +164,7 @@ class BookSynchronizationListenerIT {
 
   @Test
   void shouldReturnBookFromAPIWhenApplicationConsumesNewSyncRequest() {
-
-    this.webTestClient
-      .get()
-      .uri("/api/books")
-      .exchange()
-      .expectStatus().isOk()
-      .expectBody().jsonPath("$.size()").isEqualTo(0);
+    assertNonExistingRecord();
 
     this.openLibraryStubs.stubForSuccessfulBookResponse(ISBN, VALID_RESPONSE);
 
@@ -183,13 +178,26 @@ class BookSynchronizationListenerIT {
     given()
       .atMost(Duration.ofSeconds(5))
       .await()
-      .untilAsserted(() -> this.webTestClient
-        .get()
-        .uri("/api/books")
-        .exchange()
-        .expectStatus().isOk()
-        .expectBody()
-        .jsonPath("$.size()").isEqualTo(1)
-        .jsonPath("$[0].isbn").isEqualTo(ISBN));
+      .untilAsserted(this::assertExistingRecord);
+  }
+
+  private void assertNonExistingRecord() {
+    fetchOpenLibraryResponse()
+      .jsonPath("$.size()").isEqualTo(0);
+  }
+
+  private void assertExistingRecord() {
+    fetchOpenLibraryResponse()
+      .jsonPath("$.size()").isEqualTo(1)
+      .jsonPath("$[0].isbn").isEqualTo(ISBN);
+  }
+
+  private BodyContentSpec fetchOpenLibraryResponse() {
+    return this.webTestClient
+      .get()
+      .uri("/api/books")
+      .exchange()
+      .expectStatus().isOk()
+      .expectBody();
   }
 }
