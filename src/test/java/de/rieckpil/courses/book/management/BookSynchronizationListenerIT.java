@@ -51,10 +51,7 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BookSynchronizationListenerIT {
 
-  private static final PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:12.3")
-    .withDatabaseName("test")
-    .withUsername("duke")
-    .withPassword("s3cret");
+  private static final PostgreSQLContainer<?> database = populateDatabase();
 
   private static final LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.13.3"))
     .withServices(SQS);
@@ -179,6 +176,14 @@ class BookSynchronizationListenerIT {
       .atMost(Duration.ofSeconds(5))
       .await()
       .untilAsserted(this::assertExistingRecord);
+  }
+
+  private static PostgreSQLContainer<?> populateDatabase() {
+    try (PostgreSQLContainer<?> db = new PostgreSQLContainer<>("postgres:12.3")) {
+      return db.withDatabaseName("test")
+        .withUsername("duke")
+        .withPassword("s3cret");
+    }
   }
 
   private void assertNonExistingRecord() {

@@ -1,12 +1,5 @@
 package de.rieckpil.courses;
 
-import java.io.IOException;
-import java.time.Instant;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import com.amazonaws.services.sqs.AmazonSQSAsync;
 import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -38,6 +31,13 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.utility.DockerImageName;
 
+import java.io.IOException;
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
 @ActiveProfiles("integration-test")
@@ -45,12 +45,9 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class AbstractIntegrationTest {
 
-  static PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:12.3")
-    .withDatabaseName("test")
-    .withUsername("duke")
-    .withPassword("s3cret");
+  private static final PostgreSQLContainer<?> database = populateDatabase();
 
-  static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.13.3"))
+  private static final LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.13.3"))
     .withServices(SQS);
   // can be removed with version 0.12.17 as LocalStack now has multi-region support https://docs.localstack.cloud/localstack/configuration/#deprecated
   // .withEnv("DEFAULT_REGION", "eu-central-1");
@@ -115,6 +112,14 @@ public abstract class AbstractIntegrationTest {
   public void cleanUp() {
     this.reviewRepository.deleteAll();
     this.bookRepository.deleteAll();
+  }
+
+  private static PostgreSQLContainer<?> populateDatabase() {
+    try (PostgreSQLContainer<?> db = new PostgreSQLContainer<>("postgres:12.3")) {
+      return db.withDatabaseName("test")
+        .withUsername("duke")
+        .withPassword("s3cret");
+    }
   }
 
   protected String getSignedJWT(String username, String email) throws JOSEException {

@@ -36,18 +36,15 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 class ApplicationIT {
 
   @Container
-  static PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:12.3")
-    .withDatabaseName("test")
-    .withUsername("duke")
-    .withPassword("s3cret");
+  private static final PostgreSQLContainer<?> database = populateDatabase();
 
   @Container
-  static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.13.3"))
+  private static final LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.13.3"))
     .withServices(SQS);
   // can be removed with version 0.12.17 as LocalStack now has multi-region support https://docs.localstack.cloud/localstack/configuration/#deprecated
   // .withEnv("DEFAULT_REGION", "eu-central-1")
 
-  protected static final String QUEUE_NAME = UUID.randomUUID().toString();
+  private static final String QUEUE_NAME = UUID.randomUUID().toString();
 
   @DynamicPropertySource
   static void properties(DynamicPropertyRegistry registry) {
@@ -82,5 +79,13 @@ class ApplicationIT {
       .await()
       .atMost(5, SECONDS)
       .untilAsserted(() -> assertEquals(3, bookRepository.count()));
+  }
+
+  private static PostgreSQLContainer<?> populateDatabase() {
+    try (PostgreSQLContainer<?> db = new PostgreSQLContainer<>("postgres:12.3")) {
+      return db.withDatabaseName("test")
+        .withUsername("duke")
+        .withPassword("s3cret");
+    }
   }
 }

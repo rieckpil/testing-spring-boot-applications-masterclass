@@ -22,13 +22,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ReviewRepositoryNoInMemoryTest {
 
   @Container
-  static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:12.3")
-    .withDatabaseName("test")
-    .withUsername("duke")
-    .withPassword("s3cret");
+  private static final PostgreSQLContainer<?> container = populateDatabase();
 
   @DynamicPropertySource
-  static void properties(DynamicPropertyRegistry registry) {
+  private static void properties(DynamicPropertyRegistry registry) {
     registry.add("spring.datasource.url", container::getJdbcUrl);
     registry.add("spring.datasource.password", container::getPassword);
     registry.add("spring.datasource.username", container::getUsername);
@@ -52,7 +49,7 @@ class ReviewRepositoryNoInMemoryTest {
       System.out.println(reviewStatistic.getAvg());
       System.out.println(reviewStatistic.getIsbn());
       System.out.println(reviewStatistic.getRatings());
-      System.out.println("");
+      System.out.println();
     });
 
     assertEquals(2, result.get(0).getRatings());
@@ -65,4 +62,11 @@ class ReviewRepositoryNoInMemoryTest {
     assertEquals(0, cut.count());
   }
 
+  private static PostgreSQLContainer<?> populateDatabase() {
+    try (PostgreSQLContainer<?> db = new PostgreSQLContainer<>("postgres:12.3")) {
+      return db.withDatabaseName("test")
+        .withUsername("duke")
+        .withPassword("s3cret");
+    }
+  }
 }
