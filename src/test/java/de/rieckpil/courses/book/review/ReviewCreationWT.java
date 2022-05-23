@@ -1,8 +1,5 @@
 package de.rieckpil.courses.book.review;
 
-import java.io.File;
-import java.util.logging.Level;
-
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
@@ -24,10 +21,10 @@ import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
 
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.screenshot;
+import java.io.File;
+import java.util.logging.Level;
+
+import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -54,7 +51,7 @@ class ReviewCreationWT extends AbstractWebTest {
   }
 
   @Container
-  static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>(
+  private static final BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>(
     // Workaround to allow running the tests on an Apple M1
     System.getProperty("os.arch").equals("aarch64") ?
       DockerImageName.parse("seleniarm/standalone-chromium")
@@ -118,7 +115,7 @@ class ReviewCreationWT extends AbstractWebTest {
     $("#review-title").val("Great Book about Software Development with Java!");
     $("#review-content").val("I really enjoyed reading this book. It contains great examples and discusses also advanced topics.");
 
-    screenshot("before_submit_review");
+    takeScreenshot("before_submit_review");
 
     $("#review-submit").click();
     $(".ui .success").should(Condition.appear);
@@ -130,7 +127,7 @@ class ReviewCreationWT extends AbstractWebTest {
     $("#username").val("duke");
     $("#password").val("dukeduke");
 
-    screenshot("before_submit");
+    takeScreenshot("before_submit");
 
     $("#kc-login").click();
   }
@@ -147,5 +144,10 @@ class ReviewCreationWT extends AbstractWebTest {
     book.setGenre("Software Development");
 
     this.bookRepository.save(book);
+  }
+
+  private void takeScreenshot(String fileName) {
+    String screenshotPath = screenshot(fileName);
+    LOG.info("Screenshot is available under %s".formatted(screenshotPath));
   }
 }
