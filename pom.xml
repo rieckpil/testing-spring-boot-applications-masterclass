@@ -28,7 +28,7 @@
     <mockwebserver.version>4.9.3</mockwebserver.version>
     <mockito.version>4.4.0</mockito.version>
     <okhttp3.version>4.9.3</okhttp3.version>
-    <selenide.version>6.4.0</selenide.version>
+    <selenide.version>6.5.2</selenide.version>
     <commons-lang3.version>3.12.0</commons-lang3.version>
   </properties>
 
@@ -275,7 +275,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.0.0-M6</version>
+        <version>3.0.0-M7</version>
         <configuration>
           <includes>
             <include>**/*WT.java</include>
