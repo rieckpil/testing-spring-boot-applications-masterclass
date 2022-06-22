@@ -19,6 +19,14 @@ jobs:
           java-package: jdk
           cache: maven
 
+     - name: Download Docker images
+       run: |
+         docker pull postgres:12.3
+         docker pull localstack/localstack:0.13.3
+         docker pull selenium/standalone-firefox
+         docker pull quay.io/keycloak/keycloak:18.0.0-legacy
+         docker pull softwaremill/elasticmq-native
+
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
