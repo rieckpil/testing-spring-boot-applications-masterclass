@@ -30,7 +30,6 @@ jobs:
         if: steps.image-cache.outputs.cache-hit != 'true'
         run: |
           mkdir ~/docker-image-cache
-          ls -al
 
           docker pull postgres:12.3
           docker save -o ~/docker-image-cache/postgres.tar postgres:12.3
