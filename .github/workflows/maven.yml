@@ -19,13 +19,39 @@ jobs:
           java-package: jdk
           cache: maven
 
-     - name: Download Docker images
-       run: |
-         docker pull postgres:12.3
-         docker pull localstack/localstack:0.13.3
-         docker pull selenium/standalone-firefox
-         docker pull quay.io/keycloak/keycloak:18.0.0-legacy
-         docker pull softwaremill/elasticmq-native
+      - name: Setup Docker Image Cache
+        id: image-cache
+        uses: actions/cache@v3
+        with:
+          path: ~/docker-image-cache
+          key: docker-image-cache-${{ runner.os }}
+
+      - name: Download Docker images
+        if: steps.image-cache.outputs.cache-hit != 'true'
+        run: |
+          docker pull postgres:12.3
+          docker save -o ~/docker-image-cache/postgres.tar postgres:12.3
+
+          docker pull localstack/localstack:0.13.3
+          docker save -o ~/docker-image-cache/localstack.tar localstack/localstack:0.13.3
+
+          docker pull selenium/standalone-firefox
+          docker save -o ~/docker-image-cache/selenium.tar selenium/standalone-firefox
+
+          docker pull quay.io/keycloak/keycloak:18.0.0-legacy
+          docker save -o ~/docker-image-cache/keycloak.tar quay.io/keycloak/keycloak:18.0.0-legacy
+
+          docker pull softwaremill/elasticmq-native
+          docker save -o ~/docker-image-cache/elasticmq.tar softwaremill/elasticmq-native
+
+      - name: Load Docker Images from Cache
+        if: steps.image-cache.outputs.cache-hit == 'true'
+        run: |
+          docker load -i ~/docker-image-cache/postgres.tar
+          docker load -i ~/docker-image-cache/localstack.tar
+          docker load -i ~/docker-image-cache/selenium.tar
+          docker load -i ~/docker-image-cache/keycloak.tar
+          docker load -i ~/docker-image-cache/elasticmq.tar
 
       - name: Setup Node 16
         uses: actions/setup-node@v3
