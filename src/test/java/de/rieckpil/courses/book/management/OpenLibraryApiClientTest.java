@@ -42,7 +42,7 @@ class OpenLibraryApiClientTest {
   }
 
   @BeforeEach
-  public void setup() throws IOException {
+  void setup() throws IOException {
 
     HttpClient httpClient = HttpClient.create()
       .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 1_000)
@@ -62,7 +62,7 @@ class OpenLibraryApiClientTest {
   }
 
   @AfterEach
-  public void shutdown() throws IOException {
+  void shutdown() throws IOException {
     this.mockWebServer.shutdown();
   }
 

@@ -26,7 +26,7 @@ class BookSynchronizationListenerTest {
   private ArgumentCaptor<Book> bookArgumentCaptor;
 
   @Test
-  public void shouldRejectBookWhenIsbnIsMalformed() {
+  void shouldRejectBookWhenIsbnIsMalformed() {
     BookSynchronization bookSynchronization = new BookSynchronization("42");
 
     cut.consumeBookUpdates(bookSynchronization);
@@ -35,7 +35,7 @@ class BookSynchronizationListenerTest {
   }
 
   @Test
-  public void shouldNotOverrideWhenBookAlreadyExists() {
+  void shouldNotOverrideWhenBookAlreadyExists() {
     BookSynchronization bookSynchronization = new BookSynchronization(VALID_ISBN);
     when(bookRepository.findByIsbn(VALID_ISBN)).thenReturn(new Book());
 
@@ -46,7 +46,7 @@ class BookSynchronizationListenerTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenProcessingFails() {
+  void shouldThrowExceptionWhenProcessingFails() {
     BookSynchronization bookSynchronization = new BookSynchronization(VALID_ISBN);
     when(bookRepository.findByIsbn(VALID_ISBN)).thenReturn(null);
     when(openLibraryApiClient.fetchMetadataForBook(VALID_ISBN)).thenThrow(new RuntimeException("Network timeout"));
@@ -55,7 +55,7 @@ class BookSynchronizationListenerTest {
   }
 
   @Test
-  public void shouldStoreBookWhenNewAndCorrectIsbn() {
+  void shouldStoreBookWhenNewAndCorrectIsbn() {
 
     BookSynchronization bookSynchronization = new BookSynchronization(VALID_ISBN);
     when(bookRepository.findByIsbn(VALID_ISBN)).thenReturn(null);

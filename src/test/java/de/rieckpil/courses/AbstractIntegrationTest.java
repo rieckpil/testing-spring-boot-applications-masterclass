@@ -107,13 +107,13 @@ public abstract class AbstractIntegrationTest {
   }
 
   @BeforeEach
-  public void init() {
+  void init() {
     this.reviewRepository.deleteAll();
     this.bookRepository.deleteAll();
   }
 
   @AfterEach
-  public void cleanUp() {
+  void cleanUp() {
     this.reviewRepository.deleteAll();
     this.bookRepository.deleteAll();
   }

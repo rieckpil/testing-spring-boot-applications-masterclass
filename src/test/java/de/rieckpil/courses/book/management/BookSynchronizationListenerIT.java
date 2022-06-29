@@ -120,17 +120,17 @@ class BookSynchronizationListenerIT {
   private BookRepository bookRepository;
 
   @BeforeEach
-  public void cleanUp() {
+  void cleanUp() {
     this.bookRepository.deleteAll();
   }
 
   @AfterEach
-  public void tearDown() {
+  void tearDown() {
     this.bookRepository.deleteAll();
   }
 
   @Test
-  public void shouldGetSuccessWhenClientIsAuthenticated() throws JOSEException {
+  void shouldGetSuccessWhenClientIsAuthenticated() throws JOSEException {
 
     JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256)
       .type(JOSEObjectType.JWT)
@@ -162,7 +162,7 @@ class BookSynchronizationListenerIT {
   }
 
   @Test
-  public void shouldReturnBookFromAPIWhenApplicationConsumesNewSyncRequest() {
+  void shouldReturnBookFromAPIWhenApplicationConsumesNewSyncRequest() {
 
     this.webTestClient
       .get()

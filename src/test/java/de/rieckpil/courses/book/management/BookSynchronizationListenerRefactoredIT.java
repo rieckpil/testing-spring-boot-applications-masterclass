@@ -42,7 +42,7 @@ class BookSynchronizationListenerRefactoredIT extends AbstractIntegrationTest {
   private BookRepository bookRepository;
 
   @Test
-  public void shouldGetSuccessWhenClientIsAuthenticated() throws JOSEException {
+  void shouldGetSuccessWhenClientIsAuthenticated() throws JOSEException {
     this.webTestClient
       .get()
       .uri("/api/books/reviews/statistics")
@@ -52,7 +52,7 @@ class BookSynchronizationListenerRefactoredIT extends AbstractIntegrationTest {
   }
 
   @Test
-  public void shouldReturnBookFromAPIWhenApplicationConsumesNewSyncRequest() {
+  void shouldReturnBookFromAPIWhenApplicationConsumesNewSyncRequest() {
 
     this.webTestClient
       .get()

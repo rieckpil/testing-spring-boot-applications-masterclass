@@ -96,14 +96,14 @@ class BookSynchronizationListenerSliceTest {
   private OpenLibraryApiClient openLibraryApiClient;
 
   @Test
-  public void shouldStartSQS() {
+  void shouldStartSQS() {
     assertNotNull(cut);
     assertNotNull(queueMessagingTemplate);
     assertNotNull(messageListenerContainer);
   }
 
   @Test
-  public void shouldConsumeMessageWhenPayloadIsCorrect() {
+  void shouldConsumeMessageWhenPayloadIsCorrect() {
     queueMessagingTemplate.convertAndSend(QUEUE_NAME, new BookSynchronization(ISBN));
 
     when(bookRepository.findByIsbn(ISBN)).thenReturn(new Book());

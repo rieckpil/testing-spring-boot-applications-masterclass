@@ -38,7 +38,7 @@ class ReviewServiceTest {
   private static final String ISBN = "42";
 
   @Test
-  public void shouldNotBeNull() {
+  void shouldNotBeNull() {
     assertNotNull(reviewRepository);
     assertNotNull(mockedReviewVerifier);
     assertNotNull(userService);
@@ -48,7 +48,7 @@ class ReviewServiceTest {
 
   @Test
   @DisplayName("Write english sentence")
-  public void shouldThrowExceptionWhenReviewedBookIsNotExisting() {
+  void shouldThrowExceptionWhenReviewedBookIsNotExisting() {
     when(bookRepository.findByIsbn(ISBN)).thenReturn(null);
 
     assertThrows(IllegalArgumentException.class,
@@ -56,7 +56,7 @@ class ReviewServiceTest {
   }
 
   @Test
-  public void shouldRejectReviewWhenReviewQualityIsBad() {
+  void shouldRejectReviewWhenReviewQualityIsBad() {
     // arrange - given
     BookReviewRequest bookReviewRequest =
       new BookReviewRequest("Title", "BADCONTENT!", 1);
@@ -72,7 +72,7 @@ class ReviewServiceTest {
   }
 
   @Test
-  public void shouldStoreReviewWhenReviewQualityIsGoodAndBookIsPresent() {
+  void shouldStoreReviewWhenReviewQualityIsGoodAndBookIsPresent() {
 
     BookReviewRequest bookReviewRequest =
       new BookReviewRequest("Title", "GOOD CONTENT!", 1);
