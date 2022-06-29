@@ -31,7 +31,7 @@ class ReviewControllerTest {
   private ObjectMapper objectMapper;
 
   @BeforeEach
-  public void beforeEach() {
+  void beforeEach() {
     this.objectMapper = new ObjectMapper();
   }
 

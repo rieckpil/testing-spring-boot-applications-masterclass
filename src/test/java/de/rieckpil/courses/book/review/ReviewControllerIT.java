@@ -23,7 +23,7 @@ public class ReviewControllerIT extends AbstractIntegrationTest {
   private BookRepository bookRepository;
 
   @BeforeEach
-  public void setup() {
+  void setup() {
     Book book = new Book();
     book.setPublisher("Duke Inc.");
     book.setIsbn(ISBN);
@@ -38,7 +38,7 @@ public class ReviewControllerIT extends AbstractIntegrationTest {
   }
 
   @Test
-  public void shouldReturnCreatedReviewWhenBookExistsAndReviewHasGoodQuality() throws JOSEException {
+  void shouldReturnCreatedReviewWhenBookExistsAndReviewHasGoodQuality() throws JOSEException {
 
     String reviewPayload = """
       {
@@ -74,7 +74,7 @@ public class ReviewControllerIT extends AbstractIntegrationTest {
   }
 
   @Test
-  public void shouldReturnReviewStatisticWhenMultipleReviewsForBookFromDifferentUsersExist() throws JOSEException {
+  void shouldReturnReviewStatisticWhenMultipleReviewsForBookFromDifferentUsersExist() throws JOSEException {
 
     this.webTestClient
       .post()
