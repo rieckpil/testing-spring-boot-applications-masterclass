@@ -192,7 +192,7 @@ For skipping the frontend build, add `-Dskip.installnodenpm -Dskip.npm` to your 
 
 ## The tests are failing, but I still want to build the project
 
-You can pass `-DskipTests` to `./mvnw clean package` if you experience test failures: `./mvnw clean package -DskipTests` to build the application without running any unit test.
+You can pass `-DskipTests` to `./mvnw package` if you experience test failures: `./mvnw package -DskipTests` to build the application without running any unit test.
 
 Next, make sure you have the latest version of this project (run `git pull`) and ensure the [build status is green](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions).
 
