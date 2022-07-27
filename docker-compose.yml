@@ -8,16 +8,17 @@ services:
     ports:
       - "5432:5432"
   keycloak:
-    image: quay.io/keycloak/keycloak:18.0.0-legacy
+    image: quay.io/keycloak/keycloak:18.0.2
+    command: [ 'start-dev --import-realm' ]
     environment:
       - KEYCLOAK_USER=keycloak
       - KEYCLOAK_PASSWORD=keycloak
+      - KEYCLOAK_FEATURES=scripts
       - DB_VENDOR=h2
-      - JAVA_OPTS=-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/keycloak-dump.json
     volumes:
       - type: bind
         source: ./tmp/keycloak-dump.json
-        target: /tmp/keycloak-dump.json
+        target: /opt/keycloak/data/import
         read_only: true
     ports:
     - "8888:8080"
