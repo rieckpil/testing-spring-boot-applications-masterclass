@@ -2,7 +2,7 @@ import Keycloak from "keycloak-js";
 import {Store} from "redux";
 import {login} from "./actions";
 
-export const keycloak = Keycloak({
+export const keycloak = new Keycloak({
     "realm": "spring",
     "url": "http://" + window.location.hostname + ":8888/auth",
     "clientId": "react-client"
