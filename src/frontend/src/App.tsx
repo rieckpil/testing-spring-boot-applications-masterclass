@@ -1,5 +1,5 @@
 import React from 'react';
-import {HashRouter, Route, Switch} from "react-router-dom";
+import {HashRouter, Route, Routes} from "react-router-dom";
 import {Container, Grid} from "semantic-ui-react";
 
 import Header from "./Header";
@@ -14,19 +14,11 @@ const App: React.FC = () => {
         <Header/>
         <Grid centered>
           <Grid.Column width={10}>
-            <Switch>
-              <Route exact path="/">
-                <HomeContainer/>
-              </Route>
-              <Route path="/all-reviews">
-                <AllReviewContainer/>
-              </Route>
-              <Route path="/all-books">
-              </Route>
-              <Route path="/submit-review">
-                <SubmitReviewContainer/>
-              </Route>
-            </Switch>
+            <Routes>
+              <Route path="/" element={<HomeContainer/>}/>
+              <Route path="/all-reviews" element={<AllReviewContainer/>}/>
+              <Route path="/submit-review" element={<SubmitReviewContainer/>}/>
+            </Routes>
           </Grid.Column>
         </Grid>
       </HashRouter>
