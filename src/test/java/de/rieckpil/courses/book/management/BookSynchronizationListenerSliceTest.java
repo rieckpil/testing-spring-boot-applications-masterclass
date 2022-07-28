@@ -91,10 +91,10 @@ class BookSynchronizationListenerSliceTest {
   private OpenLibraryApiClient openLibraryApiClient;
 
   @Test
-  public void shouldStartSQS() {
+  void shouldStartSQS() {
   }
 
   @Test
-  public void shouldConsumeMessageWhenPayloadIsCorrect() {
+  void shouldConsumeMessageWhenPayloadIsCorrect() {
   }
 }

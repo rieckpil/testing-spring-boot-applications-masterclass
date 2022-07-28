@@ -27,19 +27,19 @@ class BookSynchronizationListenerTest {
   private ArgumentCaptor<Book> bookArgumentCaptor;
 
   @Test
-  public void shouldRejectBookWhenIsbnIsMalformed() {
+  void shouldRejectBookWhenIsbnIsMalformed() {
   }
 
   @Test
-  public void shouldNotOverrideWhenBookAlreadyExists() {
+  void shouldNotOverrideWhenBookAlreadyExists() {
   }
 
   @Test
-  public void shouldThrowExceptionWhenProcessingFails() {
+  void shouldThrowExceptionWhenProcessingFails() {
   }
 
   @Test
-  public void shouldStoreBookWhenNewAndCorrectIsbn() {
+  void shouldStoreBookWhenNewAndCorrectIsbn() {
   }
 
 }

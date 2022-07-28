@@ -38,19 +38,19 @@ class ReviewServiceTest {
   private static final String ISBN = "42";
 
   @Test
-  public void shouldNotBeNull() {
+  void shouldNotBeNull() {
   }
 
   @Test
   @DisplayName("Write english sentence")
-  public void shouldThrowExceptionWhenReviewedBookIsNotExisting() {
+  void shouldThrowExceptionWhenReviewedBookIsNotExisting() {
   }
 
   @Test
-  public void shouldRejectReviewWhenReviewQualityIsBad() {
+  void shouldRejectReviewWhenReviewQualityIsBad() {
   }
 
   @Test
-  public void shouldStoreReviewWhenReviewQualityIsGoodAndBookIsPresent() {
+  void shouldStoreReviewWhenReviewQualityIsGoodAndBookIsPresent() {
   }
 }

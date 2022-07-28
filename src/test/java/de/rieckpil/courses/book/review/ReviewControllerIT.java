@@ -23,10 +23,10 @@ public class ReviewControllerIT extends AbstractIntegrationTest {
   private BookRepository bookRepository;
 
   @Test
-  public void shouldReturnCreatedReviewWhenBookExistsAndReviewHasGoodQuality() throws JOSEException {
+  void shouldReturnCreatedReviewWhenBookExistsAndReviewHasGoodQuality() throws JOSEException {
   }
 
   @Test
-  public void shouldReturnReviewStatisticWhenMultipleReviewsForBookFromDifferentUsersExist() throws JOSEException {
+  void shouldReturnReviewStatisticWhenMultipleReviewsForBookFromDifferentUsersExist() throws JOSEException {
   }
 }

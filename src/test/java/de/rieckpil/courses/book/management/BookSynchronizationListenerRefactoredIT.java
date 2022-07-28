@@ -28,10 +28,10 @@ class BookSynchronizationListenerRefactoredIT extends AbstractIntegrationTest {
   private BookRepository bookRepository;
 
   @Test
-  public void shouldGetSuccessWhenClientIsAuthenticated() throws JOSEException {
+  void shouldGetSuccessWhenClientIsAuthenticated() throws JOSEException {
   }
 
   @Test
-  public void shouldReturnBookFromAPIWhenApplicationConsumesNewSyncRequest() {
+  void shouldReturnBookFromAPIWhenApplicationConsumesNewSyncRequest() {
   }
 }
