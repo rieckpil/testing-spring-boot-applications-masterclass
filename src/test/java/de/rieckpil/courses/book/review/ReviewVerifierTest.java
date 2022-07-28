@@ -23,7 +23,7 @@ class ReviewVerifierTest {
   private ReviewVerifier reviewVerifier;
 
   @BeforeEach
-  public void setup() {
+  void setup() {
     reviewVerifier = new ReviewVerifier();
   }
 

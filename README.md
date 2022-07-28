@@ -30,7 +30,7 @@ After working through the online course ...
 
 Throughout the course you'll learn how to effectively use well-known testing libraries like JUnit 5, Mockito, Awaitility, LocalStack, Testcontainers, Selenide, WireMock, MockWebServer, and JsonPath.
 
-Enroll [here](https://github.com/rieckpil/testing-spring-boot-applications-masterclass) for the Testing Spring Boot Applications Masterclass.
+Enroll [here](https://rieckpil.de/testing-spring-boot-applications-masterclass/) for the Testing Spring Boot Applications Masterclass.
 
 PS: You can watch four preview lessons by [subscribing to the mailing list](https://rieckpil.de/tsbam-preview-lessons/).
 
@@ -130,10 +130,10 @@ Optional requirements:
 
 * Maven >= 3.6 (the project also includes the Maven Wrapper).
 
-When using Maven from the command line, make sure `mvn -version` reports the correct Java version:
+When using Maven from the command line, make sure `./mvnw -version` reports the correct Java version:
 
 ```
-$ mvn -version
+$ ./mvnw -version
 
 Apache Maven 3.8.4 (9b656c72d54e5bacbed989b64718c159fe39b537)
 Maven home: /home/rieckpil/.m2/wrapper/dists/apache-maven-3.8.4-bin/52ccbt68d252mdldqsfsn03jlf/apache-maven-3.8.4
@@ -192,7 +192,7 @@ For skipping the frontend build, add `-Dskip.installnodenpm -Dskip.npm` to your 
 
 ## The tests are failing, but I still want to build the project
 
-You can pass `-DskipTests` to `./mvnw clean package` if you experience test failures: `./mvnw clean package -DskipTests` to build the application without running any unit test.
+You can pass `-DskipTests` to `./mvnw package` if you experience test failures: `./mvnw package -DskipTests` to build the application without running any unit test.
 
 Next, make sure you have the latest version of this project (run `git pull`) and ensure the [build status is green](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions).
 

@@ -69,7 +69,7 @@ class ReviewCreationWT extends AbstractWebTest {
   private static final String ISBN = "9780321751041";
 
   @BeforeEach
-  public void setup() {
+  void setup() {
     Configuration.timeout = 2000;
     // TODO: Improve platform independence, see Testcontainers.exposeHostPorts https://rieckpil.de/write-concise-web-tests-with-selenide-for-java-projects/
     Configuration.baseUrl = SystemUtils.IS_OS_LINUX ? "http://172.17.0.1:8080" : "http://host.docker.internal:8080";
@@ -81,7 +81,7 @@ class ReviewCreationWT extends AbstractWebTest {
   }
 
   @AfterEach
-  public void tearDown() {
+  void tearDown() {
     this.reviewRepository.deleteAll();
     this.bookRepository.deleteAll();
 

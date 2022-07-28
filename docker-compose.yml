@@ -8,20 +8,23 @@ services:
     ports:
       - "5432:5432"
   keycloak:
-    image: quay.io/keycloak/keycloak:18.0.0-legacy
+    # Starting with Keycloak 17, Keycloak is now powered by Quarkus and no longer WildFly
+    # This requires slight changes to the configuration, see https://www.keycloak.org/migration/migrating-to-quarkus
+    image: quay.io/keycloak/keycloak:18.0.2
+    command: [ 'start-dev --http-relative-path /auth --import-realm --auto-build' ]
     environment:
-      - KEYCLOAK_USER=keycloak
-      - KEYCLOAK_PASSWORD=keycloak
-      - DB_VENDOR=h2
-      - JAVA_OPTS=-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/keycloak-dump.json
+      - KEYCLOAK_DB=dev-file
+      - KEYCLOAK_ADMIN=keycloak
+      - KEYCLOAK_ADMIN_PASSWORD=keycloak
+      - KEYCLOAK_FEATURES=scripts
     volumes:
       - type: bind
-        source: ./tmp/keycloak-dump.json
-        target: /tmp/keycloak-dump.json
+        source: ./tmp
+        target: /opt/keycloak/data/import
         read_only: true
     ports:
     - "8888:8080"
-  # Drop-in replacement for the previous roribio16/alpine-sqs:latest (no arm64 support)
+  # Drop-in replacement for the previous roribio16/alpine-sqs:latest (which had no arm64 support)
   sqs:
     image: softwaremill/elasticmq-native
     volumes:
