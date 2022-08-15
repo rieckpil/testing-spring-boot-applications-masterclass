@@ -22,7 +22,7 @@
     <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
     <testcontainers.version>1.17.3</testcontainers.version>
     <wiremock.version>2.33.2</wiremock.version>
-    <selenium.version>4.4.0</selenium.version>
+    <selenium.version>4.3.0</selenium.version>
     <awaitility.version>4.2.0</awaitility.version>
     <p6spy.version>3.9.1</p6spy.version>
     <mockito.version>4.4.0</mockito.version>
