@@ -59,7 +59,7 @@ class ReviewCreationWT extends AbstractWebTest {
     System.getProperty("os.arch").equals("aarch64") ?
       DockerImageName.parse("seleniarm/standalone-chromium")
         .asCompatibleSubstituteFor("selenium/standalone-chrome")
-      : DockerImageName.parse("selenium/standalone-chrome")
+      : DockerImageName.parse("selenium/standalone-chrome:4.3.0-20220726")
   )
     .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target"))
     .withCapabilities(CHROME_OPTIONS);
