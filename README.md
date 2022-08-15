@@ -1,5 +1,6 @@
 [![Masterclass](https://rieckpil.de/wp-content/uploads/2020/09/testing-spring-boot-applications-masterclass-course-logo.png)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
 
+
 # About the Masterclass
 
 [![](https://img.shields.io/badge/Spring%20Boot%20Version-2.7.0-orange)](/pom.xml)
