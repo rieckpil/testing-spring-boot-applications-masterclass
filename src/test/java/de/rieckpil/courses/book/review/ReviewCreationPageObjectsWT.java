@@ -15,14 +15,21 @@ import org.apache.commons.lang3.SystemUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testcontainers.containers.BrowserWebDriverContainer;
+import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
 
 class ReviewCreationPageObjectsWT extends AbstractWebTest {
+
+  private static final Logger LOG = LoggerFactory.getLogger(ReviewCreationPageObjectsWT.class);
 
   @Autowired
   private BookRepository bookRepository;
@@ -35,6 +42,13 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
   NewReviewPage newReviewPage = new NewReviewPage();
   ReviewListPage reviewListPage = new ReviewListPage();
 
+  private static FirefoxOptions FIREFOX_OPTIONS;
+
+  static {
+    FIREFOX_OPTIONS = new FirefoxOptions();
+    FIREFOX_OPTIONS.setLogLevel(FirefoxDriverLogLevel.TRACE);
+  }
+
   @Container
   static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>(
     // Workaround to allow running the tests on an Apple M1
@@ -44,7 +58,8 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
       : DockerImageName.parse("selenium/standalone-firefox")
   )
     .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target"))
-    .withCapabilities(new FirefoxOptions());
+    .withCapabilities(new FirefoxOptions())
+    .withLogConsumer(new Slf4jLogConsumer(LOG));
 
   private static final String ISBN = "9780321751041";
 
