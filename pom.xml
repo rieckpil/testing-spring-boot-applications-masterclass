@@ -28,6 +28,8 @@
     <mockito.version>4.4.0</mockito.version>
     <selenide.version>6.7.1</selenide.version>
     <commons-lang3.version>3.12.0</commons-lang3.version>
+    <sonar.organization>jpfeliciano</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
 
   <dependencyManagement>
@@ -261,7 +263,7 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
+        <artifactId>maven-compiler-plugin</artifactId><configuration><source>16</source><target>16</target></configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
