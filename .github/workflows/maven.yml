@@ -51,7 +51,7 @@ jobs:
         run: ./mvnw test -Djunit.jupiter.execution.parallel.enabled=true -Djunit.jupiter.execution.parallel.mode.default=same_thread -Djunit.jupiter.execution.parallel.mode.classes.default=concurrent
 
       - name: Run test coverage
-        run: ./mvnw sonar:sonar -Pcoverage
+        run: ./mvnw sonar:sonar -Dsonar.projectKey=jpfeliciano_testing-spring-boot-applications-masterclass -Pcoverage
 
       - name: Flatten Selenide Screenshots and HTML Source Code on Failure
         if: ${{ failure() }}
