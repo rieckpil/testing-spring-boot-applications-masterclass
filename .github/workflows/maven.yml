@@ -51,6 +51,9 @@ jobs:
         run: ./mvnw test -Djunit.jupiter.execution.parallel.enabled=true -Djunit.jupiter.execution.parallel.mode.default=same_thread -Djunit.jupiter.execution.parallel.mode.classes.default=concurrent
 
       - name: Run test coverage
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./mvnw sonar:sonar -Dsonar.projectKey=jpfeliciano_testing-spring-boot-applications-masterclass -Pcoverage
 
       - name: Flatten Selenide Screenshots and HTML Source Code on Failure
