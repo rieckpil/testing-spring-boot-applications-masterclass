@@ -21,7 +21,7 @@ public class Application {
   CommandLineRunner welcomeMessage() {
     return runner -> {
       String welcomeMessage = """
-        \n
+
         Welcome to the Testing Spring Boot Applications Masterclass!
         If you can see this in the console, you successfully started the course application.
         """;
