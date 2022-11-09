@@ -31,8 +31,7 @@
     <commons-lang3.version>3.12.0</commons-lang3.version>
     <sonar.organization>jpfeliciano</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-    <sonar.coverage.jacoco.xmlReportPaths>
-      ${project.basedir}/report-aggregate/target/site/jacoco-aggregate/jacoco.xml
+    <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml
     </sonar.coverage.jacoco.xmlReportPaths>
   </properties>
 
@@ -374,6 +373,27 @@
         <artifactId>sonar-maven-plugin</artifactId>
         <version>3.9.1.2184</version>
       </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.6</version>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <phase>test-compile</phase>
+          </execution>
+          <execution>
+            <id>report</id>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <phase>test</phase>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   <profiles>
@@ -399,35 +419,6 @@
             <configuration>
               <skipTests>true</skipTests>
             </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>coverage</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.7</version>
-            <executions>
-              <execution>
-                <id>prepare-agent</id>
-                <goals>
-                  <goal>prepare-agent</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>report</id>
-                <goals>
-                  <goal>report</goal>
-                </goals>
-                <configuration>
-                  <formats>XML</formats>
-                </configuration>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
