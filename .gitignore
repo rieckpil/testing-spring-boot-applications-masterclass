@@ -36,3 +36,4 @@ venv/
 
 src/docs/architecture/*.png
 src/docs/architecture/*.jpg
+.java-version
