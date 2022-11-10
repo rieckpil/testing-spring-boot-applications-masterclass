@@ -20,18 +20,20 @@ public class OpenLibraryApiClient {
   public Book fetchMetadataForBook(String isbn) {
 
     ObjectNode result = openLibraryWebClient.get().uri("/api/books",
-      uriBuilder -> uriBuilder.queryParam("jscmd", "data")
-        .queryParam("format", "json")
-        .queryParam("bibkeys", "ISBN:" + isbn)
-        .build())
+        uriBuilder -> uriBuilder.queryParam("jscmd", "data")
+          .queryParam("format", "json")
+          .queryParam("bibkeys", "ISBN:" + isbn)
+          .build())
       .retrieve()
       .bodyToMono(ObjectNode.class)
       .retryWhen(Retry.fixedDelay(2, Duration.ofMillis(200)))
       .block();
 
-    JsonNode content = result.get("ISBN:" + isbn);
+    if (result != null) {
+      return convertToBook(isbn, result.get("ISBN:" + isbn));
+    }
 
-    return convertToBook(isbn, content);
+    return null;
   }
 
   private Book convertToBook(String isbn, JsonNode content) {
@@ -43,7 +45,8 @@ public class OpenLibraryApiClient {
     book.setPublisher(content.get("publishers").get(0).get("name").asText("n.A."));
     book.setPages(content.get("number_of_pages").asLong(0));
     book.setDescription(content.get("notes") == null ? "n.A" : content.get("notes").asText("n.A."));
-    book.setGenre(content.get("subjects") == null ? "n.A" : content.get("subjects").get(0).get("name").asText("n.A."));
+    book.setGenre(content.get("subjects") == null ? "n.A"
+      : content.get("subjects").get(0).get("name").asText("n.A."));
     return book;
   }
 }
