@@ -45,6 +45,12 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <!-- Temporary workaround to still use the old Spring Cloud AWS -->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-messaging</artifactId>
+        <version>5.3.24</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
