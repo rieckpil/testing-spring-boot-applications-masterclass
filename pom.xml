@@ -22,7 +22,6 @@
     <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
     <testcontainers.version>1.17.3</testcontainers.version>
     <wiremock.version>2.33.2</wiremock.version>
-    <selenium.version>4.3.0</selenium.version>
     <awaitility.version>4.2.0</awaitility.version>
     <p6spy.version>3.9.1</p6spy.version>
     <mockito.version>4.4.0</mockito.version>
@@ -45,60 +44,6 @@
         <version>${testcontainers.version}</version>
         <type>pom</type>
         <scope>import</scope>
-      </dependency>
-      <!-- accessors-smart vs. wiremock-jre8 -->
-      <dependency>
-        <groupId>org.ow2.asm</groupId>
-        <artifactId>asm</artifactId>
-        <version>9.2</version>
-      </dependency>
-      <!-- wildfly-common vs. hibernate-validator -->
-      <dependency>
-        <groupId>org.jboss.logging</groupId>
-        <artifactId>jboss-logging-annotations</artifactId>
-        <version>2.2.1.Final</version>
-      </dependency>
-      <!-- wildfly-common vs. hibernate-validator -->
-      <dependency>
-        <groupId>org.jboss.logging</groupId>
-        <artifactId>jboss-logging-processor</artifactId>
-        <version>2.2.1.Final</version>
-      </dependency>
-      <!-- many conflicting dependencies -->
-      <dependency>
-        <groupId>org.jetbrains</groupId>
-        <artifactId>annotations</artifactId>
-        <version>23.0.0</version>
-      </dependency>
-      <!-- annotations vs. guava -->
-      <dependency>
-        <groupId>com.google.code.findbugs</groupId>
-        <artifactId>jsr305</artifactId>
-        <version>3.0.2</version>
-      </dependency>
-      <!-- log4j-api vs. commons-compress -->
-      <dependency>
-        <groupId>org.osgi</groupId>
-        <artifactId>org.osgi.core</artifactId>
-        <version>6.0.0</version>
-      </dependency>
-      <!-- Selenium 4 -->
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>31.1-jre</version>
-      </dependency>
-      <!-- guava vs. postgresql -->
-      <dependency>
-        <groupId>org.checkerframework</groupId>
-        <artifactId>checker-qual</artifactId>
-        <version>3.12.0</version>
-      </dependency>
-      <!-- pin Spring Boot's version to avoid overrides that result in NoClassDefFoundError -->
-      <dependency>
-        <groupId>com.squareup.okhttp3</groupId>
-        <artifactId>okhttp</artifactId>
-        <version>${okhttp.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
