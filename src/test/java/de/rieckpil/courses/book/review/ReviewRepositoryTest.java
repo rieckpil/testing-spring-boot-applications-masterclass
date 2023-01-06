@@ -7,7 +7,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
+
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
