@@ -51,6 +51,12 @@
         <artifactId>spring-messaging</artifactId>
         <version>5.3.24</version>
       </dependency>
+      <!-- pin Spring Boot's version to avoid overrides that result in NoClassDefFoundError -->
+      <dependency>
+        <groupId>com.squareup.okhttp3</groupId>
+        <artifactId>okhttp</artifactId>
+        <version>${okhttp.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
