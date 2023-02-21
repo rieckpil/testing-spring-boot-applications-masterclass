@@ -22,14 +22,12 @@ jobs:
           cache: maven
 
       - name: Start the local environment and verify the application startup
-        working-directory: application
         run: |
           docker compose up -d
           ./mvnw spring-boot:run &
           timeout 180 ../.github/workflows/health-check.sh 8080
 
       - name: Stop local environment
-        working-directory: application
         if: always()
         run: |
           docker compose logs
