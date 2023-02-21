@@ -39,7 +39,7 @@ class BookSynchronizationListenerSliceTest {
   private static final Logger LOG = LoggerFactory.getLogger(BookSynchronizationListenerSliceTest.class);
 
   @Container
-  static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.13.3"))
+  static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.14.5"))
     .withServices(LocalStackContainer.Service.SQS)
     // can be removed with version 0.12.17 as LocalStack now has multi-region support https://docs.localstack.cloud/localstack/configuration/#deprecated
     // .withEnv("DEFAULT_REGION", "eu-central-1")

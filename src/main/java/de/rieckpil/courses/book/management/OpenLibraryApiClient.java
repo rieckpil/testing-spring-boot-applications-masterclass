@@ -20,16 +20,16 @@ public class OpenLibraryApiClient {
   public Book fetchMetadataForBook(String isbn) {
 
     ObjectNode result = openLibraryWebClient.get().uri("/api/books",
-      uriBuilder -> uriBuilder.queryParam("jscmd", "data")
-        .queryParam("format", "json")
-        .queryParam("bibkeys", "ISBN:" + isbn)
-        .build())
+        uriBuilder -> uriBuilder.queryParam("jscmd", "data")
+          .queryParam("format", "json")
+          .queryParam("bibkeys", isbn)
+          .build())
       .retrieve()
       .bodyToMono(ObjectNode.class)
       .retryWhen(Retry.fixedDelay(2, Duration.ofMillis(200)))
       .block();
 
-    JsonNode content = result.get("ISBN:" + isbn);
+    JsonNode content = result.get(isbn);
 
     return convertToBook(isbn, content);
   }
