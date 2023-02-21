@@ -37,9 +37,9 @@ public class OpenLibraryRestTemplateApiClient {
 
     ObjectNode result = restTemplate
       .exchange("/api/books?jscmd=data&format=json&bibkeys={isbn}",
-        HttpMethod.GET, entity, ObjectNode.class, "ISBN:" + isbn).getBody();
+        HttpMethod.GET, entity, ObjectNode.class, isbn).getBody();
 
-    JsonNode content = result.get("ISBN:" + isbn);
+    JsonNode content = result.get(isbn);
 
     return convertToBook(isbn, content);
   }
