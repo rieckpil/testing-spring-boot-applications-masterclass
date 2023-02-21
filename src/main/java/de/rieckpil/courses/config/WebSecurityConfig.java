@@ -1,5 +1,7 @@
 package de.rieckpil.courses.config;
 
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -18,6 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .mvcMatchers(HttpMethod.GET, "/api/books").permitAll()
         .mvcMatchers(HttpMethod.GET, "/api/books/reviews").permitAll()
         .mvcMatchers("/api/**").authenticated()
+        .requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
       )
       .sessionManagement()
       .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

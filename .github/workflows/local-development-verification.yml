@@ -1,0 +1,36 @@
+name: Verify Local Development
+
+on:
+  schedule:
+    - cron: '0 5 * * SUN' # Every Sunday at 5 AM
+  workflow_dispatch:
+
+jobs:
+  verify-local-development-mode:
+    runs-on: ubuntu-20.04
+    name: Verify local development mode
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+
+      - name: Start the local environment and verify the application startup
+        working-directory: application
+        run: |
+          docker compose up -d
+          ./mvnw spring-boot:run &
+          timeout 180 ../.github/workflows/health-check.sh 8080
+
+      - name: Stop local environment
+        working-directory: application
+        if: always()
+        run: |
+          docker compose logs
+          docker compose down
