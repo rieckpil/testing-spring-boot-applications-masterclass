@@ -36,7 +36,7 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 class ApplicationIT {
 
   @Container
-  static PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:12.3")
+  static PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:12.14")
     .withDatabaseName("test")
     .withUsername("duke")
     .withPassword("s3cret");
