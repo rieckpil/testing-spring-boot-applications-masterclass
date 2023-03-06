@@ -72,6 +72,7 @@ class BookSynchronizationListenerSliceTest {
     registry.add("sqs.book-synchronization-queue", () -> QUEUE_NAME);
     registry.add("spring.cloud.aws.credentials.secret-key", () -> "foo");
     registry.add("spring.cloud.aws.credentials.access-key", () -> "bar");
+    registry.add("spring.cloud.aws.region.static", () -> localStack.getRegion());
     registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpointOverride(SQS).toString());
   }
 
