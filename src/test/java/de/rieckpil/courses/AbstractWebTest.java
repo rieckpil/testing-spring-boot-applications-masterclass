@@ -43,6 +43,7 @@ public abstract class AbstractWebTest {
       .withLogConsumer("keycloak_1", new Slf4jLogConsumer(LOG))
       .withLogConsumer("database_1", new Slf4jLogConsumer(LOG))
       .withLogConsumer("sqs_1", new Slf4jLogConsumer(LOG))
+      .withOptions("--compatibility") // See issue https://github.com/testcontainers/testcontainers-java/issues/4565
       .withLocalCompose(true);
 
   @RegisterExtension
@@ -57,6 +58,6 @@ public abstract class AbstractWebTest {
   static void properties(DynamicPropertyRegistry registry) {
     registry.add("spring.cloud.aws.credentials.secret-key", () -> "foo");
     registry.add("spring.cloud.aws.credentials.access-key", () -> "bar");
-    registry.add("spring.cloud.aws.endpoint", () -> "localhost:9324");
+    registry.add("spring.cloud.aws.endpoint", () ->  "http://localhost:9324");
   }
 }
