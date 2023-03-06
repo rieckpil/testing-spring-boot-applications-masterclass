@@ -184,6 +184,13 @@
       <version>${commons-lang3.version}</version>
       <scope>test</scope>
     </dependency>
+    <!-- Required for tests due to dependency with the AWS SDK v1 !-->
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-core</artifactId>
+      <version>1.12.420</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>

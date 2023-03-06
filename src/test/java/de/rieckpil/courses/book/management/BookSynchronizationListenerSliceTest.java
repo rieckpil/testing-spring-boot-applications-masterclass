@@ -1,5 +1,8 @@
 package de.rieckpil.courses.book.management;
 
+import io.awspring.cloud.autoconfigure.core.AwsAutoConfiguration;
+import io.awspring.cloud.autoconfigure.core.CredentialsProviderAutoConfiguration;
+import io.awspring.cloud.autoconfigure.core.RegionProviderAutoConfiguration;
 import io.awspring.cloud.autoconfigure.sqs.SqsAutoConfiguration;
 import io.awspring.cloud.sqs.listener.SqsMessageListenerContainer;
 import io.awspring.cloud.sqs.operations.SqsTemplate;
@@ -26,6 +29,7 @@ import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.services.sqs.SqsClient;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -37,7 +41,12 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 
 @ExtendWith(SpringExtension.class)
 @Import(BookSynchronizationListener.class)
-@ImportAutoConfiguration(SqsAutoConfiguration.class)
+@ImportAutoConfiguration({
+  CredentialsProviderAutoConfiguration.class,
+  RegionProviderAutoConfiguration.class,
+  AwsAutoConfiguration.class,
+  SqsAutoConfiguration.class
+})
 @Testcontainers(disabledWithoutDocker = true)
 class BookSynchronizationListenerSliceTest {
 
@@ -61,24 +70,9 @@ class BookSynchronizationListenerSliceTest {
   @DynamicPropertySource
   static void configureProperties(DynamicPropertyRegistry registry) {
     registry.add("sqs.book-synchronization-queue", () -> QUEUE_NAME);
-  }
-
-  @TestConfiguration
-  static class TestConfig {
-
-    private final AwsCredentialsProvider awsCredentialsProvider;
-
-    TestConfig(AwsCredentialsProvider awsCredentialsProvider) {
-      this.awsCredentialsProvider = awsCredentialsProvider;
-    }
-
-    @Bean
-    public SqsClient amazonSQS() {
-      return SqsClient.builder()
-        .credentialsProvider(awsCredentialsProvider)
-        .endpointOverride(localStack.getEndpointOverride(SQS))
-        .build();
-    }
+    registry.add("spring.cloud.aws.credentials.secret-key", () -> "foo");
+    registry.add("spring.cloud.aws.credentials.access-key", () -> "bar");
+    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpointOverride(SQS).toString());
   }
 
   @Autowired
@@ -86,9 +80,6 @@ class BookSynchronizationListenerSliceTest {
 
   @Autowired
   private SqsTemplate sqsTemplate;
-
-  @Autowired
-  private SqsMessageListenerContainer messageListenerContainer;
 
   @MockBean
   private BookRepository bookRepository;
@@ -100,7 +91,6 @@ class BookSynchronizationListenerSliceTest {
   void shouldStartSQS() {
     assertNotNull(cut);
     assertNotNull(sqsTemplate);
-    assertNotNull(messageListenerContainer);
   }
 
   @Test
@@ -114,5 +104,4 @@ class BookSynchronizationListenerSliceTest {
       .atMost(5, TimeUnit.SECONDS)
       .untilAsserted(() -> verify(bookRepository).findByIsbn(ISBN));
   }
-
 }
