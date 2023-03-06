@@ -57,28 +57,9 @@ class ApplicationIT {
     registry.add("spring.datasource.password", database::getPassword);
     registry.add("spring.datasource.username", database::getUsername);
     registry.add("sqs.book-synchronization-queue", () -> QUEUE_NAME);
-  }
-
-  @TestConfiguration
-  static class TestConfig {
-
-    private final AwsCredentialsProvider awsCredentialsProvider;
-    private final AwsRegionProvider awsRegionProvider;
-
-    TestConfig(AwsCredentialsProvider awsCredentialsProvider, AwsRegionProvider awsRegionProvider) {
-      this.awsCredentialsProvider = awsCredentialsProvider;
-      this.awsRegionProvider = awsRegionProvider;
-    }
-
-    @Bean
-    public SqsClient amazonSqs() {
-      return SqsClient
-        .builder()
-        .credentialsProvider(awsCredentialsProvider)
-        .endpointOverride(URI.create("http://localhost:9324"))
-        .region(awsRegionProvider.getRegion())
-        .build();
-    }
+    registry.add("spring.cloud.aws.credentials.secret-key", () -> "foo");
+    registry.add("spring.cloud.aws.credentials.access-key", () -> "bar");
+    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpointOverride(SQS));
   }
 
   @Autowired

@@ -20,21 +20,21 @@ private final AwsRegionProvider awsRegionProvider;
     this.awsRegionProvider = awsRegionProvider;
   }
 
-  @Bean
-  public SqsClient amazonSQS() {
-    return SqsClient.builder()
-      .credentialsProvider(awsCredentialsProvider)
-      .endpointOverride(URI.create("http://localhost:9234"))
-      .region(awsRegionProvider.getRegion())
-      .build();
-  }
-
-  @Bean
-  public SqsAsyncClient amazonSQSAsync() {
-    return SqsAsyncClient.builder()
-      .credentialsProvider(awsCredentialsProvider)
-      .endpointOverride(URI.create("http://localhost:9234"))
-      .region(awsRegionProvider.getRegion())
-      .build();
-  }
+//  @Bean
+//  public SqsClient amazonSQS() {
+//    return SqsClient.builder()
+//      .credentialsProvider(awsCredentialsProvider)
+//      .endpointOverride(URI.create("http://localhost:9234"))
+//      .region(awsRegionProvider.getRegion())
+//      .build();
+//  }
+//
+//  @Bean
+//  public SqsAsyncClient amazonSQSAsync() {
+//    return SqsAsyncClient.builder()
+//      .credentialsProvider(awsCredentialsProvider)
+//      .endpointOverride(URI.create("http://localhost:9234"))
+//      .region(awsRegionProvider.getRegion())
+//      .build();
+//  }
 }
