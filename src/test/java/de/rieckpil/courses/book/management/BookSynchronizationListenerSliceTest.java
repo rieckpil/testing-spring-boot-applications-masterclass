@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -36,6 +37,7 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 @ExtendWith(SpringExtension.class)
 @Import(BookSynchronizationListener.class)
 @ImportAutoConfiguration({
+  JacksonAutoConfiguration.class,
   CredentialsProviderAutoConfiguration.class,
   RegionProviderAutoConfiguration.class,
   AwsAutoConfiguration.class,
