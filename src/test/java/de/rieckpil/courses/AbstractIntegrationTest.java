@@ -69,28 +69,9 @@ public abstract class AbstractIntegrationTest {
     registry.add("spring.datasource.password", database::getPassword);
     registry.add("spring.datasource.username", database::getUsername);
     registry.add("sqs.book-synchronization-queue", () -> QUEUE_NAME);
-  }
-
-  @TestConfiguration
-  static class TestConfig {
-
-    private final AwsRegionProvider awsRegionProvider;
-    private final AwsCredentialsProvider awsCredentialsProvider;
-
-    TestConfig(AwsRegionProvider awsRegionProvider, AwsCredentialsProvider awsCredentialsProvider) {
-      this.awsRegionProvider = awsRegionProvider;
-      this.awsCredentialsProvider = awsCredentialsProvider;
-    }
-
-    @Bean
-    public SqsClient amazonSqs() {
-      return SqsClient
-        .builder()
-        .credentialsProvider(awsCredentialsProvider)
-        .region(awsRegionProvider.getRegion())
-        .endpointOverride(localStack.getEndpointOverride(SQS))
-        .build();
-    }
+    registry.add("spring.cloud.aws.credentials.secret-key", () -> "foo");
+    registry.add("spring.cloud.aws.credentials.access-key", () -> "bar");
+    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpointOverride(SQS));
   }
 
   @Autowired
