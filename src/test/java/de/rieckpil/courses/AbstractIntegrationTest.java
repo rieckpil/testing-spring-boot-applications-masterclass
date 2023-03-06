@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.amazonaws.services.sqs.AmazonSQSAsync;
-import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JOSEObjectType;
@@ -36,8 +34,10 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.localstack.LocalStackContainer;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.regions.providers.AwsRegionProvider;
+import software.amazon.awssdk.services.sqs.SqsClient;
 
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
@@ -74,11 +74,21 @@ public abstract class AbstractIntegrationTest {
   @TestConfiguration
   static class TestConfig {
 
+    private final AwsRegionProvider awsRegionProvider;
+    private final AwsCredentialsProvider awsCredentialsProvider;
+
+    TestConfig(AwsRegionProvider awsRegionProvider, AwsCredentialsProvider awsCredentialsProvider) {
+      this.awsRegionProvider = awsRegionProvider;
+      this.awsCredentialsProvider = awsCredentialsProvider;
+    }
+
     @Bean
-    public AmazonSQSAsync amazonSQSAsync() {
-      return AmazonSQSAsyncClientBuilder.standard()
-        .withCredentials(localStack.getDefaultCredentialsProvider())
-        .withEndpointConfiguration(localStack.getEndpointConfiguration(SQS))
+    public SqsClient amazonSqs() {
+      return SqsClient
+        .builder()
+        .credentialsProvider(awsCredentialsProvider)
+        .region(awsRegionProvider.getRegion())
+        .endpointOverride(localStack.getEndpointOverride(SQS))
         .build();
     }
   }

@@ -19,7 +19,7 @@
   <properties>
     <java.version>17</java.version>
     <node.version>v16.13.0</node.version>
-    <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
+    <spring-cloud-aws.version>3.0.0-RC1</spring-cloud-aws.version>
     <testcontainers.version>1.17.5</testcontainers.version>
     <wiremock.version>2.35.0</wiremock.version>
     <awaitility.version>4.2.0</awaitility.version>
@@ -32,9 +32,9 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-dependencies</artifactId>
-        <version>${spring-cloud.version}</version>
+        <groupId>io.awspring.cloud</groupId>
+        <artifactId>spring-cloud-aws-dependencies</artifactId>
+        <version>${spring-cloud-aws.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -44,12 +44,6 @@
         <version>${testcontainers.version}</version>
         <type>pom</type>
         <scope>import</scope>
-      </dependency>
-      <!-- Temporary workaround to still use the old Spring Cloud AWS -->
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-messaging</artifactId>
-        <version>5.3.24</version>
       </dependency>
       <!-- pin Spring Boot's version to avoid overrides that result in NoClassDefFoundError -->
       <dependency>
@@ -75,8 +69,8 @@
     </dependency>
 
     <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-aws-messaging</artifactId>
+      <groupId>io.awspring.cloud</groupId>
+      <artifactId>spring-cloud-aws-starter-sqs</artifactId>
     </dependency>
 
     <dependency>
@@ -306,7 +300,7 @@
         <artifactId>maven-enforcer-plugin</artifactId>
         <configuration>
           <rules>
-            <dependencyConvergence />
+            <dependencyConvergence/>
           </rules>
         </configuration>
         <executions>

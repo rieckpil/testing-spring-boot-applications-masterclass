@@ -1,45 +1,40 @@
 package de.rieckpil.courses.config;
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.client.builder.AwsClientBuilder;
-import com.amazonaws.services.sqs.AmazonSQS;
-import com.amazonaws.services.sqs.AmazonSQSAsync;
-import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
-import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
-import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.regions.providers.AwsRegionProvider;
+import software.amazon.awssdk.services.sqs.SqsAsyncClient;
+import software.amazon.awssdk.services.sqs.SqsClient;
+
+import java.net.URI;
 
 @Configuration
 public class MessagingConfig {
 
-  // using local AWS resources
-  private static final AWSStaticCredentialsProvider CREDENTIALS =
-    new AWSStaticCredentialsProvider(new BasicAWSCredentials("foo", "bar"));
+private final AwsCredentialsProvider awsCredentialsProvider;
+private final AwsRegionProvider awsRegionProvider;
 
-  @Bean
-  public AmazonSQS amazonSQS() {
-    return AmazonSQSClientBuilder
-      .standard()
-      .withCredentials(CREDENTIALS)
-      .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(
-        "http://localhost:9324", "eu-central-1"
-      )).build();
+  public MessagingConfig(AwsCredentialsProvider awsCredentialsProvider, AwsRegionProvider awsRegionProvider) {
+    this.awsCredentialsProvider = awsCredentialsProvider;
+    this.awsRegionProvider = awsRegionProvider;
   }
 
   @Bean
-  public AmazonSQSAsync amazonSQSAsync() {
-    return AmazonSQSAsyncClientBuilder
-      .standard()
-      .withCredentials(CREDENTIALS)
-      .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(
-        "http://localhost:9324", "eu-central-1"
-      )).build();
+  public SqsClient amazonSQS() {
+    return SqsClient.builder()
+      .credentialsProvider(awsCredentialsProvider)
+      .endpointOverride(URI.create("http://localhost:9234"))
+      .region(awsRegionProvider.getRegion())
+      .build();
   }
 
   @Bean
-  public QueueMessagingTemplate queueMessagingTemplate(AmazonSQSAsync amazonSQSAsync) {
-    return new QueueMessagingTemplate(amazonSQSAsync);
+  public SqsAsyncClient amazonSQSAsync() {
+    return SqsAsyncClient.builder()
+      .credentialsProvider(awsCredentialsProvider)
+      .endpointOverride(URI.create("http://localhost:9234"))
+      .region(awsRegionProvider.getRegion())
+      .build();
   }
 }

@@ -1,13 +1,5 @@
 package de.rieckpil.courses;
 
-import java.io.File;
-import java.time.Duration;
-
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.client.builder.AwsClientBuilder;
-import com.amazonaws.services.sqs.AmazonSQSAsync;
-import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 import com.codeborne.selenide.junit5.ScreenShooterExtension;
 import de.rieckpil.courses.initializer.WireMockInitializer;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -22,6 +14,13 @@ import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.regions.providers.AwsRegionProvider;
+import software.amazon.awssdk.services.sqs.SqsClient;
+
+import java.io.File;
+import java.net.URI;
+import java.time.Duration;
 
 @ActiveProfiles("web-test")
 @Testcontainers(disabledWithoutDocker = true)
@@ -52,11 +51,22 @@ public abstract class AbstractWebTest {
 
   @TestConfiguration
   static class TestConfig {
+
+    private final AwsCredentialsProvider awsCredentialsProvider;
+    private final AwsRegionProvider awsRegionProvider;
+
+    TestConfig(AwsCredentialsProvider awsCredentialsProvider, AwsRegionProvider awsRegionProvider) {
+      this.awsCredentialsProvider = awsCredentialsProvider;
+      this.awsRegionProvider = awsRegionProvider;
+    }
+
     @Bean
-    public AmazonSQSAsync amazonSQSAsync() {
-      return AmazonSQSAsyncClientBuilder.standard()
-        .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials("foo", "bar")))
-        .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:9324", "eu-central-1"))
+    public SqsClient amazonSqs() {
+      return SqsClient
+        .builder()
+        .credentialsProvider(awsCredentialsProvider)
+        .endpointOverride(URI.create("http://localhost:9324"))
+        .region(awsRegionProvider.getRegion())
         .build();
     }
   }

@@ -1,7 +1,8 @@
 package de.rieckpil.courses.book.management;
 
-import com.amazonaws.services.sqs.AmazonSQSAsync;
-import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
+import io.awspring.cloud.autoconfigure.sqs.SqsAutoConfiguration;
+import io.awspring.cloud.sqs.listener.SqsMessageListenerContainer;
+import io.awspring.cloud.sqs.operations.SqsTemplate;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.cloud.aws.autoconfigure.messaging.MessagingAutoConfiguration;
-import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
-import org.springframework.cloud.aws.messaging.listener.SimpleMessageListenerContainer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -24,6 +22,8 @@ import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.services.sqs.SqsClient;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -37,7 +37,7 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 
 @ExtendWith(SpringExtension.class)
 @Import(BookSynchronizationListener.class)
-@ImportAutoConfiguration(MessagingAutoConfiguration.class)
+@ImportAutoConfiguration(SqsAutoConfiguration.class)
 @Testcontainers(disabledWithoutDocker = true)
 class BookSynchronizationListenerSliceTest {
 
@@ -66,17 +66,18 @@ class BookSynchronizationListenerSliceTest {
   @TestConfiguration
   static class TestConfig {
 
-    @Bean
-    public AmazonSQSAsync amazonSQS() {
-      return AmazonSQSAsyncClientBuilder.standard()
-        .withCredentials(localStack.getDefaultCredentialsProvider())
-        .withEndpointConfiguration(localStack.getEndpointConfiguration(SQS))
-        .build();
+    private final AwsCredentialsProvider awsCredentialsProvider;
+
+    TestConfig(AwsCredentialsProvider awsCredentialsProvider) {
+      this.awsCredentialsProvider = awsCredentialsProvider;
     }
 
     @Bean
-    public QueueMessagingTemplate queueMessagingTemplate(AmazonSQSAsync amazonSQS) {
-      return new QueueMessagingTemplate(amazonSQS);
+    public SqsClient amazonSQS() {
+      return SqsClient.builder()
+        .credentialsProvider(awsCredentialsProvider)
+        .endpointOverride(localStack.getEndpointOverride(SQS))
+        .build();
     }
   }
 
@@ -84,10 +85,10 @@ class BookSynchronizationListenerSliceTest {
   private BookSynchronizationListener cut;
 
   @Autowired
-  private QueueMessagingTemplate queueMessagingTemplate;
+  private SqsTemplate sqsTemplate;
 
   @Autowired
-  private SimpleMessageListenerContainer messageListenerContainer;
+  private SqsMessageListenerContainer messageListenerContainer;
 
   @MockBean
   private BookRepository bookRepository;
@@ -98,13 +99,13 @@ class BookSynchronizationListenerSliceTest {
   @Test
   void shouldStartSQS() {
     assertNotNull(cut);
-    assertNotNull(queueMessagingTemplate);
+    assertNotNull(sqsTemplate);
     assertNotNull(messageListenerContainer);
   }
 
   @Test
   void shouldConsumeMessageWhenPayloadIsCorrect() {
-    queueMessagingTemplate.convertAndSend(QUEUE_NAME, new BookSynchronization(ISBN));
+    sqsTemplate.send(QUEUE_NAME, new BookSynchronization(ISBN));
 
     when(bookRepository.findByIsbn(ISBN)).thenReturn(new Book());
 

@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.amazonaws.services.sqs.AmazonSQSAsync;
-import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JOSEObjectType;
 import com.nimbusds.jose.JWSAlgorithm;
@@ -21,6 +19,7 @@ import de.rieckpil.courses.initializer.RSAKeyGenerator;
 import de.rieckpil.courses.initializer.WireMockInitializer;
 import de.rieckpil.courses.stubs.OAuth2Stubs;
 import de.rieckpil.courses.stubs.OpenLibraryStubs;
+import io.awspring.cloud.sqs.operations.SqsTemplate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +27,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.messaging.support.GenericMessage;
@@ -39,8 +37,9 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.localstack.LocalStackContainer;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.services.sqs.SqsClient;
 
 import static org.awaitility.Awaitility.given;
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
@@ -74,11 +73,18 @@ class BookSynchronizationListenerIT {
 
   @TestConfiguration
   static class TestConfig {
+
+    private final AwsCredentialsProvider awsCredentialsProvider;
+
+    TestConfig(AwsCredentialsProvider awsCredentialsProvider) {
+      this.awsCredentialsProvider = awsCredentialsProvider;
+    }
+
     @Bean
-    public AmazonSQSAsync amazonSQSAsync() {
-      return AmazonSQSAsyncClientBuilder.standard()
-        .withCredentials(localStack.getDefaultCredentialsProvider())
-        .withEndpointConfiguration(localStack.getEndpointConfiguration(SQS))
+    public SqsClient amazonSQSAsync() {
+      return SqsClient.builder()
+        .credentialsProvider(awsCredentialsProvider)
+        .endpointOverride(localStack.getEndpointOverride(SQS))
         .build();
     }
   }
@@ -102,7 +108,7 @@ class BookSynchronizationListenerIT {
   }
 
   @Autowired
-  private QueueMessagingTemplate queueMessagingTemplate;
+  private SqsTemplate sqsTemplate;
 
   @Autowired
   private WebTestClient webTestClient;
@@ -173,7 +179,7 @@ class BookSynchronizationListenerIT {
 
     this.openLibraryStubs.stubForSuccessfulBookResponse(ISBN, VALID_RESPONSE);
 
-    this.queueMessagingTemplate.send(QUEUE_NAME, new GenericMessage<>(
+    this.sqsTemplate.send(QUEUE_NAME, new GenericMessage<>(
       """
           {
             "isbn": "%s"

@@ -1,7 +1,5 @@
 package de.rieckpil.courses;
 
-import com.amazonaws.services.sqs.AmazonSQSAsync;
-import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 import de.rieckpil.courses.book.management.BookRepository;
 import de.rieckpil.courses.initializer.DefaultBookStubsInitializer;
 import de.rieckpil.courses.initializer.WireMockInitializer;
@@ -20,8 +18,12 @@ import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.regions.providers.AwsRegionProvider;
+import software.amazon.awssdk.services.sqs.SqsClient;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.UUID;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -59,11 +61,22 @@ class ApplicationIT {
 
   @TestConfiguration
   static class TestConfig {
+
+    private final AwsCredentialsProvider awsCredentialsProvider;
+    private final AwsRegionProvider awsRegionProvider;
+
+    TestConfig(AwsCredentialsProvider awsCredentialsProvider, AwsRegionProvider awsRegionProvider) {
+      this.awsCredentialsProvider = awsCredentialsProvider;
+      this.awsRegionProvider = awsRegionProvider;
+    }
+
     @Bean
-    public AmazonSQSAsync amazonSQSAsync() {
-      return AmazonSQSAsyncClientBuilder.standard()
-        .withCredentials(localStack.getDefaultCredentialsProvider())
-        .withEndpointConfiguration(localStack.getEndpointConfiguration(SQS))
+    public SqsClient amazonSqs() {
+      return SqsClient
+        .builder()
+        .credentialsProvider(awsCredentialsProvider)
+        .endpointOverride(URI.create("http://localhost:9324"))
+        .region(awsRegionProvider.getRegion())
         .build();
     }
   }
