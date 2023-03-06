@@ -2,8 +2,8 @@ package de.rieckpil.courses.pages;
 
 import com.codeborne.selenide.Condition;
 
-import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 
 public class NewReviewPage {
 

@@ -1,9 +1,5 @@
 package de.rieckpil.courses.book.management;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import io.awspring.cloud.sqs.operations.SqsTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +9,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Component
 @Profile("default")

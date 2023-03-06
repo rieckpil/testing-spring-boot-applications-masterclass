@@ -1,6 +1,7 @@
 package de.rieckpil.courses.book.management;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity

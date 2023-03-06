@@ -1,7 +1,5 @@
 package de.rieckpil.courses.book.review;
 
-import java.io.File;
-
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import de.rieckpil.courses.AbstractWebTest;
@@ -21,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
+
+import java.io.File;
 
 class ReviewCreationPageObjectsWT extends AbstractWebTest {
 
