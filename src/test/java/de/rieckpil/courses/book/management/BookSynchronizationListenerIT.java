@@ -50,10 +50,12 @@ class BookSynchronizationListenerIT {
   static PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:12.3")
     .withDatabaseName("test")
     .withUsername("duke")
-    .withPassword("s3cret");
+    .withPassword("s3cret")
+    .withReuse(true);
 
   static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:1.4.0"))
-    .withServices(SQS);
+    .withServices(SQS)
+    .withReuse(true);
   // can be removed with version 0.12.17 as LocalStack now has multi-region support https://docs.localstack.cloud/localstack/configuration/#deprecated
   // .withEnv("DEFAULT_REGION", "eu-central-1")
 
@@ -162,12 +164,12 @@ class BookSynchronizationListenerIT {
 
     this.openLibraryStubs.stubForSuccessfulBookResponse(ISBN, VALID_RESPONSE);
 
-    this.sqsTemplate.send(QUEUE_NAME, new GenericMessage<>(
+    this.sqsTemplate.send(QUEUE_NAME,
       """
           {
             "isbn": "%s"
           }
-        """.formatted(ISBN), Map.of("contentType", "application/json")));
+        """.formatted(ISBN));
 
     given()
       .atMost(Duration.ofSeconds(5))

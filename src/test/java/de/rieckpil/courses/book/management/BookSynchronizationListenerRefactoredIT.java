@@ -62,12 +62,12 @@ class BookSynchronizationListenerRefactoredIT extends AbstractIntegrationTest {
 
     this.openLibraryStubs.stubForSuccessfulBookResponse(ISBN, VALID_RESPONSE);
 
-    this.sqsTemplate.send(QUEUE_NAME, new GenericMessage<>(
+    this.sqsTemplate.send(QUEUE_NAME,
       """
           {
             "isbn": "%s"
           }
-        """.formatted(ISBN), Map.of("contentType", "application/json")));
+        """.formatted(ISBN));
 
     given()
       .atMost(Duration.ofSeconds(5))
