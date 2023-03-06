@@ -10,6 +10,8 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
@@ -21,6 +23,8 @@ import software.amazon.awssdk.services.sqs.SqsClient;
 import java.io.File;
 import java.net.URI;
 import java.time.Duration;
+
+import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
 @ActiveProfiles("web-test")
 @Testcontainers(disabledWithoutDocker = true)
@@ -49,25 +53,10 @@ public abstract class AbstractWebTest {
     environment.start();
   }
 
-  @TestConfiguration
-  static class TestConfig {
-
-    private final AwsCredentialsProvider awsCredentialsProvider;
-    private final AwsRegionProvider awsRegionProvider;
-
-    TestConfig(AwsCredentialsProvider awsCredentialsProvider, AwsRegionProvider awsRegionProvider) {
-      this.awsCredentialsProvider = awsCredentialsProvider;
-      this.awsRegionProvider = awsRegionProvider;
-    }
-
-    @Bean
-    public SqsClient amazonSqs() {
-      return SqsClient
-        .builder()
-        .credentialsProvider(awsCredentialsProvider)
-        .endpointOverride(URI.create("http://localhost:9324"))
-        .region(awsRegionProvider.getRegion())
-        .build();
-    }
+  @DynamicPropertySource
+  static void properties(DynamicPropertyRegistry registry) {
+    registry.add("spring.cloud.aws.credentials.secret-key", () -> "foo");
+    registry.add("spring.cloud.aws.credentials.access-key", () -> "bar");
+    registry.add("spring.cloud.aws.endpoint", () -> "localhost:9324");
   }
 }
