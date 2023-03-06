@@ -15,7 +15,10 @@ spring:
     aws:
       region:
         static: eu-central-1
-      endpoint: http://localhost:9234
+      endpoint: http://localhost:9324
+      credentials:
+        secret-key: foo
+        access-key: bar
 
 clients:
   open-library:

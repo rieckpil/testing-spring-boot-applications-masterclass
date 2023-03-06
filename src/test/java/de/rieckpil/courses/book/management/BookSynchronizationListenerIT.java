@@ -38,8 +38,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.utility.DockerImageName;
-import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
-import software.amazon.awssdk.services.sqs.SqsClient;
 
 import static org.awaitility.Awaitility.given;
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
