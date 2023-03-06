@@ -69,24 +69,9 @@ class BookSynchronizationListenerIT {
     registry.add("spring.datasource.password", database::getPassword);
     registry.add("spring.datasource.username", database::getUsername);
     registry.add("sqs.book-synchronization-queue", () -> QUEUE_NAME);
-  }
-
-  @TestConfiguration
-  static class TestConfig {
-
-    private final AwsCredentialsProvider awsCredentialsProvider;
-
-    TestConfig(AwsCredentialsProvider awsCredentialsProvider) {
-      this.awsCredentialsProvider = awsCredentialsProvider;
-    }
-
-    @Bean
-    public SqsClient amazonSQSAsync() {
-      return SqsClient.builder()
-        .credentialsProvider(awsCredentialsProvider)
-        .endpointOverride(localStack.getEndpointOverride(SQS))
-        .build();
-    }
+    registry.add("spring.cloud.aws.credentials.secret-key", () -> "foo");
+    registry.add("spring.cloud.aws.credentials.access-key", () -> "bar");
+    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpointOverride(SQS));
   }
 
   @BeforeAll
