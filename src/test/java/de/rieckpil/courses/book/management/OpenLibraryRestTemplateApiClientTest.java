@@ -60,7 +60,7 @@ class OpenLibraryRestTemplateApiClientTest {
 
     String response = """
        {
-        "ISBN:9780596004651": {
+        "9780596004651": {
           "publishers": [
             {
               "name": "O'Reilly"
@@ -111,7 +111,7 @@ class OpenLibraryRestTemplateApiClientTest {
   void shouldPropagateExceptionWhenRemoteSystemIsDown() {
     assertThrows(HttpServerErrorException.class, () -> {
       this.mockRestServiceServer
-        .expect(requestTo("/api/books?jscmd=data&format=json&bibkeys=ISBN:" + ISBN))
+        .expect(requestTo("/api/books?jscmd=data&format=json&bibkeys=" + ISBN))
         .andRespond(MockRestResponseCreators.withServerError());
 
       cut.fetchMetadataForBook(ISBN);
@@ -122,7 +122,7 @@ class OpenLibraryRestTemplateApiClientTest {
   void shouldContainCorrectHeadersWhenRemoteSystemIsInvoked() {
 
     this.mockRestServiceServer
-      .expect(requestTo("/api/books?jscmd=data&format=json&bibkeys=ISBN:" + ISBN))
+      .expect(requestTo("/api/books?jscmd=data&format=json&bibkeys=" + ISBN))
       .andExpect(MockRestRequestMatchers.header("X-Custom-Auth", "Duke42"))
       .andExpect(MockRestRequestMatchers.header("X-Customer-Id", "42"))
       .andRespond(withSuccess(new ClassPathResource("/stubs/openlibrary/success-" + ISBN + ".json")

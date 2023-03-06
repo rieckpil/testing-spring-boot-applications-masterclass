@@ -92,7 +92,7 @@ class OpenLibraryApiClientTest {
     assertNull(result.getId());
 
     RecordedRequest recordedRequest = this.mockWebServer.takeRequest();
-    assertEquals("/api/books?jscmd=data&format=json&bibkeys=ISBN:" + ISBN, recordedRequest.getPath());
+    assertEquals("/api/books?jscmd=data&format=json&bibkeys=" + ISBN, recordedRequest.getPath());
   }
 
   @Test
@@ -100,7 +100,7 @@ class OpenLibraryApiClientTest {
 
     String response = """
        {
-        "ISBN:9780596004651": {
+        "9780596004651": {
           "publishers": [
             {
               "name": "O'Reilly"

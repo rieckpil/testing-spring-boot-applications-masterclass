@@ -12,7 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-public class ReviewControllerIT extends AbstractIntegrationTest {
+class ReviewControllerIT extends AbstractIntegrationTest {
 
   private static final String ISBN = "9780596004651";
 

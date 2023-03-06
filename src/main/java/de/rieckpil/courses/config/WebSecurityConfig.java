@@ -1,6 +1,8 @@
 package de.rieckpil.courses.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -19,6 +21,7 @@ public class WebSecurityConfig {
         .requestMatchers(HttpMethod.GET, "/api/books").permitAll()
         .requestMatchers(HttpMethod.GET, "/api/books/reviews").permitAll()
         .requestMatchers("/api/**").authenticated()
+        .requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
       )
       .sessionManagement()
       .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
