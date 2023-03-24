@@ -32,9 +32,10 @@ class BookSynchronizationListenerSliceNewTest {
   private static final Logger LOG = LoggerFactory.getLogger(BookSynchronizationListenerSliceTest.class);
 
   @Container
-  static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:1.4.0"))
-    .withServices(LocalStackContainer.Service.SQS)
-    .withLogConsumer(new Slf4jLogConsumer(LOG));
+  static LocalStackContainer localStack =
+    new LocalStackContainer(DockerImageName.parse("localstack/localstack:1.4.0"))
+      .withServices(LocalStackContainer.Service.SQS)
+      .withLogConsumer(new Slf4jLogConsumer(LOG));
 
   private static final String QUEUE_NAME = UUID.randomUUID().toString();
   private static final String ISBN = "9780596004651";
