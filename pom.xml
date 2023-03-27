@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.0.4</version>
+    <version>3.0.5</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
@@ -228,7 +228,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M7</version>
+        <version>3.0.0</version>
         <configuration>
           <!--<properties>
             <configurationParameters>
@@ -242,7 +242,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.0.0-M8</version>
+        <version>3.0.0</version>
         <configuration>
           <includes>
             <include>**/*WT.java</include>
