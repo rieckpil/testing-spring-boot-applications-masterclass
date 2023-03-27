@@ -2,17 +2,14 @@ package de.rieckpil.courses.book.management;
 
 import com.nimbusds.jose.JOSEException;
 import de.rieckpil.courses.AbstractIntegrationTest;
-import org.junit.jupiter.api.BeforeEach;
+import io.awspring.cloud.sqs.operations.SqsTemplate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.http.HttpHeaders;
-import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Map;
 
 import static org.awaitility.Awaitility.given;
 
@@ -33,7 +30,7 @@ class BookSynchronizationListenerRefactoredIT extends AbstractIntegrationTest {
   }
 
   @Autowired
-  private QueueMessagingTemplate queueMessagingTemplate;
+  private SqsTemplate sqsTemplate;
 
   @Autowired
   private WebTestClient webTestClient;
@@ -63,12 +60,12 @@ class BookSynchronizationListenerRefactoredIT extends AbstractIntegrationTest {
 
     this.openLibraryStubs.stubForSuccessfulBookResponse(ISBN, VALID_RESPONSE);
 
-    this.queueMessagingTemplate.send(QUEUE_NAME, new GenericMessage<>(
+    this.sqsTemplate.send(QUEUE_NAME,
       """
           {
             "isbn": "%s"
           }
-        """.formatted(ISBN), Map.of("contentType", "application/json")));
+        """.formatted(ISBN));
 
     given()
       .atMost(Duration.ofSeconds(5))

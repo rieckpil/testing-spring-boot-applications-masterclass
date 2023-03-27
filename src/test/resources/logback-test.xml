@@ -10,9 +10,6 @@
     <appender-ref ref="STDOUT"/>
   </root>
 
-  <!-- Ignore false positive warnings and general noise -->
-  <logger name="com.amazonaws" level="error"/>
-
   <!-- Noisy logs when shutting down the context, connection refuse messages for LocalStack⁄ -->
-  <logger name="org.springframework.cloud.aws.messaging.listener" level="error"/>
+  <logger name="io.awspring.cloud.sqs.listener.source" level="OFF"/>
 </configuration>

@@ -1,8 +1,8 @@
 package de.rieckpil.courses.book.management;
 
+import io.awspring.cloud.sqs.annotation.SqsListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cloud.aws.messaging.listener.annotation.SqsListener;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,16 +13,18 @@ public class BookSynchronizationListener {
   private final BookRepository bookRepository;
   private final OpenLibraryApiClient openLibraryApiClient;
 
-  public BookSynchronizationListener(BookRepository bookRepository,
-                                     OpenLibraryApiClient openLibraryApiClient) {
+  public BookSynchronizationListener(
+    BookRepository bookRepository,
+    OpenLibraryApiClient openLibraryApiClient
+  ) {
     this.bookRepository = bookRepository;
     this.openLibraryApiClient = openLibraryApiClient;
   }
 
-  @SqsListener(value = "${sqs.book-synchronization-queue}")
+  @SqsListener("${sqs.book-synchronization-queue}")
   public void consumeBookUpdates(BookSynchronization bookSynchronization) {
 
-    String isbn = bookSynchronization.getIsbn();
+    String isbn = bookSynchronization.isbn();
     LOG.info("Incoming book update for isbn '{}'", isbn);
 
     if (isbn.length() != 13) {
@@ -41,5 +43,4 @@ public class BookSynchronizationListener {
 
     LOG.info("Successfully stored new book '{}'", book);
   }
-
 }
