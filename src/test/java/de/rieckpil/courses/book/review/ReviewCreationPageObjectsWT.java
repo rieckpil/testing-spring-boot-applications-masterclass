@@ -41,7 +41,7 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
     System.getProperty("os.arch").equals("aarch64") ?
       DockerImageName.parse("seleniarm/standalone-firefox")
         .asCompatibleSubstituteFor("selenium/standalone-firefox")
-      : DockerImageName.parse("selenium/standalone-firefox:4.3.0-20220726")
+      : DockerImageName.parse("selenium/standalone-firefox:latest")
   )
     .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target"))
     .withCapabilities(new FirefoxOptions());

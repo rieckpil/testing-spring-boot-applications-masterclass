@@ -25,7 +25,8 @@
     <awaitility.version>4.2.0</awaitility.version>
     <p6spy.version>3.9.1</p6spy.version>
     <mockito.version>4.4.0</mockito.version>
-    <selenide.version>6.7.4</selenide.version>
+    <selenide.version>6.12.4</selenide.version>
+    <selenium.version>4.8.1</selenium.version>
     <commons-lang3.version>3.12.0</commons-lang3.version>
   </properties>
 

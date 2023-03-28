@@ -54,9 +54,9 @@ class ReviewCreationWT extends AbstractWebTest {
   static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>(
     // Workaround to allow running the tests on an Apple M1
     System.getProperty("os.arch").equals("aarch64") ?
-      DockerImageName.parse("seleniarm/standalone-chromium")
+      DockerImageName.parse("seleniarm/standalone-chromium:latest")
         .asCompatibleSubstituteFor("selenium/standalone-chrome")
-      : DockerImageName.parse("selenium/standalone-chrome:4.3.0-20220726")
+      : DockerImageName.parse("selenium/standalone-chrome:latest")
   )
     .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target"))
     .withCapabilities(CHROME_OPTIONS);
