@@ -17,11 +17,12 @@ public class WebSecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     httpSecurity
-      .authorizeRequests(authorize -> authorize
+      .authorizeHttpRequests(authorize -> authorize
         .requestMatchers(HttpMethod.GET, "/api/books").permitAll()
         .requestMatchers(HttpMethod.GET, "/api/books/reviews").permitAll()
         .requestMatchers("/api/**").authenticated()
         .requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
+        .anyRequest().permitAll()
       )
       .sessionManagement()
       .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
