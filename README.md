@@ -1,6 +1,6 @@
 [![Masterclass](https://rieckpil.de/wp-content/uploads/2020/09/testing-spring-boot-applications-masterclass-course-logo.png)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
 
-# About the Masterclass
+# Deploy Spring Boot Applications With More Confidence and Less Regressions
 
 [![](https://img.shields.io/badge/Spring%20Boot%20Version-3.0.5-orange)](/pom.xml)
 [![](https://img.shields.io/badge/Java%20Version-17-orange)](/pom.xml)
@@ -10,10 +10,11 @@
 
 `spring-boot-2` branch: [![Build & Test Maven Project (spring-boot-2)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg?branch=spring-boot-2)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions/workflows/maven.yml?query=branch%3Aspring-boot-2)
 
-
 `code-along` branch: [![Build & Test Maven Project (code-along)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg?branch=code-along)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions/workflows/maven.yml?query=branch%3Acode-along)
 
 ## Introduction
+
+Build Better Spring Boot Applications: A Comprehensive Testing Course to Boost Your Confidence and Productivity.
 
 The Testing Spring Boot Applications Masterclass is a **deep-dive course on testing your Spring Boot applications**. You'll learn how to effectively write **unit, integration, and end-to-end tests** while utilizing Spring Boot's excellent test support.
 
