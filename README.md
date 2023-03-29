@@ -1,4 +1,4 @@
-# Deploy Spring Boot Applications With More Confidence and Less Regressions
+# Deploy Spring Boot Applications With More Confidence
 
 [![Masterclass](https://rieckpil.de/wp-content/uploads/2020/09/testing-spring-boot-applications-masterclass-course-logo.png)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
 
