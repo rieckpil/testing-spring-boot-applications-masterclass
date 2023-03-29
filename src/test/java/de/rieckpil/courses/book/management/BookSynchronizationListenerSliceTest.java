@@ -26,6 +26,8 @@ import org.testcontainers.utility.DockerImageName;
 import java.io.IOException;
 import java.util.UUID;
 
+import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
+
 @ExtendWith(SpringExtension.class)
 @Import(BookSynchronizationListener.class)
 @ImportAutoConfiguration({
@@ -58,6 +60,10 @@ class BookSynchronizationListenerSliceTest {
   @DynamicPropertySource
   static void configureProperties(DynamicPropertyRegistry registry) {
     registry.add("sqs.book-synchronization-queue", () -> QUEUE_NAME);
+    registry.add("spring.cloud.aws.credentials.secret-key", () -> "foo");
+    registry.add("spring.cloud.aws.credentials.access-key", () -> "bar");
+    registry.add("spring.cloud.aws.region.static", () -> localStack.getRegion());
+    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpointOverride(SQS).toString());
   }
 
   @Autowired
