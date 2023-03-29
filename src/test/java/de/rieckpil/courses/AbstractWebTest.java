@@ -1,27 +1,22 @@
 package de.rieckpil.courses;
 
-import java.io.File;
-import java.time.Duration;
-
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.client.builder.AwsClientBuilder;
-import com.amazonaws.services.sqs.AmazonSQSAsync;
-import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 import com.codeborne.selenide.junit5.ScreenShooterExtension;
 import de.rieckpil.courses.initializer.WireMockInitializer;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.io.File;
+import java.time.Duration;
 
 @ActiveProfiles("web-test")
 @Testcontainers(disabledWithoutDocker = true)
@@ -40,6 +35,7 @@ public abstract class AbstractWebTest {
       .withLogConsumer("keycloak_1", new Slf4jLogConsumer(LOG))
       .withLogConsumer("database_1", new Slf4jLogConsumer(LOG))
       .withLogConsumer("sqs_1", new Slf4jLogConsumer(LOG))
+      .withOptions("--compatibility") // See issue https://github.com/testcontainers/testcontainers-java/issues/4565
       .withLocalCompose(true);
 
   @RegisterExtension
@@ -50,14 +46,10 @@ public abstract class AbstractWebTest {
     environment.start();
   }
 
-  @TestConfiguration
-  static class TestConfig {
-    @Bean
-    public AmazonSQSAsync amazonSQSAsync() {
-      return AmazonSQSAsyncClientBuilder.standard()
-        .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials("foo", "bar")))
-        .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:9324", "eu-central-1"))
-        .build();
-    }
+  @DynamicPropertySource
+  static void properties(DynamicPropertyRegistry registry) {
+    registry.add("spring.cloud.aws.credentials.secret-key", () -> "foo");
+    registry.add("spring.cloud.aws.credentials.access-key", () -> "bar");
+    registry.add("spring.cloud.aws.endpoint", () ->  "http://localhost:9324");
   }
 }

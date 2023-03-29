@@ -6,9 +6,6 @@
     <appender-ref ref="CONSOLE"/>
   </root>
 
-  <!-- Noisy logs when shutting down the context, connection refuse messages for LocalStack⁄ -->
-  <logger name="io.awspring.cloud.sqs.listener.source" level="OFF"/>
-
-  <!-- Noisy logs when running test from the ProfileFileReader -->
+  <!-- Noisy logs from the ProfileFileReader -->
   <logger name="software.amazon.awssdk.profiles.internal" level="ERROR"/>
 </configuration>

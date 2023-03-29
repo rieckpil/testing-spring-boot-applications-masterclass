@@ -19,5 +19,5 @@ jobs:
 
       - name: Check for broken links
         run: |
-          npm install -g markdown-link-check
+          npm install -g markdown-link-check@3.10.3
           find README.md -type f | xargs -L1 npx markdown-link-check -c .broken-link-config.json --quiet

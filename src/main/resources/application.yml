@@ -11,12 +11,14 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-cloud:
-  aws:
-    stack:
-      auto: false
-    region:
-      static: eu-central-1
+  cloud:
+    aws:
+      region:
+        static: eu-central-1
+      endpoint: http://localhost:9324
+      credentials:
+        secret-key: foo
+        access-key: bar
 
 clients:
   open-library:
