@@ -34,7 +34,7 @@ After working through the online course ...
 
 Throughout the course you'll learn how to effectively use well-known testing libraries like JUnit 5, Mockito, Awaitility, LocalStack, Testcontainers, Selenide, WireMock, MockWebServer, and JsonPath.
 
-Enroll [here](https://rieckpil.de/testing-spring-boot-applications-masterclass/) for the Testing Spring Boot Applications Masterclass.
+» [Enroll now for the Testing Spring Boot Applications Masterclass](https://rieckpil.de/testing-spring-boot-applications-masterclass/).
 
 PS: You can watch four preview lessons by [subscribing to the mailing list](https://rieckpil.de/tsbam-preview-lessons/).
 
@@ -76,6 +76,13 @@ _For me testing a Spring application seemed like a challenge involving digging t
 _After watching the Testing Spring Boot Applications Masterclass course I feel more confident in writing different types of tests for my apps. The course, videos, and the GitHub repository were of invaluable use to me demonstrating various testing mechanics the Spring ecosystem provides, and I will keep referencing the course materials in the future._
 
 _P.S. The application that is tested in the course is quite complex and covers a lot of real-world testing challenges one might encounter, which I found immensely useful for seeing the bigger picture._
+
+
+<p align="center">
+  <a href="https://rieckpil.de/testing-spring-boot-applications-masterclass/">
+    <img src="https://rieckpil.de/wp-content/uploads/2023/03/tsbam-testiomonials.png" alt="Testing Spring Boot Applications Masterclass Testimonials">
+  </a>
+</p>
 
 ## Further Resources and Links
 
