@@ -1,10 +1,9 @@
 package de.rieckpil.courses.book.management;
 
-import java.io.IOException;
-import java.util.UUID;
-
-import com.amazonaws.services.sqs.AmazonSQSAsync;
-import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
+import io.awspring.cloud.autoconfigure.core.AwsAutoConfiguration;
+import io.awspring.cloud.autoconfigure.core.CredentialsProviderAutoConfiguration;
+import io.awspring.cloud.autoconfigure.core.RegionProviderAutoConfiguration;
+import io.awspring.cloud.autoconfigure.sqs.SqsAutoConfiguration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,12 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.cloud.aws.autoconfigure.messaging.MessagingAutoConfiguration;
-import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
-import org.springframework.cloud.aws.messaging.listener.SimpleMessageListenerContainer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -28,11 +23,18 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
+import java.io.IOException;
+import java.util.UUID;
 
 @ExtendWith(SpringExtension.class)
 @Import(BookSynchronizationListener.class)
-@ImportAutoConfiguration(MessagingAutoConfiguration.class)
+@ImportAutoConfiguration({
+  JacksonAutoConfiguration.class,
+  CredentialsProviderAutoConfiguration.class,
+  RegionProviderAutoConfiguration.class,
+  AwsAutoConfiguration.class,
+  SqsAutoConfiguration.class
+})
 @Testcontainers(disabledWithoutDocker = true)
 class BookSynchronizationListenerSliceTest {
 
@@ -58,31 +60,8 @@ class BookSynchronizationListenerSliceTest {
     registry.add("sqs.book-synchronization-queue", () -> QUEUE_NAME);
   }
 
-  @TestConfiguration
-  static class TestConfig {
-
-    @Bean
-    public AmazonSQSAsync amazonSQS() {
-      return AmazonSQSAsyncClientBuilder.standard()
-        .withCredentials(localStack.getDefaultCredentialsProvider())
-        .withEndpointConfiguration(localStack.getEndpointConfiguration(SQS))
-        .build();
-    }
-
-    @Bean
-    public QueueMessagingTemplate queueMessagingTemplate(AmazonSQSAsync amazonSQS) {
-      return new QueueMessagingTemplate(amazonSQS);
-    }
-  }
-
   @Autowired
   private BookSynchronizationListener cut;
-
-  @Autowired
-  private QueueMessagingTemplate queueMessagingTemplate;
-
-  @Autowired
-  private SimpleMessageListenerContainer messageListenerContainer;
 
   @MockBean
   private BookRepository bookRepository;

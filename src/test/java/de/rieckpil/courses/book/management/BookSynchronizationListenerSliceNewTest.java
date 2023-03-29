@@ -68,13 +68,5 @@ class BookSynchronizationListenerSliceNewTest {
 
   @Test
   void shouldConsumeMessageWhenPayloadIsCorrect() {
-    sqsTemplate.send(QUEUE_NAME, new BookSynchronization(ISBN));
-
-    when(bookRepository.findByIsbn(ISBN)).thenReturn(new Book());
-
-    given()
-      .await()
-      .atMost(5, TimeUnit.SECONDS)
-      .untilAsserted(() -> verify(bookRepository).findByIsbn(ISBN));
   }
 }

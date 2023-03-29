@@ -8,15 +8,11 @@ import de.rieckpil.courses.stubs.OpenLibraryStubs;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 class BookSynchronizationListenerIT {
-
-  @Autowired
-  private QueueMessagingTemplate queueMessagingTemplate;
 
   @Autowired
   private WebTestClient webTestClient;
