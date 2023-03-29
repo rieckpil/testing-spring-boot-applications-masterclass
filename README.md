@@ -6,7 +6,10 @@
 [![](https://img.shields.io/badge/Java%20Version-17-orange)](/pom.xml)
 [![](https://img.shields.io/badge/Enroll-Now-orange)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
 
-`master` branch: [![Build & Test Maven Project (master)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions/workflows/maven.yml?query=branch%3Amaster)
+`main` branch: [![Build & Test Maven Project (main)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions/workflows/maven.yml?query=branch%3Amain)
+
+`spring-boot-2` branch: [![Build & Test Maven Project (spring-boot-2)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg?branch=spring-boot-2)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions/workflows/maven.yml?query=branch%3Aspring-boot-2)
+
 
 `code-along` branch: [![Build & Test Maven Project (code-along)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg?branch=code-along)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions/workflows/maven.yml?query=branch%3Acode-along)
 
