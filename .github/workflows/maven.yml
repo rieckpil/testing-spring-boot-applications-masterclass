@@ -26,8 +26,8 @@ jobs:
           cache-dependency-path: src/frontend/package-lock.json
 
       - name: Build & Test application
-        timeout-minutes: 20
-        run: ./mvnw verify
+        timeout-minutes: 15
+        run: ./mvnw --no-transfer-progress verify
 
       - name: Ensure unit tests can be parallelized
         run: ./mvnw test -Djunit.jupiter.execution.parallel.enabled=true -Djunit.jupiter.execution.parallel.mode.default=same_thread -Djunit.jupiter.execution.parallel.mode.classes.default=concurrent

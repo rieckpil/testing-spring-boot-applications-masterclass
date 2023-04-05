@@ -12,6 +12,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
@@ -22,6 +23,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
 
 import java.io.File;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import static com.codeborne.selenide.Selenide.*;
@@ -46,6 +49,7 @@ class ReviewCreationWT extends AbstractWebTest {
     CHROME_OPTIONS = new ChromeOptions();
     CHROME_OPTIONS.addArguments("--no-sandbox");
     CHROME_OPTIONS.addArguments("--disable-dev-shm-usage");
+    CHROME_OPTIONS.addArguments("--remote-allow-origins=*");
 
     CHROME_OPTIONS.setCapability("goog:loggingPrefs", LOG_PREFERENCES);
   }
@@ -54,9 +58,9 @@ class ReviewCreationWT extends AbstractWebTest {
   static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>(
     // Workaround to allow running the tests on an Apple M1
     System.getProperty("os.arch").equals("aarch64") ?
-      DockerImageName.parse("seleniarm/standalone-chromium")
+      DockerImageName.parse("seleniarm/standalone-chromium:latest")
         .asCompatibleSubstituteFor("selenium/standalone-chrome")
-      : DockerImageName.parse("selenium/standalone-chrome:4.3.0-20220726")
+      : DockerImageName.parse("selenium/standalone-chrome:latest")
   )
     .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target"))
     .withCapabilities(CHROME_OPTIONS);
@@ -69,7 +73,8 @@ class ReviewCreationWT extends AbstractWebTest {
     // TODO: Improve platform independence, see Testcontainers.exposeHostPorts https://rieckpil.de/write-concise-web-tests-with-selenide-for-java-projects/
     Configuration.baseUrl = SystemUtils.IS_OS_LINUX ? "http://172.17.0.1:8080" : "http://host.docker.internal:8080";
 
-    RemoteWebDriver remoteWebDriver = webDriverContainer.getWebDriver();
+    RemoteWebDriver remoteWebDriver = new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), CHROME_OPTIONS, false);
+    remoteWebDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     WebDriverRunner.setWebDriver(remoteWebDriver);
 
     createBook();

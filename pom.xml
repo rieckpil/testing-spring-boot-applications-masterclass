@@ -20,12 +20,13 @@
     <java.version>17</java.version>
     <node.version>v16.13.0</node.version>
     <spring-cloud-aws.version>3.0.0-RC2</spring-cloud-aws.version>
-    <testcontainers.version>1.17.6</testcontainers.version>
+    <testcontainers.version>1.18.0</testcontainers.version>
     <wiremock.version>2.35.0</wiremock.version>
     <awaitility.version>4.2.0</awaitility.version>
     <p6spy.version>3.9.1</p6spy.version>
-    <mockito.version>4.4.0</mockito.version>
-    <selenide.version>6.7.4</selenide.version>
+    <mockito.version>5.2.0</mockito.version>
+    <selenide.version>6.13.0</selenide.version>
+    <selenium.version>4.8.3</selenium.version>
     <commons-lang3.version>3.12.0</commons-lang3.version>
   </properties>
 
@@ -227,7 +228,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M9</version>
+        <version>3.0.0</version>
         <configuration>
           <!--<properties>
             <configurationParameters>
@@ -241,7 +242,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.0.0-M9</version>
+        <version>3.0.0</version>
         <configuration>
           <includes>
             <include>**/*WT.java</include>

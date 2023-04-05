@@ -48,11 +48,13 @@ public class WireMockInitializer implements ApplicationContextInitializer<Config
         ).applyTo(applicationContext);
 
     } else if (Arrays.asList(applicationContext.getEnvironment().getActiveProfiles()).contains("web-test")) {
+
+      String hostname = SystemUtils.IS_OS_WINDOWS ? "host.docker.internal" : "localhost";
+
       TestPropertyValues
         .of(
           String.format(
-            "spring.security.oauth2.resourceserver.jwt.issuer-uri=http://%s:8888/auth/realms/spring",
-            SystemUtils.IS_OS_WINDOWS ? "host.docker.internal" : "172.17.0.1")
+            "spring.security.oauth2.resourceserver.jwt.issuer-uri=http://%s:8888/auth/realms/spring", hostname)
         ).applyTo(applicationContext);
     }
 

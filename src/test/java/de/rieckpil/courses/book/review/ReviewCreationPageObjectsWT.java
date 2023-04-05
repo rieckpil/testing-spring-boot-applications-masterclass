@@ -21,6 +21,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
 
 import java.io.File;
+import java.time.Duration;
 
 class ReviewCreationPageObjectsWT extends AbstractWebTest {
 
@@ -39,9 +40,9 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
   static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>(
     // Workaround to allow running the tests on an Apple M1
     System.getProperty("os.arch").equals("aarch64") ?
-      DockerImageName.parse("seleniarm/standalone-firefox")
+      DockerImageName.parse("seleniarm/standalone-firefox:latest")
         .asCompatibleSubstituteFor("selenium/standalone-firefox")
-      : DockerImageName.parse("selenium/standalone-firefox:4.3.0-20220726")
+      : DockerImageName.parse("selenium/standalone-firefox:latest")
   )
     .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target"))
     .withCapabilities(new FirefoxOptions());
@@ -54,7 +55,8 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
     // TODO: Improve platform independence, see Testcontainers.exposeHostPorts https://rieckpil.de/write-concise-web-tests-with-selenide-for-java-projects/
     Configuration.baseUrl = SystemUtils.IS_OS_LINUX ? "http://172.17.0.1:8080" : "http://host.docker.internal:8080";
 
-    RemoteWebDriver remoteWebDriver = webDriverContainer.getWebDriver();
+    RemoteWebDriver remoteWebDriver = new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), new FirefoxOptions(), false);
+    remoteWebDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     WebDriverRunner.setWebDriver(remoteWebDriver);
   }
 

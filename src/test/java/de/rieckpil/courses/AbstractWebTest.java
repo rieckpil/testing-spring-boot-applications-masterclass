@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -19,6 +20,7 @@ import java.io.File;
 import java.time.Duration;
 
 @ActiveProfiles("web-test")
+@Import(TestJwtDecoderConfig.class)
 @Testcontainers(disabledWithoutDocker = true)
 @ContextConfiguration(initializers = WireMockInitializer.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -30,7 +32,7 @@ public abstract class AbstractWebTest {
     new DockerComposeContainer<>(new File("docker-compose.yml"))
       .withExposedService("database_1", 5432, Wait.forListeningPort())
       .withExposedService("keycloak_1", 8080, Wait.forHttp("/auth").forStatusCode(200)
-        .withStartupTimeout(Duration.ofSeconds(45)))
+        .withStartupTimeout(Duration.ofSeconds(90)))
       .withExposedService("sqs_1", 9324, Wait.forListeningPort())
       .withLogConsumer("keycloak_1", new Slf4jLogConsumer(LOG))
       .withLogConsumer("database_1", new Slf4jLogConsumer(LOG))
