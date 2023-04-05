@@ -1,4 +1,3 @@
 package de.rieckpil.courses.book.management;
 
-public record BookSynchronization(String isbn) {
-}
+public record BookSynchronization(String isbn) {}

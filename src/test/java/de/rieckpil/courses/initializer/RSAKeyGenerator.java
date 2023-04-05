@@ -1,12 +1,12 @@
 package de.rieckpil.courses.initializer;
 
+import java.security.*;
+import java.security.interfaces.RSAPublicKey;
+
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.KeyUse;
 import com.nimbusds.jose.jwk.RSAKey;
-
-import java.security.*;
-import java.security.interfaces.RSAPublicKey;
 
 public class RSAKeyGenerator {
 
@@ -17,10 +17,11 @@ public class RSAKeyGenerator {
 
   // oauth2-jose
   public String getJWKSetJsonString() {
-    RSAKey.Builder builder = new RSAKey.Builder((RSAPublicKey) publicKey)
-      .keyUse(KeyUse.SIGNATURE)
-      .algorithm(JWSAlgorithm.RS256)
-      .keyID(KEY_ID);
+    RSAKey.Builder builder =
+        new RSAKey.Builder((RSAPublicKey) publicKey)
+            .keyUse(KeyUse.SIGNATURE)
+            .algorithm(JWSAlgorithm.RS256)
+            .keyID(KEY_ID);
 
     return new JWKSet(builder.build()).toString();
   }

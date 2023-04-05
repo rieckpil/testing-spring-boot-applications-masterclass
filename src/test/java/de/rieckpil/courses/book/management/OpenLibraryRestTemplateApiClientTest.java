@@ -18,11 +18,9 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 @RestClientTest(OpenLibraryRestTemplateApiClient.class)
 class OpenLibraryRestTemplateApiClientTest {
 
-  @Autowired
-  private OpenLibraryRestTemplateApiClient cut;
+  @Autowired private OpenLibraryRestTemplateApiClient cut;
 
-  @Autowired
-  private MockRestServiceServer mockRestServiceServer;
+  @Autowired private MockRestServiceServer mockRestServiceServer;
 
   private static final String ISBN = "9780596004651";
 
@@ -36,10 +34,12 @@ class OpenLibraryRestTemplateApiClientTest {
   void shouldReturnBookWhenResultIsSuccess() {
 
     this.mockRestServiceServer
-      .expect(requestTo(Matchers.containsString(ISBN)))
-      // .expect(MockRestRequestMatchers.requestTo("/api/books?jscmd=data&format=json&bibkeys=ISBN:" + ISBN))
-      .andRespond(withSuccess(new ClassPathResource("/stubs/openlibrary/success-" + ISBN + ".json")
-        , MediaType.APPLICATION_JSON));
+        .expect(requestTo(Matchers.containsString(ISBN)))
+        // .expect(MockRestRequestMatchers.requestTo("/api/books?jscmd=data&format=json&bibkeys=ISBN:" + ISBN))
+        .andRespond(
+            withSuccess(
+                new ClassPathResource("/stubs/openlibrary/success-" + ISBN + ".json"),
+                MediaType.APPLICATION_JSON));
 
     Book result = cut.fetchMetadataForBook(ISBN);
 
@@ -47,7 +47,8 @@ class OpenLibraryRestTemplateApiClientTest {
     assertEquals("Head first Java", result.getTitle());
     assertEquals("https://covers.openlibrary.org/b/id/388761-S.jpg", result.getThumbnailUrl());
     assertEquals("Kathy Sierra", result.getAuthor());
-    assertEquals("Your brain on Java--a learner's guide--Cover.Includes index.", result.getDescription());
+    assertEquals(
+        "Your brain on Java--a learner's guide--Cover.Includes index.", result.getDescription());
     assertEquals("Java (Computer program language)", result.getGenre());
     assertEquals("O'Reilly", result.getPublisher());
     assertEquals(619, result.getPages());
@@ -58,7 +59,8 @@ class OpenLibraryRestTemplateApiClientTest {
   @Test
   void shouldReturnBookWhenResultIsSuccessButLackingAllInformation() {
 
-    String response = """
+    String response =
+        """
        {
         "9780596004651": {
           "publishers": [
@@ -84,12 +86,12 @@ class OpenLibraryRestTemplateApiClientTest {
       """;
 
     this.mockRestServiceServer
-      .expect(requestTo(Matchers.containsString("/api/books")))
-      .andRespond(withSuccess(response, MediaType.APPLICATION_JSON));
+        .expect(requestTo(Matchers.containsString("/api/books")))
+        .andRespond(withSuccess(response, MediaType.APPLICATION_JSON));
 
     this.mockRestServiceServer
-      .expect(requestTo(Matchers.containsString("/duke/42")))
-      .andRespond(withSuccess(response, MediaType.APPLICATION_JSON));
+        .expect(requestTo(Matchers.containsString("/duke/42")))
+        .andRespond(withSuccess(response, MediaType.APPLICATION_JSON));
 
     Book result = cut.fetchMetadataForBook(ISBN);
 
@@ -109,28 +111,31 @@ class OpenLibraryRestTemplateApiClientTest {
 
   @Test
   void shouldPropagateExceptionWhenRemoteSystemIsDown() {
-    assertThrows(HttpServerErrorException.class, () -> {
-      this.mockRestServiceServer
-        .expect(requestTo("/api/books?jscmd=data&format=json&bibkeys=" + ISBN))
-        .andRespond(MockRestResponseCreators.withServerError());
+    assertThrows(
+        HttpServerErrorException.class,
+        () -> {
+          this.mockRestServiceServer
+              .expect(requestTo("/api/books?jscmd=data&format=json&bibkeys=" + ISBN))
+              .andRespond(MockRestResponseCreators.withServerError());
 
-      cut.fetchMetadataForBook(ISBN);
-    });
+          cut.fetchMetadataForBook(ISBN);
+        });
   }
 
   @Test
   void shouldContainCorrectHeadersWhenRemoteSystemIsInvoked() {
 
     this.mockRestServiceServer
-      .expect(requestTo("/api/books?jscmd=data&format=json&bibkeys=" + ISBN))
-      .andExpect(MockRestRequestMatchers.header("X-Custom-Auth", "Duke42"))
-      .andExpect(MockRestRequestMatchers.header("X-Customer-Id", "42"))
-      .andRespond(withSuccess(new ClassPathResource("/stubs/openlibrary/success-" + ISBN + ".json")
-        , MediaType.APPLICATION_JSON));
+        .expect(requestTo("/api/books?jscmd=data&format=json&bibkeys=" + ISBN))
+        .andExpect(MockRestRequestMatchers.header("X-Custom-Auth", "Duke42"))
+        .andExpect(MockRestRequestMatchers.header("X-Customer-Id", "42"))
+        .andRespond(
+            withSuccess(
+                new ClassPathResource("/stubs/openlibrary/success-" + ISBN + ".json"),
+                MediaType.APPLICATION_JSON));
 
     Book result = cut.fetchMetadataForBook(ISBN);
 
     assertNotNull(result);
   }
-
 }

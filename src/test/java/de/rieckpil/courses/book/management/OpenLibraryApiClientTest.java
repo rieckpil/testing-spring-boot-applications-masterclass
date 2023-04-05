@@ -1,5 +1,8 @@
 package de.rieckpil.courses.book.management;
 
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
@@ -12,9 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
-
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,10 +29,12 @@ class OpenLibraryApiClientTest {
 
   static {
     try {
-      VALID_RESPONSE = new String(OpenLibraryApiClientTest.class
-        .getClassLoader()
-        .getResourceAsStream("stubs/openlibrary/success-" + ISBN + ".json")
-        .readAllBytes());
+      VALID_RESPONSE =
+          new String(
+              OpenLibraryApiClientTest.class
+                  .getClassLoader()
+                  .getResourceAsStream("stubs/openlibrary/success-" + ISBN + ".json")
+                  .readAllBytes());
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -41,21 +43,24 @@ class OpenLibraryApiClientTest {
   @BeforeEach
   void setup() throws IOException {
 
-    HttpClient httpClient = HttpClient.create()
-      .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 1_000)
-      .doOnConnected(connection ->
-        connection.addHandlerLast(new ReadTimeoutHandler(1))
-          .addHandlerLast(new WriteTimeoutHandler(1)));
+    HttpClient httpClient =
+        HttpClient.create()
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 1_000)
+            .doOnConnected(
+                connection ->
+                    connection
+                        .addHandlerLast(new ReadTimeoutHandler(1))
+                        .addHandlerLast(new WriteTimeoutHandler(1)));
 
     this.mockWebServer = new MockWebServer();
     this.mockWebServer.start();
 
-    this.cut = new OpenLibraryApiClient(
-      WebClient.builder()
-        .clientConnector(new ReactorClientHttpConnector(httpClient))
-        .baseUrl(mockWebServer.url("/").toString())
-        .build()
-    );
+    this.cut =
+        new OpenLibraryApiClient(
+            WebClient.builder()
+                .clientConnector(new ReactorClientHttpConnector(httpClient))
+                .baseUrl(mockWebServer.url("/").toString())
+                .build());
   }
 
   @AfterEach
@@ -72,9 +77,10 @@ class OpenLibraryApiClientTest {
   @Test
   void shouldReturnBookWhenResultIsSuccess() throws InterruptedException {
 
-    MockResponse mockResponse = new MockResponse()
-      .addHeader("Content-Type", "application/json; charset=utf-8")
-      .setBody(VALID_RESPONSE);
+    MockResponse mockResponse =
+        new MockResponse()
+            .addHeader("Content-Type", "application/json; charset=utf-8")
+            .setBody(VALID_RESPONSE);
 
     this.mockWebServer.enqueue(mockResponse);
 
@@ -84,7 +90,8 @@ class OpenLibraryApiClientTest {
     assertEquals("Head first Java", result.getTitle());
     assertEquals("https://covers.openlibrary.org/b/id/388761-S.jpg", result.getThumbnailUrl());
     assertEquals("Kathy Sierra", result.getAuthor());
-    assertEquals("Your brain on Java--a learner's guide--Cover.Includes index.", result.getDescription());
+    assertEquals(
+        "Your brain on Java--a learner's guide--Cover.Includes index.", result.getDescription());
     assertEquals("Java (Computer program language)", result.getGenre());
     assertEquals("O'Reilly", result.getPublisher());
     assertEquals(619, result.getPages());
@@ -98,7 +105,8 @@ class OpenLibraryApiClientTest {
   @Test
   void shouldReturnBookWhenResultIsSuccessButLackingAllInformation() {
 
-    String response = """
+    String response =
+        """
        {
         "9780596004651": {
           "publishers": [
@@ -123,10 +131,11 @@ class OpenLibraryApiClientTest {
        }
       """;
 
-    this.mockWebServer.enqueue(new MockResponse()
-      .addHeader("Content-Type", "application/json; charset=utf-8")
-      .setResponseCode(200)
-      .setBody(response));
+    this.mockWebServer.enqueue(
+        new MockResponse()
+            .addHeader("Content-Type", "application/json; charset=utf-8")
+            .setResponseCode(200)
+            .setBody(response));
 
     Book result = cut.fetchMetadataForBook(ISBN);
 
@@ -144,33 +153,34 @@ class OpenLibraryApiClientTest {
 
   @Test
   void shouldPropagateExceptionWhenRemoteSystemIsDown() {
-    assertThrows(RuntimeException.class, () -> {
-      this.mockWebServer.enqueue(new MockResponse()
-        .setResponseCode(500)
-        .setBody("Sorry, system is down :("));
+    assertThrows(
+        RuntimeException.class,
+        () -> {
+          this.mockWebServer.enqueue(
+              new MockResponse().setResponseCode(500).setBody("Sorry, system is down :("));
 
-      cut.fetchMetadataForBook(ISBN);
-    });
+          cut.fetchMetadataForBook(ISBN);
+        });
   }
 
   @Test
   void shouldRetryWhenRemoteSystemIsSlowOrFailing() {
 
-    this.mockWebServer.enqueue(new MockResponse()
-      .setResponseCode(500)
-      .setBody("Sorry, system is down :("));
+    this.mockWebServer.enqueue(
+        new MockResponse().setResponseCode(500).setBody("Sorry, system is down :("));
 
-    this.mockWebServer.enqueue(new MockResponse()
-      .addHeader("Content-Type", "application/json; charset=utf-8")
-      .setResponseCode(200)
-      .setBody(VALID_RESPONSE)
-      .setBodyDelay(2, TimeUnit.SECONDS));
+    this.mockWebServer.enqueue(
+        new MockResponse()
+            .addHeader("Content-Type", "application/json; charset=utf-8")
+            .setResponseCode(200)
+            .setBody(VALID_RESPONSE)
+            .setBodyDelay(2, TimeUnit.SECONDS));
 
-    this.mockWebServer.enqueue(new MockResponse()
-      .addHeader("Content-Type", "application/json; charset=utf-8")
-      .setResponseCode(200)
-      .setBody(VALID_RESPONSE));
-
+    this.mockWebServer.enqueue(
+        new MockResponse()
+            .addHeader("Content-Type", "application/json; charset=utf-8")
+            .setResponseCode(200)
+            .setBody(VALID_RESPONSE));
 
     Book result = cut.fetchMetadataForBook(ISBN);
 

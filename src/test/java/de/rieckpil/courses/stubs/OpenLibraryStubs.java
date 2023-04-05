@@ -16,10 +16,10 @@ public class OpenLibraryStubs {
 
   public void stubForSuccessfulBookResponse(String isbn, String response) {
     this.wireMockServer.stubFor(
-      WireMock.get("/openLibrary/api/books?jscmd=data&format=json&bibkeys=" + isbn)
-        .willReturn(aResponse()
-          .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-          .withBody(response))
-    );
+        WireMock.get("/openLibrary/api/books?jscmd=data&format=json&bibkeys=" + isbn)
+            .willReturn(
+                aResponse()
+                    .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                    .withBody(response)));
   }
 }

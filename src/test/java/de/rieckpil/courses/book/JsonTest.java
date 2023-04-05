@@ -17,7 +17,8 @@ public class JsonTest {
 
   @Test
   void testWithJsonPath() {
-    String result = "{\"age\":\"42\", \"name\": \"duke\", \"tags\":[\"java\", \"jdk\"], \"orders\": [42, 42, 16]}";
+    String result =
+        "{\"age\":\"42\", \"name\": \"duke\", \"tags\":[\"java\", \"jdk\"], \"orders\": [42, 42, 16]}";
 
     Assertions.assertEquals(2, JsonPath.parse(result).read("$.tags.length()", Long.class));
     Assertions.assertEquals("duke", JsonPath.parse(result).read("$.name", String.class));

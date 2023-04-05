@@ -18,20 +18,15 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ReviewServiceTest {
 
-  @Mock
-  private ReviewVerifier mockedReviewVerifier;
+  @Mock private ReviewVerifier mockedReviewVerifier;
 
-  @Mock
-  private UserService userService;
+  @Mock private UserService userService;
 
-  @Mock
-  private BookRepository bookRepository;
+  @Mock private BookRepository bookRepository;
 
-  @Mock
-  private ReviewRepository reviewRepository;
+  @Mock private ReviewRepository reviewRepository;
 
-  @InjectMocks
-  private ReviewService cut;
+  @InjectMocks private ReviewService cut;
 
   private static final String EMAIL = "duke@spring.io";
   private static final String USERNAME = "duke";
@@ -51,21 +46,22 @@ class ReviewServiceTest {
   void shouldThrowExceptionWhenReviewedBookIsNotExisting() {
     when(bookRepository.findByIsbn(ISBN)).thenReturn(null);
 
-    assertThrows(IllegalArgumentException.class,
-      () -> cut.createBookReview(ISBN, null, USERNAME, EMAIL));
+    assertThrows(
+        IllegalArgumentException.class, () -> cut.createBookReview(ISBN, null, USERNAME, EMAIL));
   }
 
   @Test
   void shouldRejectReviewWhenReviewQualityIsBad() {
     // arrange - given
-    BookReviewRequest bookReviewRequest =
-      new BookReviewRequest("Title", "BADCONTENT!", 1);
+    BookReviewRequest bookReviewRequest = new BookReviewRequest("Title", "BADCONTENT!", 1);
     when(bookRepository.findByIsbn(ISBN)).thenReturn(new Book());
-    when(mockedReviewVerifier.doesMeetQualityStandards(bookReviewRequest.getReviewContent())).thenReturn(false);
+    when(mockedReviewVerifier.doesMeetQualityStandards(bookReviewRequest.getReviewContent()))
+        .thenReturn(false);
 
     // act - when
-    assertThrows(BadReviewQualityException.class,
-      () -> cut.createBookReview(ISBN, bookReviewRequest, USERNAME, EMAIL));
+    assertThrows(
+        BadReviewQualityException.class,
+        () -> cut.createBookReview(ISBN, bookReviewRequest, USERNAME, EMAIL));
 
     // assert - then
     verify(reviewRepository, times(0)).save(ArgumentMatchers.any(Review.class));
@@ -74,17 +70,19 @@ class ReviewServiceTest {
   @Test
   void shouldStoreReviewWhenReviewQualityIsGoodAndBookIsPresent() {
 
-    BookReviewRequest bookReviewRequest =
-      new BookReviewRequest("Title", "GOOD CONTENT!", 1);
+    BookReviewRequest bookReviewRequest = new BookReviewRequest("Title", "GOOD CONTENT!", 1);
 
     when(bookRepository.findByIsbn(ISBN)).thenReturn(new Book());
-    when(mockedReviewVerifier.doesMeetQualityStandards(bookReviewRequest.getReviewContent())).thenReturn(true);
+    when(mockedReviewVerifier.doesMeetQualityStandards(bookReviewRequest.getReviewContent()))
+        .thenReturn(true);
     when(userService.getOrCreateUser(USERNAME, EMAIL)).thenReturn(new User());
-    when(reviewRepository.save(any(Review.class))).thenAnswer(invocation -> {
-      Review reviewToSave = invocation.getArgument(0);
-      reviewToSave.setId(42L);
-      return reviewToSave;
-    });
+    when(reviewRepository.save(any(Review.class)))
+        .thenAnswer(
+            invocation -> {
+              Review reviewToSave = invocation.getArgument(0);
+              reviewToSave.setId(42L);
+              return reviewToSave;
+            });
 
     Long result = cut.createBookReview(ISBN, bookReviewRequest, USERNAME, EMAIL);
 

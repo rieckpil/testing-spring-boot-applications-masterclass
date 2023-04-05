@@ -1,5 +1,8 @@
 package de.rieckpil.courses.book.review;
 
+import java.io.File;
+import java.time.Duration;
+
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import de.rieckpil.courses.AbstractWebTest;
@@ -20,16 +23,11 @@ import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
 
-import java.io.File;
-import java.time.Duration;
-
 class ReviewCreationPageObjectsWT extends AbstractWebTest {
 
-  @Autowired
-  private BookRepository bookRepository;
+  @Autowired private BookRepository bookRepository;
 
-  @Autowired
-  private ReviewRepository reviewRepository;
+  @Autowired private ReviewRepository reviewRepository;
 
   DashboardPage dashboardPage = new DashboardPage();
   LoginPage loginPage = new LoginPage();
@@ -37,25 +35,29 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
   ReviewListPage reviewListPage = new ReviewListPage();
 
   @Container
-  static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>(
-    // Workaround to allow running the tests on an Apple M1
-    System.getProperty("os.arch").equals("aarch64") ?
-      DockerImageName.parse("seleniarm/standalone-firefox:latest")
-        .asCompatibleSubstituteFor("selenium/standalone-firefox")
-      : DockerImageName.parse("selenium/standalone-firefox:latest")
-  )
-    .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target"))
-    .withCapabilities(new FirefoxOptions());
+  static BrowserWebDriverContainer<?> webDriverContainer =
+      new BrowserWebDriverContainer<>(
+              // Workaround to allow running the tests on an Apple M1
+              System.getProperty("os.arch").equals("aarch64")
+                  ? DockerImageName.parse("seleniarm/standalone-firefox:latest")
+                      .asCompatibleSubstituteFor("selenium/standalone-firefox")
+                  : DockerImageName.parse("selenium/standalone-firefox:latest"))
+          .withRecordingMode(
+              BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target"))
+          .withCapabilities(new FirefoxOptions());
 
   private static final String ISBN = "9780321751041";
 
   @BeforeEach
   void setup() {
     Configuration.timeout = 2000;
-    // TODO: Improve platform independence, see Testcontainers.exposeHostPorts https://rieckpil.de/write-concise-web-tests-with-selenide-for-java-projects/
-    Configuration.baseUrl = SystemUtils.IS_OS_LINUX ? "http://172.17.0.1:8080" : "http://host.docker.internal:8080";
+    // TODO: Improve platform independence, see Testcontainers.exposeHostPorts
+    // https://rieckpil.de/write-concise-web-tests-with-selenide-for-java-projects/
+    Configuration.baseUrl =
+        SystemUtils.IS_OS_LINUX ? "http://172.17.0.1:8080" : "http://host.docker.internal:8080";
 
-    RemoteWebDriver remoteWebDriver = new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), new FirefoxOptions(), false);
+    RemoteWebDriver remoteWebDriver =
+        new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), new FirefoxOptions(), false);
     remoteWebDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     WebDriverRunner.setWebDriver(remoteWebDriver);
   }
@@ -71,7 +73,8 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
     createBook();
 
     String reviewTitle = "Great Book about Software Development with Java!";
-    String reviewContent = "I really enjoyed reading this book. It contains great examples and discusses also advanced topics.";
+    String reviewContent =
+        "I really enjoyed reading this book. It contains great examples and discusses also advanced topics.";
 
     dashboardPage.open();
     loginPage.performLogin("duke", "dukeduke");
@@ -87,7 +90,8 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
     book.setTitle("Joyful testing with Spring Boot");
     book.setDescription("Writing unit and integration tests for Spring Boot applications");
     book.setAuthor("rieckpil");
-    book.setThumbnailUrl("https://rieckpil.de/wp-content/uploads/2020/08/tsbam_introduction_thumbnail-585x329.png.webp");
+    book.setThumbnailUrl(
+        "https://rieckpil.de/wp-content/uploads/2020/08/tsbam_introduction_thumbnail-585x329.png.webp");
     book.setGenre("Software Development");
 
     this.bookRepository.save(book);

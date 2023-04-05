@@ -2,6 +2,8 @@
 *.iml
 target/
 
+*.bak
+
 .settings/
 .classpath
 .project
