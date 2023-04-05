@@ -43,7 +43,7 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
                       .asCompatibleSubstituteFor("selenium/standalone-firefox")
                   : DockerImageName.parse("selenium/standalone-firefox:latest"))
           .withRecordingMode(
-              BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target"))
+              BrowserWebDriverContainer.VncRecordingMode.RECORD_FAILING, new File("./target"))
           .withCapabilities(new FirefoxOptions());
 
   private static final String ISBN = "9780321751041";
