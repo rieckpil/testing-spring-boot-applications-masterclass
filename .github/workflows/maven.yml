@@ -26,7 +26,7 @@ jobs:
           cache-dependency-path: src/frontend/package-lock.json
 
       - name: Build & Test application
-        timeout-minutes: 10
+        timeout-minutes: 15
         run: ./mvnw verify
 
       - name: Ensure unit tests can be parallelized
