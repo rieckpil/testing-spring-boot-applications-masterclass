@@ -12,6 +12,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
@@ -69,7 +70,7 @@ class ReviewCreationWT extends AbstractWebTest {
     // TODO: Improve platform independence, see Testcontainers.exposeHostPorts https://rieckpil.de/write-concise-web-tests-with-selenide-for-java-projects/
     Configuration.baseUrl = SystemUtils.IS_OS_LINUX ? "http://172.17.0.1:8080" : "http://host.docker.internal:8080";
 
-    RemoteWebDriver remoteWebDriver = webDriverContainer.getWebDriver();
+    RemoteWebDriver remoteWebDriver = new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), new FirefoxOptions(), false);
     WebDriverRunner.setWebDriver(remoteWebDriver);
 
     createBook();
