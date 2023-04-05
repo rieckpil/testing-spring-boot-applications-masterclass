@@ -49,7 +49,7 @@ public class WireMockInitializer implements ApplicationContextInitializer<Config
 
     } else if (Arrays.asList(applicationContext.getEnvironment().getActiveProfiles()).contains("web-test")) {
 
-      String hostname = SystemUtils.IS_OS_WINDOWS ? "host.docker.internal" : (SystemUtils.IS_OS_MAC ? "localhost" : "172.17.0.1");
+      String hostname = SystemUtils.IS_OS_WINDOWS ? "host.docker.internal" : "localhost";
 
       TestPropertyValues
         .of(
