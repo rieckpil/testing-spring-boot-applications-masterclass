@@ -1,5 +1,13 @@
 package de.rieckpil.courses.book.management;
 
+import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JOSEObjectType;
 import com.nimbusds.jose.JWSAlgorithm;
@@ -28,14 +36,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.utility.DockerImageName;
 
-import java.io.IOException;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import static org.awaitility.Awaitility.given;
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
@@ -44,14 +44,17 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BookSynchronizationListenerIT {
 
-  static PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:12.3")
-    .withDatabaseName("test")
-    .withUsername("duke")
-    .withPassword("s3cret");
+  static PostgreSQLContainer<?> database =
+      new PostgreSQLContainer<>("postgres:12.3")
+          .withDatabaseName("test")
+          .withUsername("duke")
+          .withPassword("s3cret");
 
-  static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:1.4.0"))
-    .withServices(SQS);
-  // can be removed with version 0.12.17 as LocalStack now has multi-region support https://docs.localstack.cloud/localstack/configuration/#deprecated
+  static LocalStackContainer localStack =
+      new LocalStackContainer(DockerImageName.parse("localstack/localstack:1.4.0"))
+          .withServices(SQS);
+  // can be removed with version 0.12.17 as LocalStack now has multi-region support
+  // https://docs.localstack.cloud/localstack/configuration/#deprecated
   // .withEnv("DEFAULT_REGION", "eu-central-1")
 
   private static final String QUEUE_NAME = UUID.randomUUID().toString();
@@ -78,32 +81,28 @@ class BookSynchronizationListenerIT {
     database.start();
     localStack.start();
     try {
-      VALID_RESPONSE = new String(BookSynchronizationListenerIT.class
-        .getClassLoader()
-        .getResourceAsStream("stubs/openlibrary/success-" + ISBN + ".json")
-        .readAllBytes());
+      VALID_RESPONSE =
+          new String(
+              BookSynchronizationListenerIT.class
+                  .getClassLoader()
+                  .getResourceAsStream("stubs/openlibrary/success-" + ISBN + ".json")
+                  .readAllBytes());
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  @Autowired
-  private SqsTemplate sqsTemplate;
+  @Autowired private SqsTemplate sqsTemplate;
 
-  @Autowired
-  private WebTestClient webTestClient;
+  @Autowired private WebTestClient webTestClient;
 
-  @Autowired
-  private RSAKeyGenerator rsaKeyGenerator;
+  @Autowired private RSAKeyGenerator rsaKeyGenerator;
 
-  @Autowired
-  private OAuth2Stubs oAuth2Stubs;
+  @Autowired private OAuth2Stubs oAuth2Stubs;
 
-  @Autowired
-  private OpenLibraryStubs openLibraryStubs;
+  @Autowired private OpenLibraryStubs openLibraryStubs;
 
-  @Autowired
-  private BookRepository bookRepository;
+  @Autowired private BookRepository bookRepository;
 
   @BeforeEach
   void cleanUp() {
@@ -118,66 +117,77 @@ class BookSynchronizationListenerIT {
   @Test
   void shouldGetSuccessWhenClientIsAuthenticated() throws JOSEException {
 
-    JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256)
-      .type(JOSEObjectType.JWT)
-      .keyID(RSAKeyGenerator.KEY_ID)
-      .build();
+    JWSHeader header =
+        new JWSHeader.Builder(JWSAlgorithm.RS256)
+            .type(JOSEObjectType.JWT)
+            .keyID(RSAKeyGenerator.KEY_ID)
+            .build();
 
-    JWTClaimsSet payload = new JWTClaimsSet.Builder()
-      .issuer(oAuth2Stubs.getIssuerUri())
-      .audience("account")
-      .subject("duke")
-      .claim("preferred_username", "duke")
-      .claim("email", "duke@spring.io")
-      .claim("scope", "openid email profile")
-      .claim("azp", "react-client")
-      .claim("realm_access", Map.of("roles", List.of()))
-      .expirationTime(Date.from(Instant.now().plusSeconds(120)))
-      .issueTime(new Date())
-      .build();
+    JWTClaimsSet payload =
+        new JWTClaimsSet.Builder()
+            .issuer(oAuth2Stubs.getIssuerUri())
+            .audience("account")
+            .subject("duke")
+            .claim("preferred_username", "duke")
+            .claim("email", "duke@spring.io")
+            .claim("scope", "openid email profile")
+            .claim("azp", "react-client")
+            .claim("realm_access", Map.of("roles", List.of()))
+            .expirationTime(Date.from(Instant.now().plusSeconds(120)))
+            .issueTime(new Date())
+            .build();
 
     SignedJWT signedJWT = new SignedJWT(header, payload);
     signedJWT.sign(new RSASSASigner(rsaKeyGenerator.getPrivateKey()));
 
     this.webTestClient
-      .get()
-      .uri("/api/books/reviews/statistics")
-      .header(HttpHeaders.AUTHORIZATION, "Bearer " + signedJWT.serialize())
-      .exchange()
-      .expectStatus().is2xxSuccessful();
+        .get()
+        .uri("/api/books/reviews/statistics")
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + signedJWT.serialize())
+        .exchange()
+        .expectStatus()
+        .is2xxSuccessful();
   }
 
   @Test
   void shouldReturnBookFromAPIWhenApplicationConsumesNewSyncRequest() {
 
     this.webTestClient
-      .get()
-      .uri("/api/books")
-      .exchange()
-      .expectStatus().isOk()
-      .expectBody().jsonPath("$.size()").isEqualTo(0);
+        .get()
+        .uri("/api/books")
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody()
+        .jsonPath("$.size()")
+        .isEqualTo(0);
 
     this.openLibraryStubs.stubForSuccessfulBookResponse(ISBN, VALID_RESPONSE);
 
-    this.sqsTemplate.send(QUEUE_NAME,
-      """
+    this.sqsTemplate.send(
+        QUEUE_NAME,
+        """
           {
             "isbn": "%s"
           }
         """.formatted(ISBN));
 
     given()
-      .atMost(Duration.ofSeconds(5))
-      .await()
-      .untilAsserted(() -> {
-        this.webTestClient
-          .get()
-          .uri("/api/books")
-          .exchange()
-          .expectStatus().isOk()
-          .expectBody()
-          .jsonPath("$.size()").isEqualTo(1)
-          .jsonPath("$[0].isbn").isEqualTo(ISBN);
-      });
+        .atMost(Duration.ofSeconds(5))
+        .await()
+        .untilAsserted(
+            () -> {
+              this.webTestClient
+                  .get()
+                  .uri("/api/books")
+                  .exchange()
+                  .expectStatus()
+                  .isOk()
+                  .expectBody()
+                  .jsonPath("$.size()")
+                  .isEqualTo(1)
+                  .jsonPath("$[0].isbn")
+                  .isEqualTo(ISBN);
+            });
   }
 }

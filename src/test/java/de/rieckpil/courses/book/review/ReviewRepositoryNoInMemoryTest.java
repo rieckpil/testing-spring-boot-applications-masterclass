@@ -1,5 +1,8 @@
 package de.rieckpil.courses.book.review;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -11,9 +14,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
@@ -22,10 +22,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ReviewRepositoryNoInMemoryTest {
 
   @Container
-  static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:12.3")
-    .withDatabaseName("test")
-    .withUsername("duke")
-    .withPassword("s3cret");
+  static PostgreSQLContainer<?> container =
+      new PostgreSQLContainer<>("postgres:12.3")
+          .withDatabaseName("test")
+          .withUsername("duke")
+          .withPassword("s3cret");
 
   @DynamicPropertySource
   static void properties(DynamicPropertyRegistry registry) {
@@ -34,8 +35,7 @@ class ReviewRepositoryNoInMemoryTest {
     registry.add("spring.datasource.username", container::getUsername);
   }
 
-  @Autowired
-  private ReviewRepository cut;
+  @Autowired private ReviewRepository cut;
 
   @Test
   @Sql(scripts = "/scripts/INIT_REVIEW_EACH_BOOK.sql")
@@ -46,14 +46,15 @@ class ReviewRepositoryNoInMemoryTest {
     assertEquals(3, cut.count());
     assertEquals(2, result.size());
 
-    result.forEach(reviewStatistic -> {
-      System.out.println("ReviewStatistic");
-      System.out.println(reviewStatistic.getId());
-      System.out.println(reviewStatistic.getAvg());
-      System.out.println(reviewStatistic.getIsbn());
-      System.out.println(reviewStatistic.getRatings());
-      System.out.println("");
-    });
+    result.forEach(
+        reviewStatistic -> {
+          System.out.println("ReviewStatistic");
+          System.out.println(reviewStatistic.getId());
+          System.out.println(reviewStatistic.getAvg());
+          System.out.println(reviewStatistic.getIsbn());
+          System.out.println(reviewStatistic.getRatings());
+          System.out.println("");
+        });
 
     assertEquals(2, result.get(0).getRatings());
     assertEquals(2, result.get(0).getId());
@@ -64,5 +65,4 @@ class ReviewRepositoryNoInMemoryTest {
   void databaseShouldBeEmpty() {
     assertEquals(0, cut.count());
   }
-
 }

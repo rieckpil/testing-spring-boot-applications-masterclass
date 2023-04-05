@@ -1,5 +1,7 @@
 package de.rieckpil.courses.book.management;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -8,8 +10,6 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -17,27 +17,28 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-  @Mock
-  private UserRepository userRepository;
+  @Mock private UserRepository userRepository;
 
-  @InjectMocks
-  private UserService cut;
+  @InjectMocks private UserService cut;
 
   @Test
   void shouldIncludeCurrentDateTimeWhenCreatingNewUser() {
 
     when(userRepository.findByNameAndEmail("duke", "duke@spring.io")).thenReturn(null);
-    when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
-      User user = invocation.getArgument(0);
-      user.setId(1L);
-      return user;
-    });
+    when(userRepository.save(any(User.class)))
+        .thenAnswer(
+            invocation -> {
+              User user = invocation.getArgument(0);
+              user.setId(1L);
+              return user;
+            });
 
     LocalDateTime defaultLocalDateTime = LocalDateTime.of(2020, 1, 1, 12, 0);
 
     System.out.println(LocalDateTime.now());
 
-    try (MockedStatic<LocalDateTime> mockedLocalDateTime = Mockito.mockStatic(LocalDateTime.class)) {
+    try (MockedStatic<LocalDateTime> mockedLocalDateTime =
+        Mockito.mockStatic(LocalDateTime.class)) {
       mockedLocalDateTime.when(LocalDateTime::now).thenReturn(defaultLocalDateTime);
 
       System.out.println(LocalDateTime.now());

@@ -14,18 +14,22 @@ import reactor.netty.http.client.HttpClient;
 public class WebClientConfig {
 
   @Bean
-  public WebClient openLibraryWebClient(@Value("${clients.open-library.base-url}") String openLibraryBaseUrl,
-                                        WebClient.Builder webClientBuilder) {
+  public WebClient openLibraryWebClient(
+      @Value("${clients.open-library.base-url}") String openLibraryBaseUrl,
+      WebClient.Builder webClientBuilder) {
 
-    HttpClient httpClient = HttpClient.create()
-      .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 2_000)
-      .doOnConnected(connection ->
-        connection.addHandlerLast(new ReadTimeoutHandler(2))
-          .addHandlerLast(new WriteTimeoutHandler(2)));
+    HttpClient httpClient =
+        HttpClient.create()
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 2_000)
+            .doOnConnected(
+                connection ->
+                    connection
+                        .addHandlerLast(new ReadTimeoutHandler(2))
+                        .addHandlerLast(new WriteTimeoutHandler(2)));
 
     return webClientBuilder
-      .baseUrl(openLibraryBaseUrl)
-      .clientConnector(new ReactorClientHttpConnector(httpClient))
-      .build();
+        .baseUrl(openLibraryBaseUrl)
+        .clientConnector(new ReactorClientHttpConnector(httpClient))
+        .build();
   }
 }

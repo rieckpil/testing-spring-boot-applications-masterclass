@@ -6,15 +6,11 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 public class BookReviewRequest {
 
-  @NotEmpty
-  private String reviewTitle;
+  @NotEmpty private String reviewTitle;
 
-  @NotEmpty
-  private String reviewContent;
+  @NotEmpty private String reviewContent;
 
-  @NotNull
-  @PositiveOrZero
-  private Integer rating;
+  @NotNull @PositiveOrZero private Integer rating;
 
   public BookReviewRequest(String reviewTitle, String reviewContent, Integer rating) {
     this.reviewTitle = reviewTitle;
