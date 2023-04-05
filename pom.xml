@@ -122,6 +122,7 @@
       <groupId>p6spy</groupId>
       <artifactId>p6spy</artifactId>
       <version>${p6spy.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
