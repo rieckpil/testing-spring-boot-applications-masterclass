@@ -341,7 +341,7 @@
             <importOrder>
               <file>${project.basedir}/spotless.importorder</file>
             </importOrder>
-            <removeUnusedImports></removeUnusedImports>
+            <removeUnusedImports/>
           </java>
         </configuration>
         <executions>
