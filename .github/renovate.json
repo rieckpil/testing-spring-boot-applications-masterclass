@@ -14,5 +14,8 @@
       ],
       "datasourceTemplate": "docker"
     }
-  ]
+  ],
+  "npm": {
+    "enabled": false
+  }
 }
