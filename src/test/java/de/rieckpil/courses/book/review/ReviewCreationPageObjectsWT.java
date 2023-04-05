@@ -39,7 +39,7 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
   static BrowserWebDriverContainer<?> webDriverContainer = new BrowserWebDriverContainer<>(
     // Workaround to allow running the tests on an Apple M1
     System.getProperty("os.arch").equals("aarch64") ?
-      DockerImageName.parse("seleniarm/standalone-firefox")
+      DockerImageName.parse("seleniarm/standalone-firefox:latest")
         .asCompatibleSubstituteFor("selenium/standalone-firefox")
       : DockerImageName.parse("selenium/standalone-firefox:latest")
   )
