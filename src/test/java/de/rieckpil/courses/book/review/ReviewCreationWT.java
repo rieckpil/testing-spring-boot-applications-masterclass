@@ -58,8 +58,7 @@ class ReviewCreationWT extends AbstractWebTest {
                   ? DockerImageName.parse("seleniarm/standalone-chromium:latest")
                       .asCompatibleSubstituteFor("selenium/standalone-chrome")
                   : DockerImageName.parse("selenium/standalone-chrome:latest"))
-          .withRecordingMode(
-              BrowserWebDriverContainer.VncRecordingMode.RECORD_FAILING, new File("./target"))
+          .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, new File("./target"))
           .withCapabilities(CHROME_OPTIONS);
 
   private static final String ISBN = "9780321751041";
