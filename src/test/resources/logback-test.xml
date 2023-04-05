@@ -9,6 +9,9 @@
   <!-- Noisy logs when shutting down the context, connection refuse messages for LocalStack⁄ -->
   <logger name="io.awspring.cloud.sqs.listener.source" level="OFF"/>
 
+  <!-- Noisy logs when running webtestss -->
+  <logger name="org.openqa.selenium.remote.tracing.opentelemetry" level="WARN"/>
+
   <!-- Noisy logs when running test from the ProfileFileReader -->
   <logger name="software.amazon.awssdk.profiles.internal" level="ERROR"/>
 </configuration>
