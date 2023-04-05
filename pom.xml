@@ -201,6 +201,13 @@
       <artifactId>spring-cloud-aws-test</artifactId>
       <scope>test</scope>
     </dependency>
+  <dependencies>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-api</artifactId>
+      <version>1.24.0</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
