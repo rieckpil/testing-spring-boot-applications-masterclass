@@ -32,7 +32,7 @@ public abstract class AbstractWebTest {
     new DockerComposeContainer<>(new File("docker-compose.yml"))
       .withExposedService("database_1", 5432, Wait.forListeningPort())
       .withExposedService("keycloak_1", 8080, Wait.forHttp("/auth").forStatusCode(200)
-        .withStartupTimeout(Duration.ofSeconds(45)))
+        .withStartupTimeout(Duration.ofSeconds(90)))
       .withExposedService("sqs_1", 9324, Wait.forListeningPort())
       .withLogConsumer("keycloak_1", new Slf4jLogConsumer(LOG))
       .withLogConsumer("database_1", new Slf4jLogConsumer(LOG))
