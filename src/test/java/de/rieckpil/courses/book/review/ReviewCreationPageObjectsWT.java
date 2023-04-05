@@ -21,6 +21,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
 
 import java.io.File;
+import java.time.Duration;
 
 class ReviewCreationPageObjectsWT extends AbstractWebTest {
 
@@ -55,6 +56,7 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
     Configuration.baseUrl = SystemUtils.IS_OS_LINUX ? "http://172.17.0.1:8080" : "http://host.docker.internal:8080";
 
     RemoteWebDriver remoteWebDriver = new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), new FirefoxOptions(), false);
+    remoteWebDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     WebDriverRunner.setWebDriver(remoteWebDriver);
   }
 

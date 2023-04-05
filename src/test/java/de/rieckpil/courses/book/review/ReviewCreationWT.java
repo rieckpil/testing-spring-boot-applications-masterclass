@@ -23,6 +23,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
 
 import java.io.File;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import static com.codeborne.selenide.Selenide.*;
@@ -47,6 +49,7 @@ class ReviewCreationWT extends AbstractWebTest {
     CHROME_OPTIONS = new ChromeOptions();
     CHROME_OPTIONS.addArguments("--no-sandbox");
     CHROME_OPTIONS.addArguments("--disable-dev-shm-usage");
+    CHROME_OPTIONS.addArguments("--remote-allow-origins=*");
 
     CHROME_OPTIONS.setCapability("goog:loggingPrefs", LOG_PREFERENCES);
   }
@@ -70,7 +73,8 @@ class ReviewCreationWT extends AbstractWebTest {
     // TODO: Improve platform independence, see Testcontainers.exposeHostPorts https://rieckpil.de/write-concise-web-tests-with-selenide-for-java-projects/
     Configuration.baseUrl = SystemUtils.IS_OS_LINUX ? "http://172.17.0.1:8080" : "http://host.docker.internal:8080";
 
-    RemoteWebDriver remoteWebDriver = new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), new FirefoxOptions(), false);
+    RemoteWebDriver remoteWebDriver = new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), CHROME_OPTIONS, false);
+    remoteWebDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     WebDriverRunner.setWebDriver(remoteWebDriver);
 
     createBook();
