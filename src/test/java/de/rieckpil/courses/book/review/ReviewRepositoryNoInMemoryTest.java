@@ -23,7 +23,7 @@ class ReviewRepositoryNoInMemoryTest {
 
   @Container
   static PostgreSQLContainer<?> container =
-      new PostgreSQLContainer<>("postgres:12.3")
+      new PostgreSQLContainer<>("postgres:15.2")
           .withDatabaseName("test")
           .withUsername("duke")
           .withPassword("s3cret");
