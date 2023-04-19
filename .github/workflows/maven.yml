@@ -31,9 +31,9 @@ jobs:
         with:
           timeout_minutes: 15
           max_attempts: 3
-          command: ./mvnw --no-transfer-progress -Pwebtests verify
+          command: ./mvnw verify --no-transfer-progress -Pwebtests
 
-      - name: Setup Testcontainers Cloud Client
+      - name: Setup Testcontainers Cloud client
         uses: atomicjar/testcontainers-cloud-setup-action@v1
         with:
           token: ${{ secrets.TC_CLOUD_TOKEN }}
@@ -41,12 +41,12 @@ jobs:
 
       - name: Run all unit and integration tests
         timeout-minutes: 15
-        run: ./mvnw --no-transfer-progress -Dskip.installnodenpm -Dskip.npm -PnoWebtests verify
+        run: ./mvnw verify --no-transfer-progress -Dskip.installnodenpm -Dskip.npm -PnoWebtests
 
       - name: Ensure unit tests can be parallelized
-        run: ./mvnw test -Djunit.jupiter.execution.parallel.enabled=true -Djunit.jupiter.execution.parallel.mode.default=same_thread -Djunit.jupiter.execution.parallel.mode.classes.default=concurrent
+        run: ./mvnw test -Djunit.jupiter.execution.parallel.enabled=true -Djunit.jupiter.execution.parallel.mode.default=same_thread -Djunit.jupiter.execution.parallel.mode.classes.default=concurrent -Dskip.installnodenpm -Dskip.npm
 
-      - name: Flatten Selenide Screenshots and HTML Source Code on Failure
+      - name: Flatten Selenide Screenshots and HTML source code on failure
         if: ${{ failure() }}
         working-directory: target
         env:
@@ -62,7 +62,7 @@ jobs:
             echo "No Selenide failure artifacts found in folder $SOURCE_FOLDER"
           fi
 
-      - name: Archive Selenide Outcome on Failure
+      - name: Archive Selenide outcome on failure
         uses: actions/upload-artifact@v3
         if: ${{ failure() }}
         with:
