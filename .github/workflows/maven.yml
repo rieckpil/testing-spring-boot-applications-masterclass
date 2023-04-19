@@ -25,6 +25,11 @@ jobs:
           cache: npm
           cache-dependency-path: src/frontend/package-lock.json
 
+      - name: Setup Testcontainers Cloud Client
+        uses: atomicjar/testcontainers-cloud-setup-action@v1
+        with:
+          token: ${{ secrets.TC_CLOUD_TOKEN }}
+
       - name: Build & Test application
         uses: nick-fields/retry@v2
         with:
