@@ -318,7 +318,7 @@
         <artifactId>maven-enforcer-plugin</artifactId>
         <configuration>
           <rules>
-            <dependencyConvergence></dependencyConvergence>
+            <dependencyConvergence/>
           </rules>
         </configuration>
         <executions>
@@ -391,6 +391,25 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
               <skipTests>true</skipTests>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>noWebtests</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <includes>
+                <include>**/*IT.java</include>
+              </includes>
+              <excludes>
+                <exclude>**/*WT.java</exclude>
+              </excludes>
             </configuration>
           </plugin>
         </plugins>
