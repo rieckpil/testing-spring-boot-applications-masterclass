@@ -397,7 +397,7 @@
       </build>
     </profile>
     <profile>
-      <id>no-webtests</id>
+      <id>noWebtests</id>
       <build>
         <plugins>
           <plugin>
