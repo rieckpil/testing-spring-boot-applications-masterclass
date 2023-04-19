@@ -25,17 +25,25 @@ jobs:
           cache: npm
           cache-dependency-path: src/frontend/package-lock.json
 
-      - name: Setup Testcontainers Cloud Client
-        uses: atomicjar/testcontainers-cloud-setup-action@v1
-        with:
-          token: ${{ secrets.TC_CLOUD_TOKEN }}
-
-      - name: Build & Test application
+      - name: Run all web tests
+        # Testcontainers Cloud currently doesn't support Docker Compose usage
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 15
           max_attempts: 3
-          command: ./mvnw --no-transfer-progress verify
+          command: ./mvnw --no-transfer-progress -Pno-webtests verify
+
+      - name: Setup Testcontainers Cloud Client
+        uses: atomicjar/testcontainers-cloud-setup-action@v1
+        with:
+          token: ${{ secrets.TC_CLOUD_TOKEN }}
+          logfile: testcontainers-client.log
+
+      - name: Run all unit and integration tests
+        with:
+          timeout_minutes: 15
+          max_attempts: 3
+          command: ./mvnw --no-transfer-progress -Pno-webtests verify
 
       - name: Ensure unit tests can be parallelized
         run: ./mvnw test -Djunit.jupiter.execution.parallel.enabled=true -Djunit.jupiter.execution.parallel.mode.default=same_thread -Djunit.jupiter.execution.parallel.mode.classes.default=concurrent
@@ -62,3 +70,11 @@ jobs:
         with:
           name: selenide-failure-captures
           path: target/aggregated-outcome
+
+      - name: Upload Testcontainers Cloud output file
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: testcontainers-cloud-log-file
+          path: testcontainers-client.log
+          retention-days: 30
