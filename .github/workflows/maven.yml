@@ -40,10 +40,8 @@ jobs:
           logfile: testcontainers-client.log
 
       - name: Run all unit and integration tests
-        with:
-          timeout_minutes: 15
-          max_attempts: 3
-          command: ./mvnw --no-transfer-progress -Pno-webtests verify
+        timeout-minutes: 15
+        run: ./mvnw --no-transfer-progress -Pno-webtests verify
 
       - name: Ensure unit tests can be parallelized
         run: ./mvnw test -Djunit.jupiter.execution.parallel.enabled=true -Djunit.jupiter.execution.parallel.mode.default=same_thread -Djunit.jupiter.execution.parallel.mode.classes.default=concurrent
