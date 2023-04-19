@@ -41,7 +41,7 @@ jobs:
 
       - name: Run all unit and integration tests
         timeout-minutes: 15
-        run: ./mvnw --no-transfer-progress -Pno-webtests verify
+        run: ./mvnw --no-transfer-progress -Dskip.installnodenpm -Dskip.npm -Pno-webtests verify
 
       - name: Ensure unit tests can be parallelized
         run: ./mvnw test -Djunit.jupiter.execution.parallel.enabled=true -Djunit.jupiter.execution.parallel.mode.default=same_thread -Djunit.jupiter.execution.parallel.mode.classes.default=concurrent
