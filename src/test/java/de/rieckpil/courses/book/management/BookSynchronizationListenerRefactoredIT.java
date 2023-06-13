@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import software.amazon.awssdk.services.sqs.SqsAsyncClient;
+import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
 import static org.awaitility.Awaitility.given;
 
@@ -33,9 +35,9 @@ class BookSynchronizationListenerRefactoredIT extends AbstractIntegrationTest {
 
   @Autowired private SqsTemplate sqsTemplate;
 
-  @Autowired private WebTestClient webTestClient;
+  @Autowired private SqsAsyncClient sqsAsyncClient;
 
-  @Autowired private BookRepository bookRepository;
+  @Autowired private WebTestClient webTestClient;
 
   @Test
   void shouldGetSuccessWhenClientIsAuthenticated() throws JOSEException {
@@ -63,13 +65,16 @@ class BookSynchronizationListenerRefactoredIT extends AbstractIntegrationTest {
 
     this.openLibraryStubs.stubForSuccessfulBookResponse(ISBN, VALID_RESPONSE);
 
-    this.sqsTemplate.send(
-        QUEUE_NAME,
-        """
-          {
-            "isbn": "%s"
-          }
-        """.formatted(ISBN));
+    this.sqsAsyncClient.sendMessage(
+        SendMessageRequest.builder()
+            .queueUrl(
+                this.sqsAsyncClient.getQueueUrl(r -> r.queueName(QUEUE_NAME)).join().queueUrl())
+            .messageBody("""
+    {
+      "isbn": "%s"
+    }
+  """.formatted(ISBN))
+            .build());
 
     given()
         .atMost(Duration.ofSeconds(5))
