@@ -38,7 +38,6 @@ public class BookSynchronizationListener {
 
     Book book = openLibraryApiClient.fetchMetadataForBook(isbn);
     book = bookRepository.save(book);
-    System.out.println(book);
 
     LOG.info("Successfully stored new book '{}'", book);
   }

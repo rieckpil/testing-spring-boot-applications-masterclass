@@ -19,7 +19,6 @@ import de.rieckpil.courses.initializer.RSAKeyGenerator;
 import de.rieckpil.courses.initializer.WireMockInitializer;
 import de.rieckpil.courses.stubs.OAuth2Stubs;
 import de.rieckpil.courses.stubs.OpenLibraryStubs;
-import io.awspring.cloud.sqs.operations.SqsTemplate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +34,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.utility.DockerImageName;
+import software.amazon.awssdk.services.sqs.SqsAsyncClient;
+import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
 import static org.awaitility.Awaitility.given;
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
@@ -92,7 +93,7 @@ class BookSynchronizationListenerIT {
     }
   }
 
-  @Autowired private SqsTemplate sqsTemplate;
+  @Autowired private SqsAsyncClient sqsClient;
 
   @Autowired private WebTestClient webTestClient;
 
@@ -164,13 +165,16 @@ class BookSynchronizationListenerIT {
 
     this.openLibraryStubs.stubForSuccessfulBookResponse(ISBN, VALID_RESPONSE);
 
-    this.sqsTemplate.send(
-        QUEUE_NAME,
-        """
+    this.sqsClient.sendMessage(
+        SendMessageRequest.builder()
+            .queueUrl(this.sqsClient.getQueueUrl(r -> r.queueName(QUEUE_NAME)).join().queueUrl())
+            .messageBody(
+                """
           {
             "isbn": "%s"
           }
-        """.formatted(ISBN));
+        """.formatted(ISBN))
+            .build());
 
     given()
         .atMost(Duration.ofSeconds(5))
