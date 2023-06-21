@@ -5,6 +5,7 @@ on:
     - cron: '0 15 * * *' # daily at 3pm
 jobs:
   build-and-test:
+    timeout-minutes: 20
     runs-on: ubuntu-20.04
     name: Build Application
     steps:
