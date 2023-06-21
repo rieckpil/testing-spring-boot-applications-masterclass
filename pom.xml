@@ -28,6 +28,7 @@
     <selenide.version>6.15.0</selenide.version>
     <selenium.version>4.8.3</selenium.version>
     <commons-lang3.version>3.12.0</commons-lang3.version>
+    <allure.version>2.22.2</allure.version>
   </properties>
 
   <dependencyManagement>
@@ -200,6 +201,26 @@
     <dependency>
       <groupId>io.awspring.cloud</groupId>
       <artifactId>spring-cloud-aws-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Test Reporting -->
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-junit5</artifactId>
+      <version>${allure.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-selenide</artifactId>
+      <version>${allure.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-awaitility</artifactId>
+      <version>${allure.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

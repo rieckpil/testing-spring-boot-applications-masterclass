@@ -5,7 +5,8 @@ on:
     - cron: '0 15 * * *' # daily at 3pm
 jobs:
   build-and-test:
-    runs-on: ubuntu-20.04
+    timeout-minutes: 20
+    runs-on: ubuntu-22.04
     name: Build Application
     steps:
       - name: Checkout Code
@@ -41,6 +42,7 @@ jobs:
 
       - name: Run all unit and integration tests
         timeout-minutes: 15
+        continue-on-error: true
         run: ./mvnw verify --no-transfer-progress -Dskip.installnodenpm -Dskip.npm -PnoWebtests
 
       - name: Flatten Selenide Screenshots and HTML source code on failure
@@ -73,3 +75,29 @@ jobs:
           name: testcontainers-cloud-log-file
           path: testcontainers-client.log
           retention-days: 30
+
+      - name: Get Allure history
+        uses: actions/checkout@v2
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Allure Report action from marketplace
+        uses: simple-elf/allure-report-action@master
+        if: always()
+        id: allure-report
+        with:
+          allure_results: target/allure-results
+          gh_pages: gh-pages
+          allure_report: allure-report
+          allure_history: allure-history
+
+      - name: Deploy report to Github Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v2
+        env:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: allure-history

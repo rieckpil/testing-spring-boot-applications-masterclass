@@ -8,6 +8,7 @@ import de.rieckpil.courses.initializer.DefaultBookStubsInitializer;
 import de.rieckpil.courses.initializer.WireMockInitializer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -25,6 +26,7 @@ import static org.awaitility.Awaitility.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
+@ExtendWith(AllureReportingExtension.class)
 @Testcontainers(disabledWithoutDocker = true)
 @ActiveProfiles({"default", "integration-test"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
