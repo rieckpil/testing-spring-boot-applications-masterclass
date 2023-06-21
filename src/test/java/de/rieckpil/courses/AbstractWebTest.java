@@ -5,6 +5,7 @@ import java.time.Duration;
 
 import com.codeborne.selenide.junit5.ScreenShooterExtension;
 import de.rieckpil.courses.initializer.WireMockInitializer;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @ActiveProfiles("web-test")
 @Import(TestJwtDecoderConfig.class)
+@ExtendWith(AllureReportingExtension.class)
 @Testcontainers(disabledWithoutDocker = true)
 @ContextConfiguration(initializers = WireMockInitializer.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
