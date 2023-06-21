@@ -40,3 +40,6 @@ src/docs/architecture/*.png
 src/docs/architecture/*.jpg
 
 .mvn/.gradle-enterprise
+
+.allure
+allure-results
