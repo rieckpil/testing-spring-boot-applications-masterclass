@@ -7,7 +7,7 @@ on:
 
 jobs:
   verify-local-development-mode:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Verify local development mode
     steps:
 
