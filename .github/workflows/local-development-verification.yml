@@ -2,8 +2,9 @@ name: Verify Local Development
 
 on:
   schedule:
-    - cron: '0 5 * * SUN' # Every Sunday at 5 AM
+    - cron: '0 5 * * *' # Runs everyday at 5 AM
   workflow_dispatch:
+  push:
 
 jobs:
   verify-local-development-mode:
