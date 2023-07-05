@@ -10,7 +10,7 @@ services:
   keycloak:
     # Starting with Keycloak 17, Keycloak is now powered by Quarkus and no longer WildFly
     # This requires slight changes to the configuration, see https://www.keycloak.org/migration/migrating-to-quarkus
-    image: quay.io/keycloak/keycloak:18.0.2
+    image: quay.io/keycloak/keycloak:21.1.2
     command: [ 'start-dev --http-relative-path /auth --import-realm --auto-build' ]
     environment:
       - KEYCLOAK_DB=dev-file
