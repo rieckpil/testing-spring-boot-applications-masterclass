@@ -63,7 +63,7 @@ From [Wim Deblauwe](https://www.wimdeblauwe.com/):
 
 _Philip has made a fantastic overview of the full testing landscape of Spring. The videos are clear and explain details and common pitfalls in great depth. Looking forward to the rest of the course._
 
-From [Siva](https://www.sivalabs.in/2020/10/philip-testing-spring-boot-applications-masterclass-course-review/):
+From [Siva](https://www.sivalabs.in/philip-testing-spring-boot-applications-masterclass-course-review/):
 
 _I got an opportunity to review the course I find it wonderful for learning how to test Spring Boot applications leveraging modern testing frameworks and libraries...._
 
