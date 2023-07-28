@@ -77,7 +77,7 @@ jobs:
           retention-days: 30
 
       - name: Get Allure history
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: always()
         continue-on-error: true
         with:
