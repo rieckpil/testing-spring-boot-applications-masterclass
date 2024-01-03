@@ -2,8 +2,8 @@
 
 [![Masterclass](https://rieckpil.de/wp-content/uploads/2020/09/testing-spring-boot-applications-masterclass-course-logo.png)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
 
-[![](https://img.shields.io/badge/Spring%20Boot%20Version-3.1.0-orange)](/pom.xml)
-[![](https://img.shields.io/badge/Java%20Version-17-orange)](/pom.xml)
+[![](https://img.shields.io/badge/Spring%20Boot%20Version-3.2.1-orange)](/pom.xml)
+[![](https://img.shields.io/badge/Java%20Version-21-orange)](/pom.xml)
 [![](https://img.shields.io/badge/Enroll-Now-orange)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
 
 `main` branch: [![Build & Test Maven Project (main)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions/workflows/maven.yml?query=branch%3Amain)
