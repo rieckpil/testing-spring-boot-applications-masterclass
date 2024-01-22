@@ -62,14 +62,14 @@ jobs:
           fi
 
       - name: Archive Selenide outcome on failure
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ failure() }}
         with:
           name: selenide-failure-captures
           path: target/aggregated-outcome
 
       - name: Upload Testcontainers Cloud output file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: testcontainers-cloud-log-file
