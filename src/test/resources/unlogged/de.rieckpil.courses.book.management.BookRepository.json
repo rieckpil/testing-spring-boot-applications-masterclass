@@ -1,0 +1,46 @@
+{
+  "classname" : "de.rieckpil.courses.book.management.BookRepository",
+  "storedCandidateMap" : { },
+  "declaredMockMap" : {
+    "de.rieckpil.courses.book.management.BookRepository#findByIsbn#(Ljava/lang/String;)Lde/rieckpil/courses/book/management/Book;" : [ {
+      "id" : "7a17099f-e6f2-4382-b3ae-e06630bd07fe",
+      "name" : "mock response bookRepository.findByIsbn",
+      "fieldTypeName" : "de.rieckpil.courses.book.management.BookRepository",
+      "sourceClassName" : "de.rieckpil.courses.book.review.ReviewService",
+      "fieldName" : "bookRepository",
+      "methodName" : "findByIsbn",
+      "whenParameter" : [ {
+        "name" : "isbn",
+        "type" : "ANY_OF_TYPE",
+        "value" : "java.lang.String"
+      } ],
+      "thenParameter" : [ {
+        "returnParameter" : {
+          "declaredMocks" : [ ],
+          "value" : "{\"id\": 0, \"title\": \"string\", \"isbn\": \"string\", \"author\": \"string\", \"genre\": \"string\", \"thumbnailUrl\": \"string\", \"description\": \"string\", \"publisher\": \"string\", \"pages\": 0}",
+          "returnValueType" : "REAL",
+          "className" : "de.rieckpil.courses.book.management.Book"
+        },
+        "methodExitType" : "NORMAL"
+      } ]
+    } ],
+    "de.rieckpil.courses.book.management.BookRepository#count#()J" : [ {
+      "id" : "7fe66419-b264-4478-b977-d4560db5c936",
+      "name" : "mock response bookRepository.count",
+      "fieldTypeName" : "de.rieckpil.courses.book.management.BookRepository",
+      "sourceClassName" : "de.rieckpil.courses.book.management.InitialBookCreator",
+      "fieldName" : "bookRepository",
+      "methodName" : "count",
+      "whenParameter" : [ ],
+      "thenParameter" : [ {
+        "returnParameter" : {
+          "declaredMocks" : [ ],
+          "value" : "0",
+          "returnValueType" : "REAL",
+          "className" : "long"
+        },
+        "methodExitType" : "NORMAL"
+      } ]
+    } ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "classname" : "de.rieckpil.courses.book.review.ReviewVerifier",
+  "storedCandidateMap" : { },
+  "declaredMockMap" : {
+    "de.rieckpil.courses.book.review.ReviewVerifier#doesMeetQualityStandards#(Ljava/lang/String;)Z" : [ {
+      "id" : "65c755f3-9ede-47f4-995c-2aee01db339b",
+      "name" : "mock response reviewVerifier.doesMeetQualityStandards",
+      "fieldTypeName" : "de.rieckpil.courses.book.review.ReviewVerifier",
+      "sourceClassName" : "de.rieckpil.courses.book.review.ReviewService",
+      "fieldName" : "reviewVerifier",
+      "methodName" : "doesMeetQualityStandards",
+      "whenParameter" : [ {
+        "name" : "review",
+        "type" : "ANY_OF_TYPE",
+        "value" : "java.lang.String"
+      } ],
+      "thenParameter" : [ {
+        "returnParameter" : {
+          "declaredMocks" : [ ],
+          "value" : "true",
+          "returnValueType" : "REAL",
+          "className" : "boolean"
+        },
+        "methodExitType" : "NORMAL"
+      } ]
+    } ]
+  }
+}
