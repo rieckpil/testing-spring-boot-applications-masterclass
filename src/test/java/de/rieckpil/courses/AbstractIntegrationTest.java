@@ -44,7 +44,7 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 public abstract class AbstractIntegrationTest {
 
   static PostgreSQLContainer<?> database =
-      new PostgreSQLContainer<>("postgres:15.3")
+      new PostgreSQLContainer<>("postgres:15.5")
           .withDatabaseName("test")
           .withUsername("duke")
           .withPassword("s3cret");
