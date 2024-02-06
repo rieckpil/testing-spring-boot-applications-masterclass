@@ -279,7 +279,7 @@
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
-        <version>1.13.4</version>
+        <version>1.15.0</version>
         <configuration>
           <workingDirectory>src/frontend</workingDirectory>
           <nodeVersion>${node.version}</nodeVersion>
