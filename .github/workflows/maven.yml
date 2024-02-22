@@ -28,7 +28,7 @@ jobs:
 
       - name: Run all web tests
         # Testcontainers Cloud currently doesn't support Docker Compose usage
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v3
         with:
           timeout_minutes: 15
           max_attempts: 3
