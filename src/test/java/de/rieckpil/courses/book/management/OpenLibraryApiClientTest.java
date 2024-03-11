@@ -1,20 +1,7 @@
 package de.rieckpil.courses.book.management;
 
-import io.netty.channel.ChannelOption;
-import io.netty.handler.timeout.ReadTimeoutHandler;
-import io.netty.handler.timeout.WriteTimeoutHandler;
-import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.client.reactive.ReactorClientHttpConnector;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.netty.http.client.HttpClient;
-
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,22 +15,17 @@ class OpenLibraryApiClientTest {
   private static String VALID_RESPONSE;
 
   @Test
-  void notNull() {
-  }
+  void notNull() {}
 
   @Test
-  void shouldReturnBookWhenResultIsSuccess() throws InterruptedException {
-  }
+  void shouldReturnBookWhenResultIsSuccess() throws InterruptedException {}
 
   @Test
-  void shouldReturnBookWhenResultIsSuccessButLackingAllInformation() {
-  }
+  void shouldReturnBookWhenResultIsSuccessButLackingAllInformation() {}
 
   @Test
-  void shouldPropagateExceptionWhenRemoteSystemIsDown() {
-  }
+  void shouldPropagateExceptionWhenRemoteSystemIsDown() {}
 
   @Test
-  void shouldRetryWhenRemoteSystemIsSlowOrFailing() {
-  }
+  void shouldRetryWhenRemoteSystemIsSlowOrFailing() {}
 }

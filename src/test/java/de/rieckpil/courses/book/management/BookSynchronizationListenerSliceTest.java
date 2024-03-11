@@ -1,5 +1,8 @@
 package de.rieckpil.courses.book.management;
 
+import java.io.IOException;
+import java.util.UUID;
+
 import io.awspring.cloud.autoconfigure.core.AwsAutoConfiguration;
 import io.awspring.cloud.autoconfigure.core.CredentialsProviderAutoConfiguration;
 import io.awspring.cloud.autoconfigure.core.RegionProviderAutoConfiguration;
@@ -23,9 +26,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import java.io.IOException;
-import java.util.UUID;
-
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
 @ExtendWith(SpringExtension.class)
@@ -40,14 +40,17 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 @Testcontainers(disabledWithoutDocker = true)
 class BookSynchronizationListenerSliceTest {
 
-  private static final Logger LOG = LoggerFactory.getLogger(BookSynchronizationListenerSliceTest.class);
+  private static final Logger LOG =
+      LoggerFactory.getLogger(BookSynchronizationListenerSliceTest.class);
 
   @Container
-  static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.14.5"))
-    .withServices(LocalStackContainer.Service.SQS)
-    // can be removed with version 0.12.17 as LocalStack now has multi-region support https://docs.localstack.cloud/localstack/configuration/#deprecated
-    // .withEnv("DEFAULT_REGION", "eu-central-1")
-    .withLogConsumer(new Slf4jLogConsumer(LOG));
+  static LocalStackContainer localStack =
+      new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.14.5"))
+          .withServices(LocalStackContainer.Service.SQS)
+          // can be removed with version 0.12.17 as LocalStack now has multi-region support
+          // https://docs.localstack.cloud/localstack/configuration/#deprecated
+          // .withEnv("DEFAULT_REGION", "eu-central-1")
+          .withLogConsumer(new Slf4jLogConsumer(LOG));
 
   private static final String QUEUE_NAME = UUID.randomUUID().toString();
   private static final String ISBN = "9780596004651";
@@ -66,20 +69,15 @@ class BookSynchronizationListenerSliceTest {
     registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpointOverride(SQS).toString());
   }
 
-  @Autowired
-  private BookSynchronizationListener cut;
+  @Autowired private BookSynchronizationListener cut;
 
-  @MockBean
-  private BookRepository bookRepository;
+  @MockBean private BookRepository bookRepository;
 
-  @MockBean
-  private OpenLibraryApiClient openLibraryApiClient;
+  @MockBean private OpenLibraryApiClient openLibraryApiClient;
 
   @Test
-  void shouldStartSQS() {
-  }
+  void shouldStartSQS() {}
 
   @Test
-  void shouldConsumeMessageWhenPayloadIsCorrect() {
-  }
+  void shouldConsumeMessageWhenPayloadIsCorrect() {}
 }

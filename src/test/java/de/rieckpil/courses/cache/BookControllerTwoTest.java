@@ -7,43 +7,38 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.List;
-
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(BookController.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class BookControllerTwoTest {
 
-  @MockBean
-  private BookManagementService bookManagementService;
+  @MockBean private BookManagementService bookManagementService;
 
-  @Autowired
-  private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
   @Test
-  void shouldGetEmptyArrayWhenNoBooksExists() throws Exception {
-  }
+  void shouldGetEmptyArrayWhenNoBooksExists() throws Exception {}
 
   @Test
-  void shouldNotReturnXML() throws Exception {
-  }
+  void shouldNotReturnXML() throws Exception {}
 
   @Test
-  void shouldGetBooksWhenServiceReturnsBooks() throws Exception {
-  }
+  void shouldGetBooksWhenServiceReturnsBooks() throws Exception {}
 
-  private Book createBook(Long id, String isbn, String title, String author, String description, String genre, Long pages, String publisher, String thumbnailUrl) {
+  private Book createBook(
+      Long id,
+      String isbn,
+      String title,
+      String author,
+      String description,
+      String genre,
+      Long pages,
+      String publisher,
+      String thumbnailUrl) {
     Book result = new Book();
     result.setId(id);
     result.setIsbn(isbn);

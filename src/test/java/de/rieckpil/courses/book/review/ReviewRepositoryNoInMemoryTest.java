@@ -17,10 +17,11 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 class ReviewRepositoryNoInMemoryTest {
 
   @Container
-  static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:12.3")
-    .withDatabaseName("test")
-    .withUsername("duke")
-    .withPassword("s3cret");
+  static PostgreSQLContainer<?> container =
+      new PostgreSQLContainer<>("postgres:12.3")
+          .withDatabaseName("test")
+          .withUsername("duke")
+          .withPassword("s3cret");
 
   @DynamicPropertySource
   static void properties(DynamicPropertyRegistry registry) {
@@ -29,15 +30,12 @@ class ReviewRepositoryNoInMemoryTest {
     registry.add("spring.datasource.username", container::getUsername);
   }
 
-  @Autowired
-  private ReviewRepository cut;
+  @Autowired private ReviewRepository cut;
 
   @Test
   @Sql(scripts = "/scripts/INIT_REVIEW_EACH_BOOK.sql")
-  void shouldGetTwoReviewStatisticsWhenDatabaseContainsTwoBooksWithReview() {
-  }
+  void shouldGetTwoReviewStatisticsWhenDatabaseContainsTwoBooksWithReview() {}
 
   @Test
-  void databaseShouldBeEmpty() {
-  }
+  void databaseShouldBeEmpty() {}
 }
