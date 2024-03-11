@@ -42,7 +42,7 @@ class ApplicationIT {
 
   @Container
   static LocalStackContainer localStack =
-      new LocalStackContainer(DockerImageName.parse("localstack/localstack:2.2.0"))
+      new LocalStackContainer(DockerImageName.parse("localstack/localstack:2.3.2"))
           .withServices(SQS);
 
   // can be removed with version 0.12.17 as LocalStack now has multi-region support
