@@ -28,7 +28,7 @@
     <selenide.version>7.2.1</selenide.version>
     <selenium.version>4.16.1</selenium.version>
     <commons-lang3.version>3.13.0</commons-lang3.version>
-    <allure.version>2.23.0</allure.version>
+    <allure.version>2.25.0</allure.version>
   </properties>
 
   <dependencyManagement>
