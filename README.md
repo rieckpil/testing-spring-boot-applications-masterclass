@@ -1,16 +1,20 @@
+# Deploy Spring Boot Applications With More Confidence
+
 [![Masterclass](https://rieckpil.de/wp-content/uploads/2020/09/testing-spring-boot-applications-masterclass-course-logo.png)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
 
-# About the Masterclass
-
-[![](https://img.shields.io/badge/Spring%20Boot%20Version-3.0.5-orange)](/pom.xml)
-[![](https://img.shields.io/badge/Java%20Version-17-orange)](/pom.xml)
+[![](https://img.shields.io/badge/Spring%20Boot%20Version-3.2.1-orange)](/pom.xml)
+[![](https://img.shields.io/badge/Java%20Version-21-orange)](/pom.xml)
 [![](https://img.shields.io/badge/Enroll-Now-orange)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
 
-`master` branch: [![Build & Test Maven Project (master)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions/workflows/maven.yml?query=branch%3Amaster)
+`main` branch: [![Build & Test Maven Project (main)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions/workflows/maven.yml?query=branch%3Amain)
+
+`spring-boot-2` branch: [![Build & Test Maven Project (spring-boot-2)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg?branch=spring-boot-2)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions/workflows/maven.yml?query=branch%3Aspring-boot-2)
 
 `code-along` branch: [![Build & Test Maven Project (code-along)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg?branch=code-along)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions/workflows/maven.yml?query=branch%3Acode-along)
 
 ## Introduction
+
+Build Better Spring Boot Applications: A Comprehensive Testing Course to Boost Your Confidence and Productivity.
 
 The Testing Spring Boot Applications Masterclass is a **deep-dive course on testing your Spring Boot applications**. You'll learn how to effectively write **unit, integration, and end-to-end tests** while utilizing Spring Boot's excellent test support.
 
@@ -30,7 +34,7 @@ After working through the online course ...
 
 Throughout the course you'll learn how to effectively use well-known testing libraries like JUnit 5, Mockito, Awaitility, LocalStack, Testcontainers, Selenide, WireMock, MockWebServer, and JsonPath.
 
-Enroll [here](https://rieckpil.de/testing-spring-boot-applications-masterclass/) for the Testing Spring Boot Applications Masterclass.
+» [Enroll now for the Testing Spring Boot Applications Masterclass](https://rieckpil.de/testing-spring-boot-applications-masterclass/).
 
 PS: You can watch four preview lessons by [subscribing to the mailing list](https://rieckpil.de/tsbam-preview-lessons/).
 
@@ -59,7 +63,7 @@ From [Wim Deblauwe](https://www.wimdeblauwe.com/):
 
 _Philip has made a fantastic overview of the full testing landscape of Spring. The videos are clear and explain details and common pitfalls in great depth. Looking forward to the rest of the course._
 
-From [Siva](https://www.sivalabs.in/2020/10/philip-testing-spring-boot-applications-masterclass-course-review/):
+From [Siva](https://www.sivalabs.in/philip-testing-spring-boot-applications-masterclass-course-review/):
 
 _I got an opportunity to review the course I find it wonderful for learning how to test Spring Boot applications leveraging modern testing frameworks and libraries...._
 
@@ -72,6 +76,13 @@ _For me testing a Spring application seemed like a challenge involving digging t
 _After watching the Testing Spring Boot Applications Masterclass course I feel more confident in writing different types of tests for my apps. The course, videos, and the GitHub repository were of invaluable use to me demonstrating various testing mechanics the Spring ecosystem provides, and I will keep referencing the course materials in the future._
 
 _P.S. The application that is tested in the course is quite complex and covers a lot of real-world testing challenges one might encounter, which I found immensely useful for seeing the bigger picture._
+
+
+<p align="center">
+  <a href="https://rieckpil.de/testing-spring-boot-applications-masterclass/">
+    <img src="https://rieckpil.de/wp-content/uploads/2023/03/tsbam-testiomonials.png" alt="Testing Spring Boot Applications Masterclass Testimonials">
+  </a>
+</p>
 
 ## Further Resources and Links
 
@@ -86,13 +97,13 @@ _P.S. The application that is tested in the course is quite complex and covers a
 
 Mandatory requirements:
 
-* Java 17 (JDK flavour (OpenJDK/Azul/Oracle) does not matter). For the correct Java version setup I can recommend [JEnv](https://www.youtube.com/watch?v=9FVZyeFDXo0) (Mac/Linux) and the [Maven Toolchains Plugin](https://maven.apache.org/plugins/maven-toolchains-plugin/toolchains/jdk.html) (Windows)
+* Java 21 (JDK flavour (OpenJDK/Azul/Oracle) does not matter). For the correct Java version setup I can recommend [JEnv](https://www.youtube.com/watch?v=9FVZyeFDXo0) (Mac/Linux) and the [Maven Toolchains Plugin](https://maven.apache.org/plugins/maven-toolchains-plugin/toolchains/jdk.html) (Windows)
 
 ```
 $ java -version
-openjdk version "17" 2021-09-14 LTS
-OpenJDK Runtime Environment Zulu17.28+13-CA (build 17+35-LTS)
-OpenJDK 64-Bit Server VM Zulu17.28+13-CA (build 17+35-LTS, mixed mode, sharing)
+openjdk version "21.0.1" 2023-10-17 LTS
+OpenJDK Runtime Environment Temurin-21.0.1+12 (build 21.0.1+12-LTS)
+OpenJDK 64-Bit Server VM Temurin-21.0.1+12 (build 21.0.1+12-LTS, mixed mode)
 ```
 
 * Docker Engine (Community Edition is enough) and Docker Compose:

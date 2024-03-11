@@ -1,5 +1,8 @@
 package de.rieckpil.courses.book.management;
 
+import java.time.Duration;
+import java.util.Collections;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -10,20 +13,18 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.Duration;
-import java.util.Collections;
-
 @Component
 public class OpenLibraryRestTemplateApiClient {
 
   private final RestTemplate restTemplate;
 
   public OpenLibraryRestTemplateApiClient(RestTemplateBuilder restTemplateBuilder) {
-    this.restTemplate = restTemplateBuilder
-      .rootUri("https://openlibrary.org")
-      .setConnectTimeout(Duration.ofSeconds(2))
-      .setReadTimeout(Duration.ofSeconds(2))
-      .build();
+    this.restTemplate =
+        restTemplateBuilder
+            .rootUri("https://openlibrary.org")
+            .setConnectTimeout(Duration.ofSeconds(2))
+            .setReadTimeout(Duration.ofSeconds(2))
+            .build();
   }
 
   public Book fetchMetadataForBook(String isbn) {
@@ -35,9 +36,15 @@ public class OpenLibraryRestTemplateApiClient {
 
     HttpEntity<Void> entity = new HttpEntity<>(headers);
 
-    ObjectNode result = restTemplate
-      .exchange("/api/books?jscmd=data&format=json&bibkeys={isbn}",
-        HttpMethod.GET, entity, ObjectNode.class, isbn).getBody();
+    ObjectNode result =
+        restTemplate
+            .exchange(
+                "/api/books?jscmd=data&format=json&bibkeys={isbn}",
+                HttpMethod.GET,
+                entity,
+                ObjectNode.class,
+                isbn)
+            .getBody();
 
     JsonNode content = result.get(isbn);
 
@@ -53,7 +60,10 @@ public class OpenLibraryRestTemplateApiClient {
     book.setPublisher(content.get("publishers").get(0).get("name").asText("n.A."));
     book.setPages(content.get("number_of_pages").asLong(0));
     book.setDescription(content.get("notes") == null ? "n.A" : content.get("notes").asText("n.A."));
-    book.setGenre(content.get("subjects") == null ? "n.A" : content.get("subjects").get(0).get("name").asText("n.A."));
+    book.setGenre(
+        content.get("subjects") == null
+            ? "n.A"
+            : content.get("subjects").get(0).get("name").asText("n.A."));
     return book;
   }
 }

@@ -5,34 +5,47 @@ on:
     - cron: '0 15 * * *' # daily at 3pm
 jobs:
   build-and-test:
-    runs-on: ubuntu-20.04
+    timeout-minutes: 20
+    runs-on: ubuntu-22.04
     name: Build Application
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Setup for JDK 17
-        uses: actions/setup-java@v3
+      - name: Setup for JDK 21
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
           java-package: jdk
           cache: maven
 
-      - name: Setup Node 16
-        uses: actions/setup-node@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           cache: npm
           cache-dependency-path: src/frontend/package-lock.json
 
-      - name: Build & Test application
-        timeout-minutes: 20
-        run: ./mvnw verify
+      - name: Run all web tests
+        # Testcontainers Cloud currently doesn't support Docker Compose usage
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 15
+          max_attempts: 3
+          command: ./mvnw verify --no-transfer-progress -Pwebtests
 
-      - name: Ensure unit tests can be parallelized
-        run: ./mvnw test -Djunit.jupiter.execution.parallel.enabled=true -Djunit.jupiter.execution.parallel.mode.default=same_thread -Djunit.jupiter.execution.parallel.mode.classes.default=concurrent
+      - name: Setup Testcontainers Cloud client
+        uses: atomicjar/testcontainers-cloud-setup-action@v1
+        with:
+          token: ${{ secrets.TC_CLOUD_TOKEN }}
+          logfile: testcontainers-client.log
 
-      - name: Flatten Selenide Screenshots and HTML Source Code on Failure
+      - name: Run all unit and integration tests
+        timeout-minutes: 15
+        continue-on-error: true
+        run: ./mvnw verify --no-transfer-progress -Dskip.installnodenpm -Dskip.npm -PnoWebtests
+
+      - name: Flatten Selenide Screenshots and HTML source code on failure
         if: ${{ failure() }}
         working-directory: target
         env:
@@ -48,9 +61,43 @@ jobs:
             echo "No Selenide failure artifacts found in folder $SOURCE_FOLDER"
           fi
 
-      - name: Archive Selenide Outcome on Failure
-        uses: actions/upload-artifact@v3
+      - name: Archive Selenide outcome on failure
+        uses: actions/upload-artifact@v4
         if: ${{ failure() }}
         with:
           name: selenide-failure-captures
           path: target/aggregated-outcome
+
+      - name: Upload Testcontainers Cloud output file
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: testcontainers-cloud-log-file
+          path: testcontainers-client.log
+          retention-days: 30
+
+#      - name: Get Allure history
+#        uses: actions/checkout@v3
+#        if: always()
+#        continue-on-error: true
+#        with:
+#          ref: gh-pages
+#          path: gh-pages
+#
+#      - name: Allure Report action from marketplace
+#        uses: simple-elf/allure-report-action@master
+#        if: always()
+#        id: allure-report
+#        with:
+#          allure_results: target/allure-results
+#          gh_pages: gh-pages
+#          allure_report: allure-report
+#          allure_history: allure-history
+#
+#      - name: Deploy report to Github Pages
+#        if: always()
+#        uses: peaceiris/actions-gh-pages@v2
+#        env:
+#          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          PUBLISH_BRANCH: gh-pages
+#          PUBLISH_DIR: allure-history

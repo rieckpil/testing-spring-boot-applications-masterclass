@@ -1,5 +1,7 @@
 package de.rieckpil.courses.initializer;
 
+import java.util.Arrays;
+
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import de.rieckpil.courses.stubs.OAuth2Stubs;
@@ -14,10 +16,9 @@ import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
-import java.util.Arrays;
-
 @Order(Ordered.LOWEST_PRECEDENCE - 1000)
-public class WireMockInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+public class WireMockInitializer
+    implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
   private static final Logger LOG = LoggerFactory.getLogger(WireMockInitializer.class);
 
@@ -31,7 +32,8 @@ public class WireMockInitializer implements ApplicationContextInitializer<Config
 
     LOG.info("WireMockServer successfully started");
 
-    if (Arrays.asList(applicationContext.getEnvironment().getActiveProfiles()).contains("integration-test")) {
+    if (Arrays.asList(applicationContext.getEnvironment().getActiveProfiles())
+        .contains("integration-test")) {
       RSAKeyGenerator rsaKeyGenerator = new RSAKeyGenerator();
       rsaKeyGenerator.initializeKeys();
 
@@ -42,18 +44,22 @@ public class WireMockInitializer implements ApplicationContextInitializer<Config
       applicationContext.getBeanFactory().registerSingleton("oAuth2Stubs", oAuth2Stubs);
       applicationContext.getBeanFactory().registerSingleton("rsaKeyGenerator", rsaKeyGenerator);
 
-      TestPropertyValues
-        .of(
-          "spring.security.oauth2.resourceserver.jwt.issuer-uri=http://localhost:" + wireMockServer.port() + "/auth/realms/spring"
-        ).applyTo(applicationContext);
+      TestPropertyValues.of(
+              "spring.security.oauth2.resourceserver.jwt.issuer-uri=http://localhost:"
+                  + wireMockServer.port()
+                  + "/auth/realms/spring")
+          .applyTo(applicationContext);
 
-    } else if (Arrays.asList(applicationContext.getEnvironment().getActiveProfiles()).contains("web-test")) {
-      TestPropertyValues
-        .of(
-          String.format(
-            "spring.security.oauth2.resourceserver.jwt.issuer-uri=http://%s:8888/auth/realms/spring",
-            SystemUtils.IS_OS_WINDOWS ? "host.docker.internal" : "172.17.0.1")
-        ).applyTo(applicationContext);
+    } else if (Arrays.asList(applicationContext.getEnvironment().getActiveProfiles())
+        .contains("web-test")) {
+
+      String hostname = SystemUtils.IS_OS_WINDOWS ? "host.docker.internal" : "localhost";
+
+      TestPropertyValues.of(
+              String.format(
+                  "spring.security.oauth2.resourceserver.jwt.issuer-uri=http://%s:8888/auth/realms/spring",
+                  hostname))
+          .applyTo(applicationContext);
     }
 
     OpenLibraryStubs openLibraryStubs = new OpenLibraryStubs(wireMockServer);
@@ -61,16 +67,18 @@ public class WireMockInitializer implements ApplicationContextInitializer<Config
     applicationContext.getBeanFactory().registerSingleton("wireMockServer", wireMockServer);
     applicationContext.getBeanFactory().registerSingleton("openLibraryStubs", openLibraryStubs);
 
-    applicationContext.addApplicationListener(applicationEvent -> {
-      if (applicationEvent instanceof ContextClosedEvent) {
-        LOG.info("Stopping the WireMockServer");
-        wireMockServer.stop();
-      }
-    });
+    applicationContext.addApplicationListener(
+        applicationEvent -> {
+          if (applicationEvent instanceof ContextClosedEvent) {
+            LOG.info("Stopping the WireMockServer");
+            wireMockServer.stop();
+          }
+        });
 
-    TestPropertyValues
-      .of(
-        "clients.open-library.base-url=http://localhost:" + wireMockServer.port() + "/openLibrary"
-      ).applyTo(applicationContext);
+    TestPropertyValues.of(
+            "clients.open-library.base-url=http://localhost:"
+                + wireMockServer.port()
+                + "/openLibrary")
+        .applyTo(applicationContext);
   }
 }

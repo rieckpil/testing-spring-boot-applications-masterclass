@@ -1,12 +1,12 @@
 package de.rieckpil.courses.book.management;
 
+import java.time.Duration;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.util.retry.Retry;
-
-import java.time.Duration;
 
 @Component
 public class OpenLibraryApiClient {
@@ -19,15 +19,21 @@ public class OpenLibraryApiClient {
 
   public Book fetchMetadataForBook(String isbn) {
 
-    ObjectNode result = openLibraryWebClient.get().uri("/api/books",
-        uriBuilder -> uriBuilder.queryParam("jscmd", "data")
-          .queryParam("format", "json")
-          .queryParam("bibkeys", isbn)
-          .build())
-      .retrieve()
-      .bodyToMono(ObjectNode.class)
-      .retryWhen(Retry.fixedDelay(2, Duration.ofMillis(200)))
-      .block();
+    ObjectNode result =
+        openLibraryWebClient
+            .get()
+            .uri(
+                "/api/books",
+                uriBuilder ->
+                    uriBuilder
+                        .queryParam("jscmd", "data")
+                        .queryParam("format", "json")
+                        .queryParam("bibkeys", isbn)
+                        .build())
+            .retrieve()
+            .bodyToMono(ObjectNode.class)
+            .retryWhen(Retry.fixedDelay(2, Duration.ofMillis(200)))
+            .block();
 
     JsonNode content = result.get(isbn);
 
@@ -43,7 +49,10 @@ public class OpenLibraryApiClient {
     book.setPublisher(content.get("publishers").get(0).get("name").asText("n.A."));
     book.setPages(content.get("number_of_pages").asLong(0));
     book.setDescription(content.get("notes") == null ? "n.A" : content.get("notes").asText("n.A."));
-    book.setGenre(content.get("subjects") == null ? "n.A" : content.get("subjects").get(0).get("name").asText("n.A."));
+    book.setGenre(
+        content.get("subjects") == null
+            ? "n.A"
+            : content.get("subjects").get(0).get("name").asText("n.A."));
     return book;
   }
 }

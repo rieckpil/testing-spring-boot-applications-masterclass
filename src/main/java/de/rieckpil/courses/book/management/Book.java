@@ -1,10 +1,10 @@
 package de.rieckpil.courses.book.management;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.NaturalId;
-
-import java.util.Objects;
 
 @Entity
 @Table(name = "books")
@@ -18,8 +18,7 @@ public class Book {
   @Column(nullable = false)
   private String title;
 
-  @NaturalId
-  private String isbn;
+  @NaturalId private String isbn;
 
   private String author;
 
@@ -120,16 +119,32 @@ public class Book {
 
   @Override
   public String toString() {
-    return "Book{" +
-      "id=" + id +
-      ", title='" + title + '\'' +
-      ", isbn='" + isbn + '\'' +
-      ", author='" + author + '\'' +
-      ", genre='" + genre + '\'' +
-      ", thumbnailUrl='" + thumbnailUrl + '\'' +
-      ", description='" + description + '\'' +
-      ", publisher='" + publisher + '\'' +
-      ", pages=" + pages +
-      '}';
+    return "Book{"
+        + "id="
+        + id
+        + ", title='"
+        + title
+        + '\''
+        + ", isbn='"
+        + isbn
+        + '\''
+        + ", author='"
+        + author
+        + '\''
+        + ", genre='"
+        + genre
+        + '\''
+        + ", thumbnailUrl='"
+        + thumbnailUrl
+        + '\''
+        + ", description='"
+        + description
+        + '\''
+        + ", publisher='"
+        + publisher
+        + '\''
+        + ", pages="
+        + pages
+        + '}';
   }
 }

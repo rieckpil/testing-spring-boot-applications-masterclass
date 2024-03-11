@@ -6,14 +6,14 @@ on:
 
 jobs:
   broken-link-check:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Check for broken links in README.md
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 16
 

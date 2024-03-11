@@ -2,6 +2,8 @@
 *.iml
 target/
 
+*.bak
+
 .settings/
 .classpath
 .project
@@ -36,3 +38,8 @@ venv/
 
 src/docs/architecture/*.png
 src/docs/architecture/*.jpg
+
+.mvn/.gradle-enterprise
+
+.allure
+allure-results

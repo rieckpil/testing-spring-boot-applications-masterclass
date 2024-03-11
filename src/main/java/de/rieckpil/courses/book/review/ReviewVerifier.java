@@ -1,8 +1,8 @@
 package de.rieckpil.courses.book.review;
 
-import org.springframework.stereotype.Service;
-
 import java.util.Arrays;
+
+import org.springframework.stereotype.Service;
 
 @Service
 public class ReviewVerifier {
@@ -33,5 +33,4 @@ public class ReviewVerifier {
 
     return doesNotContainSwearWords(review);
   }
-
 }

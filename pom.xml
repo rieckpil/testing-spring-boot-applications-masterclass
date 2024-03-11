@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.0.5</version>
-    <relativePath/> <!-- lookup parent from repository -->
+    <version>3.2.2</version>
+    <relativePath/>
+    <!-- ltextookup parent from repository -->
   </parent>
 
   <groupId>de.rieckpil.courses</groupId>
@@ -17,16 +17,18 @@
   <description>Testing Spring Boot Applications Masterclass</description>
 
   <properties>
-    <java.version>17</java.version>
-    <node.version>v16.13.0</node.version>
-    <spring-cloud-aws.version>3.0.0-RC2</spring-cloud-aws.version>
-    <testcontainers.version>1.17.6</testcontainers.version>
-    <wiremock.version>2.35.0</wiremock.version>
+    <java.version>21</java.version>
+    <node.version>v18.16.0</node.version>
+    <spring-cloud-aws.version>3.1.0</spring-cloud-aws.version>
+    <testcontainers.version>1.19.5</testcontainers.version>
+    <wiremock.version>3.0.1</wiremock.version>
     <awaitility.version>4.2.0</awaitility.version>
     <p6spy.version>3.9.1</p6spy.version>
-    <mockito.version>4.4.0</mockito.version>
-    <selenide.version>6.7.4</selenide.version>
-    <commons-lang3.version>3.12.0</commons-lang3.version>
+    <mockito.version>5.2.0</mockito.version>
+    <selenide.version>7.1.0</selenide.version>
+    <selenium.version>4.16.1</selenium.version>
+    <commons-lang3.version>3.13.0</commons-lang3.version>
+    <allure.version>2.23.0</allure.version>
   </properties>
 
   <dependencyManagement>
@@ -121,6 +123,7 @@
       <groupId>p6spy</groupId>
       <artifactId>p6spy</artifactId>
       <version>${p6spy.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -200,19 +203,39 @@
       <artifactId>spring-cloud-aws-test</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <!-- Test Reporting -->
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-junit5</artifactId>
+      <version>${allure.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-selenide</artifactId>
+      <version>${allure.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-awaitility</artifactId>
+      <version>${allure.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
     <finalName>${project.artifactId}</finalName>
     <resources>
       <resource>
-        <directory>${project.basedir}/src/frontend/build</directory>
-        <filtering>false</filtering>
         <targetPath>public</targetPath>
+        <filtering>false</filtering>
+        <directory>${project.basedir}/src/frontend/build</directory>
       </resource>
       <resource>
-        <directory>${project.basedir}/src/main/resources</directory>
         <filtering>false</filtering>
+        <directory>${project.basedir}/src/main/resources</directory>
       </resource>
     </resources>
     <plugins>
@@ -222,26 +245,22 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M9</version>
+        <version>3.2.5</version>
         <configuration>
-          <!--<properties>
+          <properties>
             <configurationParameters>
               junit.jupiter.execution.parallel.enabled = true
               junit.jupiter.execution.parallel.mode.default = same_thread
               junit.jupiter.execution.parallel.mode.classes.default = concurrent
             </configurationParameters>
-          </properties> -->
+          </properties>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.0.0-M9</version>
+        <version>3.2.5</version>
         <configuration>
           <includes>
             <include>**/*WT.java</include>
@@ -260,7 +279,11 @@
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
-        <version>1.12.1</version>
+        <version>1.15.0</version>
+        <configuration>
+          <workingDirectory>src/frontend</workingDirectory>
+          <nodeVersion>${node.version}</nodeVersion>
+        </configuration>
         <executions>
           <execution>
             <id>install node and npm</id>
@@ -272,7 +295,7 @@
           <execution>
             <id>npm install</id>
             <goals>
-              <goal>npm</goal>
+                <goal>npm</goal>
             </goals>
             <phase>generate-resources</phase>
             <configuration>
@@ -306,10 +329,6 @@
             </configuration>
           </execution>
         </executions>
-        <configuration>
-          <workingDirectory>src/frontend</workingDirectory>
-          <nodeVersion>${node.version}</nodeVersion>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -324,6 +343,44 @@
             <goals>
               <goal>enforce</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.43.0</version>
+        <configuration>
+          <java>
+            <googleJavaFormat>
+              <version>1.17.0</version>
+              <style>GOOGLE</style>
+            </googleJavaFormat>
+            <importOrder>
+              <file>${project.basedir}/spotless.importorder</file>
+            </importOrder>
+            <removeUnusedImports/>
+          </java>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>validate</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.github.ekryd.sortpom</groupId>
+        <artifactId>sortpom-maven-plugin</artifactId>
+        <version>3.4.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>verify</goal>
+            </goals>
+            <phase>validate</phase>
           </execution>
         </executions>
       </plugin>
@@ -351,6 +408,25 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
               <skipTests>true</skipTests>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>noWebtests</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <includes>
+                <include>**/*IT.java</include>
+              </includes>
+              <excludes>
+                <exclude>**/*WT.java</exclude>
+              </excludes>
             </configuration>
           </plugin>
         </plugins>

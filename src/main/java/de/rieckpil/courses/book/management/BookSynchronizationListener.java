@@ -8,15 +8,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class BookSynchronizationListener {
 
-  private static final Logger LOG = LoggerFactory.getLogger(BookSynchronizationListener.class.getName());
+  private static final Logger LOG =
+      LoggerFactory.getLogger(BookSynchronizationListener.class.getName());
 
   private final BookRepository bookRepository;
   private final OpenLibraryApiClient openLibraryApiClient;
 
   public BookSynchronizationListener(
-    BookRepository bookRepository,
-    OpenLibraryApiClient openLibraryApiClient
-  ) {
+      BookRepository bookRepository, OpenLibraryApiClient openLibraryApiClient) {
     this.bookRepository = bookRepository;
     this.openLibraryApiClient = openLibraryApiClient;
   }
@@ -39,7 +38,6 @@ public class BookSynchronizationListener {
 
     Book book = openLibraryApiClient.fetchMetadataForBook(isbn);
     book = bookRepository.save(book);
-    System.out.println(book);
 
     LOG.info("Successfully stored new book '{}'", book);
   }

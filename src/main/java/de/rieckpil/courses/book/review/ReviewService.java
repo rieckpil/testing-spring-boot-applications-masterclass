@@ -1,5 +1,9 @@
 package de.rieckpil.courses.book.review;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.List;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -9,10 +13,6 @@ import de.rieckpil.courses.book.management.UserService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.List;
 
 @Service
 @Transactional
@@ -24,14 +24,19 @@ public class ReviewService {
   private final ReviewRepository reviewRepository;
   private final ObjectMapper objectMapper = new ObjectMapper();
 
-  public ReviewService(ReviewVerifier reviewVerifier, UserService userService, BookRepository bookRepository, ReviewRepository reviewRepository) {
+  public ReviewService(
+      ReviewVerifier reviewVerifier,
+      UserService userService,
+      BookRepository bookRepository,
+      ReviewRepository reviewRepository) {
     this.reviewVerifier = reviewVerifier;
     this.userService = userService;
     this.bookRepository = bookRepository;
     this.reviewRepository = reviewRepository;
   }
 
-  public Long createBookReview(String isbn, BookReviewRequest bookReviewRequest, String userName, String email) {
+  public Long createBookReview(
+      String isbn, BookReviewRequest bookReviewRequest, String userName, String email) {
 
     Book book = bookRepository.findByIsbn(isbn);
 
@@ -60,10 +65,9 @@ public class ReviewService {
   public ArrayNode getReviewStatistics() {
     ArrayNode result = objectMapper.createArrayNode();
 
-    reviewRepository.getReviewStatistics()
-      .stream()
-      .map(this::mapReviewStatistic)
-      .forEach(result::add);
+    reviewRepository.getReviewStatistics().stream()
+        .map(this::mapReviewStatistic)
+        .forEach(result::add);
 
     return result;
   }
@@ -79,10 +83,7 @@ public class ReviewService {
       requestedReviews = reviewRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(0, size));
     }
 
-    requestedReviews
-      .stream()
-      .map(this::mapReview)
-      .forEach(result::add);
+    requestedReviews.stream().map(this::mapReview).forEach(result::add);
 
     return result;
   }
@@ -97,8 +98,9 @@ public class ReviewService {
     objectNode.put("bookTitle", review.getBook().getTitle());
     objectNode.put("bookThumbnailUrl", review.getBook().getThumbnailUrl());
     objectNode.put("submittedBy", review.getUser().getName());
-    objectNode.put("submittedAt",
-      review.getCreatedAt().atZone(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli());
+    objectNode.put(
+        "submittedAt",
+        review.getCreatedAt().atZone(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli());
     return objectNode;
   }
 
@@ -116,8 +118,9 @@ public class ReviewService {
   }
 
   public ObjectNode getReviewById(String isbn, Long reviewId) {
-    return this.reviewRepository.findByIdAndBookIsbn(reviewId, isbn)
-      .map(this::mapReview)
-      .orElseThrow(ReviewNotFoundException::new);
+    return this.reviewRepository
+        .findByIdAndBookIsbn(reviewId, isbn)
+        .map(this::mapReview)
+        .orElseThrow(ReviewNotFoundException::new);
   }
 }
