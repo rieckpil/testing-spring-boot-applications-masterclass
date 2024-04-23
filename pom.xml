@@ -173,13 +173,12 @@
       <version>${wiremock.version}</version>
       <scope>test</scope>
     </dependency>
+    <!-- Version is managed by Spring Boot -->
     <dependency>
       <groupId>org.awaitility</groupId>
       <artifactId>awaitility</artifactId>
-      <version>${awaitility.version}</version>
       <scope>test</scope>
     </dependency>
-    <!-- Version is managed by Spring Boot -->
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>mockwebserver</artifactId>
