@@ -7,7 +7,7 @@
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>3.2.3</version>
     <relativePath/>
-    <!-- ltextookup parent from repository -->
+    <!-- lookup parent from repository -->
   </parent>
 
   <groupId>de.rieckpil.courses</groupId>
