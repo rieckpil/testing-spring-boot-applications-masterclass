@@ -19,6 +19,9 @@ spring:
       credentials:
         secret-key: foo
         access-key: bar
+  threads:
+    virtual:
+      enabled: true
 
 clients:
   open-library:

@@ -103,6 +103,11 @@
       <groupId>org.flywaydb</groupId>
       <artifactId>flyway-core</artifactId>
     </dependency>
+    <!-- required module since Flyway 10 (Spring Boot 3.3) -->
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-database-postgresql</artifactId>
+    </dependency>
 
     <!-- Fix noisy ERROR log on M1 processors during startup. See https://github.com/netty/netty/issues/11020 -->
     <dependency>
