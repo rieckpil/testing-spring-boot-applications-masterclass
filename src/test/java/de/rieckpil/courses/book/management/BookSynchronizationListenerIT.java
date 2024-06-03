@@ -52,7 +52,7 @@ class BookSynchronizationListenerIT {
           .withPassword("s3cret");
 
   static LocalStackContainer localStack =
-      new LocalStackContainer(DockerImageName.parse("localstack/localstack:3.2.0"))
+      new LocalStackContainer(DockerImageName.parse("localstack/localstack:3.4.0"))
           .withServices(SQS);
   // can be removed with version 0.12.17 as LocalStack now has multi-region support
   // https://docs.localstack.cloud/localstack/configuration/#deprecated
