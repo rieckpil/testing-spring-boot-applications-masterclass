@@ -39,9 +39,7 @@ public abstract class AbstractWebTest {
           .withLogConsumer("keycloak_1", new Slf4jLogConsumer(LOG))
           .withLogConsumer("database_1", new Slf4jLogConsumer(LOG))
           .withLogConsumer("sqs_1", new Slf4jLogConsumer(LOG))
-          .withOptions("--compatibility") // See issue
-          // https://github.com/testcontainers/testcontainers-java/issues/4565
-          .withLocalCompose(true);
+          .withOptions("--compatibility");
 
   @RegisterExtension
   static ScreenShooterExtension screenShooterExtension =
