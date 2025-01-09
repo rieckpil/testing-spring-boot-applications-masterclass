@@ -19,7 +19,7 @@ Are you tired of:
 - Missing deadlines because of unexpected bugs and regressions?
 - Mindlessly applying cargo cult testing practices that don't fit your application's needs?
 
-The [Testing Spring Boot Applications Masterclass](https://rieckpil.de/testing-spring-boot-applications-masterclass/) transforms you from feeling uncertain about your application's reliability to being confident in your testing strategy.
+The [Testing Spring Boot Applications Masterclass](https://rieckpil.de/testing-spring-boot-applications-masterclass/) transforms you from feeling uncertain about your application's reliability to being confident in your testing strategy, making you a more **productive**, **efficient**, and **valuable** **developer**.
 
 ## Why This Course?
 
