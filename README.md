@@ -15,7 +15,9 @@ Are you tired of:
 - Spending countless hours debugging production issues that should have been caught in testing?
 - Feeling anxious about deploying on Fridays because your test coverage isn't comprehensive?
 - Wrestling with complex microservice architectures that are difficult to test properly?
+- Copying and pasting test code from Stack Overflow without understanding the underlying principles?
 - Missing deadlines because of unexpected bugs and regressions?
+- Mindlessly applying cargo cult testing practices that don't fit your application's needs?
 
 The [Testing Spring Boot Applications Masterclass](https://rieckpil.de/testing-spring-boot-applications-masterclass/) transforms you from feeling uncertain about your application's reliability to being confident in your testing strategy.
 
