@@ -26,25 +26,10 @@ jobs:
           cache: npm
           cache-dependency-path: src/frontend/package-lock.json
 
-      - name: Run all web tests
-        # Testcontainers Cloud currently doesn't support Docker Compose usage
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 15
-          max_attempts: 3
-          command: ./mvnw verify --no-transfer-progress -Pwebtests
-
-      - name: Setup Testcontainers Cloud client
-        if: github.ref == 'refs/heads/main'
-        uses: atomicjar/testcontainers-cloud-setup-action@v1
-        with:
-          token: ${{ secrets.TC_CLOUD_TOKEN }}
-          logfile: testcontainers-client.log
-
-      - name: Run all unit and integration tests
+      - name: Build project
         timeout-minutes: 15
         continue-on-error: true
-        run: ./mvnw verify --no-transfer-progress -Dskip.installnodenpm -Dskip.npm -PnoWebtests
+        run: ./mvnw verify --no-transfer-progress
 
       - name: Flatten Selenide Screenshots and HTML source code on failure
         if: ${{ failure() }}
@@ -68,11 +53,3 @@ jobs:
         with:
           name: selenide-failure-captures
           path: target/aggregated-outcome
-
-      - name: Upload Testcontainers Cloud output file
-        uses: actions/upload-artifact@v4
-        if: github.ref == 'refs/heads/main'
-        with:
-          name: testcontainers-cloud-log-file
-          path: testcontainers-client.log
-          retention-days: 7
