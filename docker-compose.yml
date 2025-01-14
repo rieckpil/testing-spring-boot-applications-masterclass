@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   database:
-    image: postgres:16.3
+    image: postgres:16.6
     environment:
       - POSTGRES_USER=test
       - POSTGRES_PASSWORD=test
