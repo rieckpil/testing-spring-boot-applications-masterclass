@@ -34,7 +34,7 @@ class BookSynchronizationListenerSliceNewTest {
 
   @Container
   static LocalStackContainer localStack =
-      new LocalStackContainer(DockerImageName.parse("localstack/localstack:4.0.3"))
+      new LocalStackContainer(DockerImageName.parse("localstack/localstack:4.1.1"))
           .withServices(LocalStackContainer.Service.SQS)
           .withLogConsumer(new Slf4jLogConsumer(LOG));
 
