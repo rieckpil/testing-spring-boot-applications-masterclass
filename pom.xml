@@ -24,7 +24,7 @@
     <wiremock.version>3.11.0</wiremock.version>
     <p6spy.version>3.9.1</p6spy.version>
     <mockito.version>5.11.0</mockito.version>
-    <selenide.version>7.7.1</selenide.version>
+    <selenide.version>7.7.3</selenide.version>
     <selenium.version>4.27.0</selenium.version>
     <commons-lang3.version>3.17.0</commons-lang3.version>
   </properties>
