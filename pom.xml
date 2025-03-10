@@ -21,7 +21,7 @@
     <node.version>v18.16.0</node.version>
     <spring-cloud-aws.version>3.3.0</spring-cloud-aws.version>
     <testcontainers.version>1.20.6</testcontainers.version>
-    <wiremock.version>3.11.0</wiremock.version>
+    <wiremock.version>3.12.1</wiremock.version>
     <p6spy.version>3.9.1</p6spy.version>
     <mockito.version>5.11.0</mockito.version>
     <selenide.version>7.7.3</selenide.version>
