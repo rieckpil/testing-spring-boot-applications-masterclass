@@ -3,7 +3,7 @@
 [![Masterclass](https://rieckpil.de/wp-content/uploads/2020/09/testing-spring-boot-applications-masterclass-course-logo.png)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
 
 [![](https://img.shields.io/badge/Spring%20Boot%20Version-3.4.5-orange)](/pom.xml)
-[![](https://img.shields.io/badge/Java%20Version-21-orange)](/pom.xml)
+[![](https://img.shields.io/badge/Java%20Version-17-orange)](/pom.xml)
 [![](https://img.shields.io/badge/Enroll-Now-orange)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
 
 ## 😓 Tired of the Friday Afternoon Dread?
