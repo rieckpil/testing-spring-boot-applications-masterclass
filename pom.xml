@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.3.0</version>
+    <version>3.4.5</version>
     <relativePath/>
     <!-- lookup parent from repository -->
   </parent>
@@ -17,7 +17,7 @@
   <description>Testing Spring Boot Applications Masterclass</description>
 
   <properties>
-    <java.version>21</java.version>
+    <java.version>17</java.version>
     <node.version>v18.16.0</node.version>
     <spring-cloud-aws.version>3.3.0</spring-cloud-aws.version>
     <testcontainers.version>1.20.6</testcontainers.version>
@@ -27,6 +27,7 @@
     <selenide.version>7.7.3</selenide.version>
     <selenium.version>4.27.0</selenium.version>
     <commons-lang3.version>3.17.0</commons-lang3.version>
+    <okhttp.version>4.12.0</okhttp.version>
   </properties>
 
   <dependencyManagement>
@@ -186,6 +187,7 @@
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>mockwebserver</artifactId>
+      <version>${okhttp.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
