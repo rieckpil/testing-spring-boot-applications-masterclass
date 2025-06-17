@@ -52,16 +52,6 @@
         <artifactId>okhttp</artifactId>
         <version>${okhttp.version}</version>
       </dependency>
-      <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-compress</artifactId>
-        <version>1.26.1</version>
-      </dependency>
-      <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>2.15.1</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -175,11 +165,6 @@
       <groupId>org.testcontainers</groupId>
       <artifactId>selenium</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.github.bonigarcia</groupId>
-      <artifactId>webdrivermanager</artifactId>
-      <version>5.8.0</version>
     </dependency>
 
     <dependency>
