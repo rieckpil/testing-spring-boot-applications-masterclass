@@ -2,6 +2,8 @@
 *.iml
 target/
 
+.DS_Store
+
 *.bak
 
 .settings/

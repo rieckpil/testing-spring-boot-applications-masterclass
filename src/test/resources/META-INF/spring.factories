@@ -1,0 +1,4 @@
+org.springframework.test.context.TestExecutionListener=\
+digital.pragmatech.testing.SpringTestProfilerListener
+org.springframework.context.ApplicationContextInitializer=\
+digital.pragmatech.testing.diagnostic.ContextDiagnosticApplicationInitializer
