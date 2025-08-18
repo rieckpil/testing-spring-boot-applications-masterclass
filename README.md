@@ -109,7 +109,7 @@ Even though the technical setup for your day-to-day projects might differ, the t
 
 <p align="center">
   <a href="https://rieckpil.de/testing-spring-boot-applications-masterclass/">
-    <img src="https://rieckpil.de/wp-content/uploads/2023/03/tsbam-testiomonials.png" alt="Testing Spring Boot Applications Masterclass Testimonials">
+    <img src="src/docs/images/tsbam-testimonials.png" alt="Testing Spring Boot Applications Masterclass Testimonials">
   </a>
 </p>
 
