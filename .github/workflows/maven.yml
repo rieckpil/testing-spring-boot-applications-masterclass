@@ -6,7 +6,7 @@ on:
 jobs:
   build-and-test:
     timeout-minutes: 20
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: Build Application
     steps:
       - name: Checkout Code
@@ -26,24 +26,10 @@ jobs:
           cache: npm
           cache-dependency-path: src/frontend/package-lock.json
 
-      - name: Run all web tests
-        # Testcontainers Cloud currently doesn't support Docker Compose usage
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 15
-          max_attempts: 3
-          command: ./mvnw verify --no-transfer-progress -Pwebtests
-
-      - name: Setup Testcontainers Cloud client
-        uses: atomicjar/testcontainers-cloud-setup-action@v1
-        with:
-          token: ${{ secrets.TC_CLOUD_TOKEN }}
-          logfile: testcontainers-client.log
-
-      - name: Run all unit and integration tests
+      - name: Build project
         timeout-minutes: 15
         continue-on-error: true
-        run: ./mvnw verify --no-transfer-progress -Dskip.installnodenpm -Dskip.npm -PnoWebtests
+        run: ./mvnw verify --no-transfer-progress
 
       - name: Flatten Selenide Screenshots and HTML source code on failure
         if: ${{ failure() }}
@@ -67,37 +53,3 @@ jobs:
         with:
           name: selenide-failure-captures
           path: target/aggregated-outcome
-
-      - name: Upload Testcontainers Cloud output file
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: testcontainers-cloud-log-file
-          path: testcontainers-client.log
-          retention-days: 30
-
-#      - name: Get Allure history
-#        uses: actions/checkout@v3
-#        if: always()
-#        continue-on-error: true
-#        with:
-#          ref: gh-pages
-#          path: gh-pages
-#
-#      - name: Allure Report action from marketplace
-#        uses: simple-elf/allure-report-action@master
-#        if: always()
-#        id: allure-report
-#        with:
-#          allure_results: target/allure-results
-#          gh_pages: gh-pages
-#          allure_report: allure-report
-#          allure_history: allure-history
-#
-#      - name: Deploy report to Github Pages
-#        if: always()
-#        uses: peaceiris/actions-gh-pages@v2
-#        env:
-#          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          PUBLISH_BRANCH: gh-pages
-#          PUBLISH_DIR: allure-history

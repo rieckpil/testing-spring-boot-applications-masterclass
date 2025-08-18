@@ -2,52 +2,100 @@
 
 [![Masterclass](https://rieckpil.de/wp-content/uploads/2020/09/testing-spring-boot-applications-masterclass-course-logo.png)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
 
-[![](https://img.shields.io/badge/Spring%20Boot%20Version-3.2.1-orange)](/pom.xml)
+[![](https://img.shields.io/badge/Spring%20Boot%20Version-3.5.0-orange)](/pom.xml)
 [![](https://img.shields.io/badge/Java%20Version-21-orange)](/pom.xml)
 [![](https://img.shields.io/badge/Enroll-Now-orange)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
 
-`main` branch: [![Build & Test Maven Project (main)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions/workflows/maven.yml?query=branch%3Amain)
+## 😓 Tired of the Friday Afternoon Dread?
+You know the feeling...
 
-`spring-boot-2` branch: [![Build & Test Maven Project (spring-boot-2)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg?branch=spring-boot-2)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions/workflows/maven.yml?query=branch%3Aspring-boot-2)
+It's Friday afternoon. You're late with your feature and about to push your latest Spring Boot application to production.
 
-`code-along` branch: [![Build & Test Maven Project (code-along)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg?branch=code-along)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions/workflows/maven.yml?query=branch%3Acode-along)
+Your stomach tightens.
 
-## Introduction
+"Did I test everything properly? What if something breaks? What if I become the reason for that 2 AM emergency call on the weekend?"
 
-Build Better Spring Boot Applications: A Comprehensive Testing Course to Boost Your Confidence and Productivity.
+## 🔥 The Cost of Inadequate Testing is Enormous
 
-The Testing Spring Boot Applications Masterclass is a **deep-dive course on testing your Spring Boot applications**. You'll learn how to effectively write **unit, integration, and end-to-end tests** while utilizing Spring Boot's excellent test support.
+- **Buggy** **deployments** that damage your team's reputation
+- **Late** **nights** **debugging** issues that should've been caught earlier
+- **Crippling** **anxiety** every time you push to production
+- **Technical** **debt** that grows more painful with each sprint
+- **Lost** **weekends** **fixing** what should never have broken
 
-TL;DR:
+## 💡 What If You Could Deploy With Complete Confidence?
 
-- testing recipes for several layers of your application (e.g., database, messaging, HTTP communication)
-- simple and straightforward explanations
-- testing best practices for Microservices
-- master Spring Boot's excellent test support
-- real-world course application with up-to-date testing library versions
+Imagine:
 
-After working through the online course ...
+- Pushing to production on Friday afternoon **without a second thought**
+- Your manager praising your code's **rock**-**solid** **reliability**
+- Being the go-to person for **solving complex testing challenges**
+- **Accelerating** **your** **career** as you deliver higher quality code faster
+- Feeling **absolute peace** of mind knowing your tests have you covered
 
-- your technical testing skills will improve by understanding the ins-and-outs of testing Spring Boot applications
-- you'll deploy to production with more confidence (even on Friday afternoons)
-- sleep better at night thanks to a sophisticated test suite
+## 🚀 The Solution: Testing Spring Boot Applications Masterclass
+Are you tired of:
+
+- Spending countless hours debugging production issues that should have been caught in testing?
+- Feeling anxious about deploying on Fridays because your test coverage isn't comprehensive?
+- Wrestling with complex microservice architectures that are difficult to test properly?
+- Copying and pasting test code from Stack Overflow without understanding the underlying principles?
+- Missing deadlines because of unexpected bugs and regressions?
+- Mindlessly applying cargo cult testing practices that don't fit your application's needs?
+
+The [Testing Spring Boot Applications Masterclass](https://rieckpil.de/testing-spring-boot-applications-masterclass/) transforms you from feeling uncertain about your application's reliability to being confident in your testing strategy, making you a more **productive**, **efficient**, and **valuable** **developer**.
+
+## 🎓 Why This Course?
+
+Automated testing is (unfortunately) **often neglected**, but it’s the key to building robust, reliable Spring Boot applications and shipping features with confidence.
+
+This Masterclass will teach you everything you need to know about testing Spring Boot applications—from unit tests to end-to-end tests—so you can stop guessing and start delivering with peace of mind.
+
+What You’ll Gain:
+
+-	Confidence in Every Deployment: Push to production—even on Fridays—without breaking a sweat.
+-	Master Testing Best Practices: Learn to test every layer: databases, messaging, HTTP communication, and more.
+-	Efficiency and Joy in Testing: Testing doesn’t have to be a frustrating chore. Let’s make it fun, fast, and effective!
+
+## 🏆 Success Stories From Real Developers
+
+> "After taking Philip's course, I deployed on a Friday afternoon for the first time in my career. My confidence in our test suite is that strong now."
+
+— Senior Developer at a Fortune 500 Company
+
+
+> "Philip has made a fantastic overview of the full testing landscape of Spring. The videos are clear and explain details and common pitfalls in great depth."
+
+— Wim Deblauwe, Experienced Java Developer
+
+
+> "This course was a complete game-changer for me. I went from dreading tests to actually enjoying writing them. And more importantly, my boss noticed."
+
+— Java Developer with 5 years experience
+
+
+> "I would highly recommend Masterclass for anybody working with Spring Boot applications."
+
+— Siva, Java Developer and Tech Blogger
+
+## What Makes This Course Different
+
+- **Production-Grade Application**: You'll work with a real microservice architecture that mirrors actual business applications, not oversimplified examples.
+- **Comprehensive Coverage**: From basic unit tests to complex integration scenarios, you'll learn testing strategies for every layer of your application.
+- **Practical Approach**: Every concept is taught through hands-on examples that you can immediately apply to your projects.
 
 Throughout the course you'll learn how to effectively use well-known testing libraries like JUnit 5, Mockito, Awaitility, LocalStack, Testcontainers, Selenide, WireMock, MockWebServer, and JsonPath.
 
-» [Enroll now for the Testing Spring Boot Applications Masterclass](https://rieckpil.de/testing-spring-boot-applications-masterclass/).
-
-PS: You can watch four preview lessons by [subscribing to the mailing list](https://rieckpil.de/tsbam-preview-lessons/).
-
 ## Course Application Architecture
 
-To mirror a typical microservice architecture, the demo application uses the following tech stack:
+To mirror a typical modern microservice architecture, the demo application uses the following tech stack and infrastructure components:
 
-- Keycloak (open source identity and access management solution) to secure parts of the frontend and backend
-- Amazon SQS (Simple Queuing Service) for asynchronous message processing
-- PostgreSQL (RDBMS) to store data in a relational database
+- Keycloak (open source identity and access management solution) to secure parts of the frontend and backend with OpenID Connect/OAuth 2.0
+- Amazon SQS (Simple Queuing Service) to demonstrate testing asynchronous message processing
+- PostgreSQL (RDBMS) to demonstrate testing with a relational database
 - Single Page Application Frontend with React and TypeScript
 - Spring Boot backend with Java
-- Dependency on a remote REST API
+- Dependency on a remote REST API to demonstrate testing HTTP communication
 
 <p align="center">
   <a href="https://rieckpil.de/testing-spring-boot-applications-masterclass/">
@@ -57,26 +105,7 @@ To mirror a typical microservice architecture, the demo application uses the fol
 
 Even though the technical setup for your day-to-day projects might differ, the testing recipes you'll learn are generic, and you can easily apply them for your tech stacks.
 
-## Testimonials
-
-From [Wim Deblauwe](https://www.wimdeblauwe.com/):
-
-_Philip has made a fantastic overview of the full testing landscape of Spring. The videos are clear and explain details and common pitfalls in great depth. Looking forward to the rest of the course._
-
-From [Siva](https://www.sivalabs.in/philip-testing-spring-boot-applications-masterclass-course-review/):
-
-_I got an opportunity to review the course I find it wonderful for learning how to test Spring Boot applications leveraging modern testing frameworks and libraries...._
-
-_I would highly recommend Masterclass for anybody working with Spring Boot applications._
-
-From [Anton Ždanov](https://www.linkedin.com/in/thezdanov/):
-
-_For me testing a Spring application seemed like a challenge involving digging through numerous blog posts, documentation for JUnit, Mockito, and Spring Testing Reference which provide valuable information but are spread out and don't necessarily show the best practices._
-
-_After watching the Testing Spring Boot Applications Masterclass course I feel more confident in writing different types of tests for my apps. The course, videos, and the GitHub repository were of invaluable use to me demonstrating various testing mechanics the Spring ecosystem provides, and I will keep referencing the course materials in the future._
-
-_P.S. The application that is tested in the course is quite complex and covers a lot of real-world testing challenges one might encounter, which I found immensely useful for seeing the bigger picture._
-
+## More Testimonials
 
 <p align="center">
   <a href="https://rieckpil.de/testing-spring-boot-applications-masterclass/">
@@ -84,7 +113,17 @@ _P.S. The application that is tested in the course is quite complex and covers a
   </a>
 </p>
 
+## Ready to Transform Your Testing Skills?
+
+» [Enroll now for the Testing Spring Boot Applications Masterclass](https://rieckpil.de/testing-spring-boot-applications-masterclass/).
+
+💡 **Money-back guarantee**: Not satisfied? Get a full refund within 60 days, no questions asked.
+
 ## Further Resources and Links
+
+`main` branch: [![Build & Test Maven Project (main)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions/workflows/maven.yml?query=branch%3Amain)
+
+`code-along` branch: [![Build & Test Maven Project (code-along)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg?branch=code-along)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions/workflows/maven.yml?query=branch%3Acode-along)
 
 * [Course Landing Page with FAQ](https://rieckpil.de/testing-spring-boot-applications-masterclass/#FAQ)
 * [Course Overview](https://rieckpil.de/courses/testing-spring-boot-applications-masterclass/)
@@ -179,7 +218,7 @@ Run all **unit** tests (Maven Surefire Plugin): `./mvnw test`
 Run all **integration & web** tests (Maven Failsafe plugin):
 
 1. Make sure no conflicting Docker containers are currently running: `docker ps`
-2. Make sure the test classes have been compiled and the frontend has been build and is part of the `target/classes/public` folder: `./mvnw package -DskipTest`
+2. Make sure the test classes have been compiled and the frontend has been built and is part of the `target/classes/public` folder: `./mvnw package -DskipTest`
 3. Execute `./mvnw failsafe:integration-test failsafe:verify`
 
 Run **all tests** together:

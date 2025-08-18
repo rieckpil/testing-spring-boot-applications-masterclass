@@ -24,7 +24,6 @@ import de.rieckpil.courses.stubs.OpenLibraryStubs;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -37,20 +36,19 @@ import org.testcontainers.utility.DockerImageName;
 
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
-@ExtendWith(AllureReportingExtension.class)
 @ActiveProfiles("integration-test")
 @ContextConfiguration(initializers = WireMockInitializer.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class AbstractIntegrationTest {
 
   static PostgreSQLContainer<?> database =
-      new PostgreSQLContainer<>("postgres:16.1")
+      new PostgreSQLContainer<>("postgres:17.2")
           .withDatabaseName("test")
           .withUsername("duke")
           .withPassword("s3cret");
 
   static LocalStackContainer localStack =
-      new LocalStackContainer(DockerImageName.parse("localstack/localstack:2.2.0"))
+      new LocalStackContainer(DockerImageName.parse("localstack/localstack:4.5.0"))
           .withServices(SQS);
 
   // can be removed with version 0.12.17 as LocalStack now has multi-region support

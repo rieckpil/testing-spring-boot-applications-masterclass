@@ -5,9 +5,9 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.2.2</version>
+    <version>3.5.0</version>
     <relativePath/>
-    <!-- ltextookup parent from repository -->
+    <!-- lookup parent from repository -->
   </parent>
 
   <groupId>de.rieckpil.courses</groupId>
@@ -19,16 +19,15 @@
   <properties>
     <java.version>21</java.version>
     <node.version>v18.16.0</node.version>
-    <spring-cloud-aws.version>3.1.0</spring-cloud-aws.version>
-    <testcontainers.version>1.19.5</testcontainers.version>
-    <wiremock.version>3.0.1</wiremock.version>
-    <awaitility.version>4.2.0</awaitility.version>
+    <spring-cloud-aws.version>3.4.0</spring-cloud-aws.version>
+    <testcontainers.version>1.21.1</testcontainers.version>
+    <wiremock.version>3.13.0</wiremock.version>
     <p6spy.version>3.9.1</p6spy.version>
-    <mockito.version>5.2.0</mockito.version>
-    <selenide.version>7.1.0</selenide.version>
-    <selenium.version>4.16.1</selenium.version>
-    <commons-lang3.version>3.13.0</commons-lang3.version>
-    <allure.version>2.23.0</allure.version>
+    <mockito.version>5.11.0</mockito.version>
+    <selenide.version>7.9.3</selenide.version>
+    <selenium.version>4.33.0</selenium.version>
+    <commons-lang3.version>3.17.0</commons-lang3.version>
+    <okhttp.version>4.11.0</okhttp.version>
   </properties>
 
   <dependencyManagement>
@@ -105,6 +104,11 @@
       <groupId>org.flywaydb</groupId>
       <artifactId>flyway-core</artifactId>
     </dependency>
+    <!-- required module since Flyway 10 (Spring Boot 3.3) -->
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-database-postgresql</artifactId>
+    </dependency>
 
     <!-- Fix noisy ERROR log on M1 processors during startup. See https://github.com/netty/netty/issues/11020 -->
     <dependency>
@@ -127,6 +131,12 @@
     </dependency>
 
     <dependency>
+      <groupId>digital.pragmatech.testing</groupId>
+      <artifactId>spring-test-profiler</artifactId>
+      <version>0.0.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
@@ -136,11 +146,12 @@
       <artifactId>spring-security-test</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
+    <!-- No longer required, recent Mockito version include it -->
+    <!-- <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-inline</artifactId>
       <scope>test</scope>
-    </dependency>
+    </dependency> -->
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>postgresql</artifactId>
@@ -161,6 +172,7 @@
       <artifactId>selenium</artifactId>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>com.codeborne</groupId>
       <artifactId>selenide</artifactId>
@@ -168,18 +180,17 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.github.tomakehurst</groupId>
-      <artifactId>wiremock-jre8-standalone</artifactId>
+      <groupId>org.wiremock</groupId>
+      <artifactId>wiremock-standalone</artifactId>
       <version>${wiremock.version}</version>
       <scope>test</scope>
     </dependency>
+    <!-- Version is managed by Spring Boot -->
     <dependency>
       <groupId>org.awaitility</groupId>
       <artifactId>awaitility</artifactId>
-      <version>${awaitility.version}</version>
       <scope>test</scope>
     </dependency>
-    <!-- Version is managed by Spring Boot -->
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>mockwebserver</artifactId>
@@ -195,32 +206,12 @@
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-core</artifactId>
-      <version>1.12.420</version>
+      <version>1.12.780</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.awspring.cloud</groupId>
       <artifactId>spring-cloud-aws-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <!-- Test Reporting -->
-    <dependency>
-      <groupId>io.qameta.allure</groupId>
-      <artifactId>allure-junit5</artifactId>
-      <version>${allure.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.qameta.allure</groupId>
-      <artifactId>allure-selenide</artifactId>
-      <version>${allure.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.qameta.allure</groupId>
-      <artifactId>allure-awaitility</artifactId>
-      <version>${allure.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -246,7 +237,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.2.5</version>
+        <version>3.5.3</version>
         <configuration>
           <properties>
             <configurationParameters>
@@ -260,7 +251,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.2.5</version>
+        <version>3.5.3</version>
         <configuration>
           <includes>
             <include>**/*WT.java</include>
@@ -279,7 +270,7 @@
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
-        <version>1.15.0</version>
+        <version>1.15.1</version>
         <configuration>
           <workingDirectory>src/frontend</workingDirectory>
           <nodeVersion>${node.version}</nodeVersion>
@@ -349,7 +340,7 @@
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
-        <version>2.43.0</version>
+        <version>2.44.4</version>
         <configuration>
           <java>
             <googleJavaFormat>
@@ -374,7 +365,7 @@
       <plugin>
         <groupId>com.github.ekryd.sortpom</groupId>
         <artifactId>sortpom-maven-plugin</artifactId>
-        <version>3.4.0</version>
+        <version>4.0.0</version>
         <executions>
           <execution>
             <goals>

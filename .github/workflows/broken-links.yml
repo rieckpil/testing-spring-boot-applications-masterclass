@@ -6,7 +6,7 @@ on:
 
 jobs:
   broken-link-check:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: Check for broken links in README.md
     steps:
       - name: Checkout code
@@ -15,7 +15,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 18
 
       - name: Check for broken links
         run: |

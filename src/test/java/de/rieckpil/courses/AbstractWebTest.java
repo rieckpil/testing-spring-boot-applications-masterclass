@@ -5,7 +5,6 @@ import java.time.Duration;
 
 import com.codeborne.selenide.junit5.ScreenShooterExtension;
 import de.rieckpil.courses.initializer.WireMockInitializer;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +21,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @ActiveProfiles("web-test")
 @Import(TestJwtDecoderConfig.class)
-@ExtendWith(AllureReportingExtension.class)
 @Testcontainers(disabledWithoutDocker = true)
 @ContextConfiguration(initializers = WireMockInitializer.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -41,9 +39,7 @@ public abstract class AbstractWebTest {
           .withLogConsumer("keycloak_1", new Slf4jLogConsumer(LOG))
           .withLogConsumer("database_1", new Slf4jLogConsumer(LOG))
           .withLogConsumer("sqs_1", new Slf4jLogConsumer(LOG))
-          .withOptions("--compatibility") // See issue
-          // https://github.com/testcontainers/testcontainers-java/issues/4565
-          .withLocalCompose(true);
+          .withOptions("--compatibility");
 
   @RegisterExtension
   static ScreenShooterExtension screenShooterExtension =

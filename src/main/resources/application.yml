@@ -11,6 +11,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+    open-in-view: false
   cloud:
     aws:
       region:
@@ -19,6 +20,9 @@ spring:
       credentials:
         secret-key: foo
         access-key: bar
+  threads:
+    virtual:
+      enabled: true
 
 clients:
   open-library:

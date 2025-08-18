@@ -8,7 +8,6 @@ import de.rieckpil.courses.initializer.DefaultBookStubsInitializer;
 import de.rieckpil.courses.initializer.WireMockInitializer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -26,7 +25,6 @@ import static org.awaitility.Awaitility.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
-@ExtendWith(AllureReportingExtension.class)
 @Testcontainers(disabledWithoutDocker = true)
 @ActiveProfiles({"default", "integration-test"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -35,14 +33,14 @@ class ApplicationIT {
 
   @Container
   static PostgreSQLContainer<?> database =
-      new PostgreSQLContainer<>("postgres:16.1")
+      new PostgreSQLContainer<>("postgres:17.2")
           .withDatabaseName("test")
           .withUsername("duke")
           .withPassword("s3cret");
 
   @Container
   static LocalStackContainer localStack =
-      new LocalStackContainer(DockerImageName.parse("localstack/localstack:2.2.0"))
+      new LocalStackContainer(DockerImageName.parse("localstack/localstack:4.5.0"))
           .withServices(SQS);
 
   // can be removed with version 0.12.17 as LocalStack now has multi-region support
