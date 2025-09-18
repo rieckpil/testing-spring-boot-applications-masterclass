@@ -133,7 +133,7 @@
     <dependency>
       <groupId>digital.pragmatech.testing</groupId>
       <artifactId>spring-test-profiler</artifactId>
-      <version>0.0.11</version>
+      <version>0.0.12</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -254,7 +254,6 @@
         <version>3.5.3</version>
         <configuration>
           <includes>
-            <include>**/*WT.java</include>
             <include>**/*IT.java</include>
           </includes>
         </configuration>
