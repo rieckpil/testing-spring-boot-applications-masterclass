@@ -1,0 +1,364 @@
+Test classes
+
+@Test
+	- normal test
+
+
+
+@BeforeEach
+	- runs before each Test, e.g. for setup
+@AfterEach
+	- runs AFTER each test, e.g. for cleaning a db, freeing resources
+
+@BeforeAll
+	- runs once before all tests
+@AfterAll
+	- runs once after all tests
+
+@DisplayName("xyz")
+	- naming a test
+
+assertions: a message can be added for reference.
+
+
+
+@Test annotation for methods, can be private, is a testcase
+
+--
+others:
+
+@ParameterizedTest
+	- test with a param.
+
+@RepeatedTest(5) -> for multiple executions
+
+
+multiple options:
+--
+@EnumSource
+@MethodSource
+@ValueSource
+@CsvFileSource(resources= "fileonclasspath");
+
+e.g.:
+  @ParameterizedTest
+  @CsvFileSource(resources = "/badReview.csv")
+  void shouldFailWhenReviewIsBadQuality(String review){
+    assertFalse(doesReviewMeetQualityStandard(review));
+  }
+
+  this will take "badReview" as input and for each line check if assertFalse(...)
+
+ -- dependency injection
+
+ 1. in test:
+ void shouldFailWhenReviewIsBadQuality(@RandomReview String review)
+ 2. write extensionclass (implements ParameterResolver) and implement methods
+	supportsParameter -> parameterContext.isAnnotated(RandomReview.class)
+		-> this will be used when RandomReview is annotated for injection
+	resolveParameter
+		-> what do do when it happens. e.g. return a random index from a list
+
+ 3. in same class:
+
+  @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.PARAMETER)
+    public @interface RandomReview {
+        // This annotation can be used to mark parameters that should be resolved by this extension
+    }
+ 4. base test class needs: @ExtendWith(RandomReviewParameterResolverExtension.class)
+
+ ---------- Mocking -----------
+
+ We need to mock every bean that the class we wanna test depends on.
+ We mock them because we assume they work correctly.
+ @Mock
+ This means: we tell Mockito how the mocked classes should behave based on some input
+
+
+
+ with @InjectMocks we inject the class that is being tested!
+
+ important verifies:
+ verifyNoInteractions(mock1, mock2..)
+	- e.g. we can check if a component is never used. e.g. if a method returns at the beginning (with wrong input etc..)
+	and never calls a repository method, this will pass the test
+verify(bookRepository, Mockito.times(0)).save(Mockito.any());
+	-> this means "bookRepository.save(any-argument)" is called 0 times
+
+
+we can "simulate" what a mocked method does:
+when(method).then(invoication -> {
+	Class arg = invoication.getArgument(0);
+	arg.setId(1L);
+}
+
+e.g. for the book (see shouldStoreBookWhenNewAndValid) -> there it will set id to 1, which can be seen in logs
+
+@Captor<class> can help getting the "real" object!
+see shouldStoreBookWhenNewAndValid
+
+
+--------- HAMCREST -------------
+is also a testing librarty for assertions.
+We can write:
+MatcherAssert.assertThat("message to show when fails", parameter, Matcher);
+e.g.
+MatcherAssert.assertThat("review is bad!", isReviewGood, matchers.equalsTo(true));
+-> checks if isReviewGood == true, shows "Review is bad!" otherwise
+MatcherAssert.assertThat("I am string", Matchers.endsWith("string");
+-> checks if string ends with the given argument
+MatcherAssert.assertThat(List.of(1,2,3), Matchers.hasSize(3));
+-> self explainatory
+and so on, very extremely powerful!
+
+
+-------- AssertJ ----------------
+also assertion library
+use the org.assertJ!
+
+Assertions.assertThat(argument).withFailMessage("show message when fails").condition();
+
+condition can be anything like isEqualTo, isTrue and they can be chained
+
+-------- JSONAssert --------
+
+can be used for JSON payload!
+ JSONAssert.assertEquals("{'name': 'John'}", result, false );
+ first parameter: what to check for
+ second paramter: what to check
+ third: how "strict".
+	false = not strict, will pass if p1 is somewhere in p2
+	true = very strict, only pass if exactly same
+
+
+----- JSON PATH---
+can be used with other assertion tests to validate Jsons even better
+e.g.
+Assertions.assertEquals(3, JsonPath.parse(result).read("$['hobbies'].length()", Long.class));
+-> check if lengh of "hobbies" in json is 3
+
+there is more info about this on
+github.com/json-path/JsonPath
+
+
+------- DB Test ------------
+with JPA ONLY the db part can be tested
+JPA kenn ma eh schon..
+für entity definitionen
+
+inlcude h2 db in pom
+@DataJpaTest (above class) -> testing db layer
+	properties can be overwritten to use in memory db (faster)
+
+
+
+see ReviewRepositoryTest
+
+Autowire:
+	- entityManager
+	- dataSource
+	- repo to test
+	- testEntityManager -> like entityManager but with a subset of useful test-methods
+
+@Transactional -> rollback after each test
+
+
+---- replace in memory database
+try to get as close to prod as possible
+
+- use a Postgres DB with docker
+with the @Container anotation and the PostGreSQLContainer the postgresql can be simulated
+it also automatically manages the lifecycle which can be checked by "docker ps"
+
+this can be done manually:
+	- comment out "testcontainers and Containers"
+	- add a static block (see testclass)
+
+preopulate database:
+add @Sql annotation, e.g. for arguments: executionPhase (before/After) or scripts = "path To a script";
+
+
+---------------- WEB LAYER ---------------------------
+
+see BookControllerTest
+
+Testing Rest Endpoints
+We will use Mocking
+benefits need to be considered.
+e.g. in the BookController it wouldn't make much sense, as we could only mock the getAllBooks and check if getAvailableBooks
+returns this list of mocked bocks.
+BUT we could test that the correct endpoint is called. Or check the correct exception, bean validation etc.
+
+
+
+annotation:
+@WebMvcTest(classname.class)
+only apply configuration relevant to this test ( a subset of the application)
+@Import(irgendwas.class) -> imports whole bean, but then the other classes in this bean need to be mocked with mockBean!
+
+@MockBean
+this mocks the whole bean
+
+@Autowired
+MockMvc mockMvc; -> very important! this enables talking to the REST Layer
+e.g.
+MockMvcResult result =
+ this.mockMvc
+      .perform(MockMvcRequestBuilders.get("/api/books")
+      .header("Accept", "application/json"))
+      .andExpect(MockMvcResultMatchers.status().isOk())
+      .andDo(MockMvcResultHandlers.print())
+      .andReturn();
+---> all get on api/books, set headers, check if status is ok, print the result and store it in result;
+
+
+
+providing auth can be done multiple ways:
+- @WithMockUser above the test method. 	-> getReviewStatistics_shouldReturnStatisticsWhenUserIsAuthorizedWithMockUser
+- with(user()) 							-> getReviewStatistics_shouldReturnStatisticsWhenUserIsAuthorizedWithWithUser
+- with(jwt()) 						-> getReviewStatistics_shouldReturnStatisticsWhenUserIsAuthorizedWithWithJwt
+also others like oidc, httpBasic...... work all the same in with!
+
+
+
+@WIthMockUser can mock e.g. roles or users (e.g. if a endpoint can only be accessed by moderator:
+ @WithMockUser("roles=moderator")
+
+
+
+
+ ------ Testing HTTP Clients --------------
+
+ @RestClientTest(class.class)
+ OpenLibraryRestTemplateApiClient
+
+
+
+
+class needs to extend RestTemplateBuilder, testing RestClients without setting anything else up like Server etc but use external service instead
+
+
+we can also simulate server errors
+
+- mockwebserver
+
+<dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>mockwebserver</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+
+
+-------- test business logic --------------
+there are multiple tests, each tests a specific "slice" of the application, while it mocks others
+
+makes lotta sense when there are many "paths" (if/else etc) in a method
+
+example: ReviewService:
+how to we provide the external Serivces/Repos etc? It's needed in Constructing a ReviewService
+
+1. make real implementation (hard)
+
+2. just mock them! (easy, but no spring context)
+-> we will do that
+
+one mock for each class we need.
+
+
+@Mock -> this is what is being mocked
+
+@InjectMocks -> Where to inject the mocks into.
+
+in this case the ReviewService, as it needs those mocks!! BOOOOOFFF
+
+
+
+------test any application slice without spring context------------
+
+here: SQS queue
+no spring support yet
+
+outaded
+
+
+----- Test with whole Spring Context -----------
+
+
+
+setup:
+
+@SpringBootTest
+@ActiveProfiles("integrationtest") -> like local etc, it's the yaml
+class BookSynchronizationListenerIntegrationTest
+
+we also define some of the containers by hand
+
+
+
+--- Testing whole Application aka Integration Test ----------
+
+BookSynchronizationListenerIT
+
+- creating integration Test profile
+	use ActiveProfiles annotation
+	a application-[name of profile].yml needs to exist
+	copy old yml
+	some values will be overwritten
+just look at the class to see everything
+
+
+
+we have now a abstract AbstractIntegrationClass to have setup in one place
+
+-> BookSynchronizationListenerRefactoredIT
+much nicer!
+
+or ReviewControllerIT
+
+TDD: first write new test, then create endpoint
+
+
+
+---- Writing Web Tests --------
+expensive but valuable
+E2E / AcceptanceTests
+
+Selenium to react with Frontend
+
+we want to do the whole workflow
+
+user logs in -> creates a review for existing book -> go to their own review
+ReviewCreationWT
+setup in AbstractWebTest
+
+first create other profile
+
+we will use Selenide to write tests!
+
+it builds on top of Selenium
+
+
+
+--- Best Practices ---
+- Defining Test Strategy
+A system always has different components
+	- classes that talk to remote systems (Webtest)
+	- classes with no others collaborators (UNIT)
+	- classes with some collaborators  (Integrations)
+
+some are easier to test, some are harder
+e.g. if a class depends on something, it needs to be mocked
+
+there needs to be a definition in a team
+
+
+Annotations to use
+
+Integartion -> SpringBoot
+UnitTests +  Spring -> DataJPA, WebMVC
+UnitTests only -> JUnit and Mockito
+
+
+- Naming Conventions
