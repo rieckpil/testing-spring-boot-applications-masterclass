@@ -129,7 +129,12 @@
       <version>${p6spy.version}</version>
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>io.github.wouter-bauweraerts</groupId>
+      <artifactId>unit-socializer-junit-mockito</artifactId>
+      <version>1.0.0</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>digital.pragmatech.testing</groupId>
       <artifactId>spring-test-profiler</artifactId>
