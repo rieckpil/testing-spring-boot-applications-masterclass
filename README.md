@@ -267,3 +267,60 @@ services:
 ```
 
 Next, start everything with `docker-compose up` and watch the following video to [configure Keycloak manually](https://vimeo.com/458246315).
+
+## Working Behind a Corporate Proxy
+
+If you're working behind a corporate proxy, you may need to configure proxy settings for Maven, npm, and the AWS SDK to ensure proper connectivity.
+
+### Maven Proxy Configuration
+
+Add the following to your `~/.m2/settings.xml` file (create it if it doesn't exist):
+
+```xml
+<settings>
+  <proxies>
+    <proxy>
+      <id>corporate-proxy-https</id>
+      <active>true</active>
+      <protocol>https</protocol>
+      <host>your-proxy-host.company.com</host>
+      <port>8080</port>
+      <username>your-username</username>  <!-- Optional -->
+      <password>your-password</password>  <!-- Optional -->
+      <nonProxyHosts>localhost|127.0.0.1|*.local</nonProxyHosts>
+    </proxy>
+  </proxies>
+</settings>
+```
+
+### npm Proxy Configuration
+
+Configure npm to use your corporate proxy:
+
+```bash
+npm config set proxy http://your-proxy-host.company.com:8080
+npm config set https-proxy http://your-proxy-host.company.com:8080
+
+# If authentication is required
+npm config set proxy http://username:password@your-proxy-host.company.com:8080
+npm config set https-proxy http://username:password@your-proxy-host.company.com:8080
+
+# Verify configuration
+npm config get proxy
+npm config get https-proxy
+```
+
+### AWS SDK Proxy Configuration (LocalStack Connection)
+
+When running the application, the AWS SDK may attempt to route localhost connections (to LocalStack) through your corporate proxy, which will fail. To prevent this, add the following JVM argument when starting the application:
+
+```bash
+# Using Maven
+./mvnw spring-boot:run -Dspring-boot.run.jvmArguments="-Dhttp.nonProxyHosts='localhost|127.0.0.1|::1|*.local'"
+
+# Using java -jar
+java -Dhttp.nonProxyHosts="localhost|127.0.0.1|::1|*.local" -jar target/application.jar
+
+# In IntelliJ IDEA: Run > Edit Configurations > VM options
+-Dhttp.nonProxyHosts="localhost|127.0.0.1|::1|*.local"
+```
