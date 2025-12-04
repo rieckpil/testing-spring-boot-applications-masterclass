@@ -27,7 +27,7 @@
     <selenide.version>7.9.3</selenide.version>
     <selenium.version>4.33.0</selenium.version>
     <commons-lang3.version>3.17.0</commons-lang3.version>
-    <okhttp.version>4.11.0</okhttp.version>
+    <okhttp.version>4.12.0</okhttp.version>
   </properties>
 
   <dependencyManagement>
