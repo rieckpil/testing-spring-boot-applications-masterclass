@@ -312,7 +312,9 @@ npm config get https-proxy
 
 ### AWS SDK Proxy Configuration (LocalStack Connection)
 
-When running the application, the AWS SDK may attempt to route localhost connections (to LocalStack) through your corporate proxy, which will fail. To prevent this, add the following JVM argument when starting the application:
+When running the application, the AWS SDK may attempt to route localhost connections (to LocalStack) through your corporate proxy, which may will fail.
+
+To prevent this, add the following JVM argument when starting the application:
 
 ```bash
 # Using Maven
