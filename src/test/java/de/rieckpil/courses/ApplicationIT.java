@@ -33,7 +33,7 @@ class ApplicationIT {
 
   @Container
   static PostgreSQLContainer<?> database =
-      new PostgreSQLContainer<>("postgres:17.2")
+      new PostgreSQLContainer<>("postgres:17.7")
           .withDatabaseName("test")
           .withUsername("duke")
           .withPassword("s3cret");
