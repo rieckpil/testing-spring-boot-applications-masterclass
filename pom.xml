@@ -20,7 +20,7 @@
     <java.version>21</java.version>
     <node.version>v18.16.0</node.version>
     <spring-cloud-aws.version>3.4.0</spring-cloud-aws.version>
-    <testcontainers.version>1.21.1</testcontainers.version>
+    <testcontainers.version>1.21.3</testcontainers.version>
     <wiremock.version>3.13.0</wiremock.version>
     <p6spy.version>3.9.1</p6spy.version>
     <mockito.version>5.11.0</mockito.version>
@@ -133,7 +133,7 @@
     <dependency>
       <groupId>digital.pragmatech.testing</groupId>
       <artifactId>spring-test-profiler</artifactId>
-      <version>0.0.11</version>
+      <version>0.0.13</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -251,10 +251,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.5.3</version>
+        <version>3.5.4</version>
         <configuration>
           <includes>
-            <include>**/*WT.java</include>
             <include>**/*IT.java</include>
           </includes>
         </configuration>
