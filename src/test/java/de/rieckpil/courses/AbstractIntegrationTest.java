@@ -34,7 +34,7 @@ import org.testcontainers.localstack.LocalStackContainer;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
-import static org.testcontainers.localstack.LocalStackContainer.Service.SQS;
+import static com.amazonaws.regions.ServiceAbbreviations.SQS;
 
 @ActiveProfiles("integration-test")
 @ContextConfiguration(initializers = WireMockInitializer.class)
@@ -70,7 +70,7 @@ public abstract class AbstractIntegrationTest {
     registry.add("sqs.book-synchronization-queue", () -> QUEUE_NAME);
     registry.add("spring.cloud.aws.credentials.secret-key", () -> "foo");
     registry.add("spring.cloud.aws.credentials.access-key", () -> "bar");
-    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpointOverride(SQS));
+    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpoint());
   }
 
   @Autowired private ReviewRepository reviewRepository;

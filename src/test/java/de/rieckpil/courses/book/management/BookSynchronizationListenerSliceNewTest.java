@@ -23,7 +23,7 @@ import org.testcontainers.utility.DockerImageName;
 import static org.awaitility.Awaitility.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.testcontainers.localstack.LocalStackContainer.Service.SQS;
+import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
 @SqsTest(BookSynchronizationListener.class)
 @Testcontainers(disabledWithoutDocker = true)
@@ -35,7 +35,7 @@ class BookSynchronizationListenerSliceNewTest {
   @Container
   static LocalStackContainer localStack =
       new LocalStackContainer(DockerImageName.parse("localstack/localstack:4.9.2"))
-          .withServices(LocalStackContainer.Service.SQS)
+          .withServices(SQS.getLocalStackName())
           .withLogConsumer(new Slf4jLogConsumer(LOG));
 
   private static final String QUEUE_NAME = UUID.randomUUID().toString();
@@ -52,7 +52,7 @@ class BookSynchronizationListenerSliceNewTest {
     registry.add("spring.cloud.aws.credentials.secret-key", () -> "foo");
     registry.add("spring.cloud.aws.credentials.access-key", () -> "bar");
     registry.add("spring.cloud.aws.region.static", () -> localStack.getRegion());
-    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpointOverride(SQS).toString());
+    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpoint().toString());
   }
 
   @Autowired private BookSynchronizationListener cut;

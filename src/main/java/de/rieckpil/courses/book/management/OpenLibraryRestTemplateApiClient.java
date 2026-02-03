@@ -4,14 +4,14 @@ import java.time.Duration;
 import java.util.Collections;
 
 import org.springframework.boot.restclient.RestTemplateBuilder;
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.node.ObjectNode;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ObjectNode;
 
 @Component
 public class OpenLibraryRestTemplateApiClient {
@@ -22,8 +22,8 @@ public class OpenLibraryRestTemplateApiClient {
     this.restTemplate =
         restTemplateBuilder
             .rootUri("https://openlibrary.org")
-            .setConnectTimeout(Duration.ofSeconds(2))
-            .setReadTimeout(Duration.ofSeconds(2))
+            .clientSettings(
+                settings -> settings.withTimeouts(Duration.ofSeconds(2), Duration.ofSeconds(2)))
             .build();
   }
 
@@ -59,7 +59,8 @@ public class OpenLibraryRestTemplateApiClient {
     book.setAuthor(content.get("authors").get(0).get("name").asString());
     book.setPublisher(content.get("publishers").get(0).get("name").asString("n.A."));
     book.setPages(content.get("number_of_pages").asLong(0));
-    book.setDescription(content.get("notes") == null ? "n.A" : content.get("notes").asString("n.A."));
+    book.setDescription(
+        content.get("notes") == null ? "n.A" : content.get("notes").asString("n.A."));
     book.setGenre(
         content.get("subjects") == null
             ? "n.A"

@@ -2,11 +2,11 @@ package de.rieckpil.courses.book.management;
 
 import java.time.Duration;
 
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.util.retry.Retry;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ObjectNode;
 
 @Component
 public class OpenLibraryApiClient {
@@ -48,7 +48,8 @@ public class OpenLibraryApiClient {
     book.setAuthor(content.get("authors").get(0).get("name").asString());
     book.setPublisher(content.get("publishers").get(0).get("name").asString("n.A."));
     book.setPages(content.get("number_of_pages").asLong(0));
-    book.setDescription(content.get("notes") == null ? "n.A" : content.get("notes").asString("n.A."));
+    book.setDescription(
+        content.get("notes") == null ? "n.A" : content.get("notes").asString("n.A."));
     book.setGenre(
         content.get("subjects") == null
             ? "n.A"

@@ -32,7 +32,7 @@ import static org.awaitility.Awaitility.given;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.testcontainers.localstack.LocalStackContainer.Service.SQS;
+import static org.testcontainers.containers.localstack.LocalStackContainer.*;
 
 @ExtendWith(SpringExtension.class)
 @Import(BookSynchronizationListener.class)
@@ -52,7 +52,7 @@ class BookSynchronizationListenerSliceTest {
   @Container
   static LocalStackContainer localStack =
       new LocalStackContainer(DockerImageName.parse("localstack/localstack:4.9.2"))
-          .withServices(LocalStackContainer.Service.SQS)
+          .withServices(Service.SQS.getLocalStackName())
           // can be removed with version 0.12.17 as LocalStack now has multi-region support
           // https://docs.localstack.cloud/localstack/configuration/#deprecated
           // .withEnv("DEFAULT_REGION", "eu-central-1")
@@ -72,7 +72,7 @@ class BookSynchronizationListenerSliceTest {
     registry.add("spring.cloud.aws.credentials.secret-key", () -> "foo");
     registry.add("spring.cloud.aws.credentials.access-key", () -> "bar");
     registry.add("spring.cloud.aws.region.static", () -> localStack.getRegion());
-    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpointOverride(SQS).toString());
+    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpoint().toString());
   }
 
   @Autowired private BookSynchronizationListener cut;
