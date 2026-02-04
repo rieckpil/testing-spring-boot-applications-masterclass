@@ -27,12 +27,12 @@ jobs:
           cache-dependency-path: src/frontend/package-lock.json
 
       - name: Build project
-        timeout-minutes: 15
+        id: build
         continue-on-error: true
         run: ./mvnw verify --no-transfer-progress
 
       - name: Flatten Selenide Screenshots and HTML source code on failure
-        if: ${{ failure() }}
+        if: ${{ always() && steps.build.outcome == 'failure' }}
         working-directory: target
         env:
           SOURCE_FOLDER: selenide-screenshots
@@ -49,7 +49,11 @@ jobs:
 
       - name: Archive Selenide outcome on failure
         uses: actions/upload-artifact@v4
-        if: ${{ failure() }}
+        if: ${{ always() && steps.build.outcome == 'failure' }}
         with:
           name: selenide-failure-captures
           path: target/aggregated-outcome
+
+      - name: Fail pipeline if build failed
+        if: ${{ steps.build.outcome == 'failure' }}
+        run: exit 1
