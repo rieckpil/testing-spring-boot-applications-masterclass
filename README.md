@@ -125,6 +125,8 @@ Even though the technical setup for your day-to-day projects might differ, the t
 
 `code-along` branch: [![Build & Test Maven Project (code-along)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg?branch=code-along)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions/workflows/maven.yml?query=branch%3Acode-along)
 
+`spring-boot-3` branch: Keeping the Spring Boot 3 version alive for those who are still on Spring Boot 3 and want to learn testing with that version.
+
 * [Course Landing Page with FAQ](https://rieckpil.de/testing-spring-boot-applications-masterclass/#FAQ)
 * [Course Overview](https://rieckpil.de/courses/testing-spring-boot-applications-masterclass/)
 * [Course Login](https://rieckpil.de/wp-login.php)
