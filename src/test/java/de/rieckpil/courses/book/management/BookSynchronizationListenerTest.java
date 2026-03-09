@@ -13,6 +13,7 @@ import static org.mockito.Mockito.*;
 class BookSynchronizationListenerTest {
 
   private static final String VALID_ISBN = "1234567891234";
+
   @Mock private BookRepository bookRepository;
 
   @Mock private OpenLibraryApiClient openLibraryApiClient;

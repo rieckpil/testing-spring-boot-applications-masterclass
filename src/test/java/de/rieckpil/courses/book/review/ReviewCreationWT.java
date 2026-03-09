@@ -21,8 +21,8 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.selenium.BrowserWebDriverContainer;
 import org.testcontainers.utility.DockerImageName;
 
 import static com.codeborne.selenide.Selenide.*;
@@ -51,15 +51,14 @@ class ReviewCreationWT extends AbstractWebTest {
   }
 
   @Container
-  static BrowserWebDriverContainer<?> webDriverContainer =
-      new BrowserWebDriverContainer<>(
+  static BrowserWebDriverContainer webDriverContainer =
+      new BrowserWebDriverContainer(
               // Workaround to allow running the tests on an Apple M1
               System.getProperty("os.arch").equals("aarch64")
                   ? DockerImageName.parse("seleniarm/standalone-chromium:latest")
                       .asCompatibleSubstituteFor("selenium/standalone-chrome")
                   : DockerImageName.parse("selenium/standalone-chrome:latest"))
-          .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, new File("./target"))
-          .withCapabilities(CHROME_OPTIONS);
+          .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, new File("./target"));
 
   private static final String ISBN = "9780321751041";
 

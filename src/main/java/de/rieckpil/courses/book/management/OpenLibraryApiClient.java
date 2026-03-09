@@ -2,11 +2,11 @@ package de.rieckpil.courses.book.management;
 
 import java.time.Duration;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.util.retry.Retry;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ObjectNode;
 
 @Component
 public class OpenLibraryApiClient {
@@ -43,16 +43,17 @@ public class OpenLibraryApiClient {
   private Book convertToBook(String isbn, JsonNode content) {
     Book book = new Book();
     book.setIsbn(isbn);
-    book.setThumbnailUrl(content.get("cover").get("small").asText());
-    book.setTitle(content.get("title").asText());
-    book.setAuthor(content.get("authors").get(0).get("name").asText());
-    book.setPublisher(content.get("publishers").get(0).get("name").asText("n.A."));
+    book.setThumbnailUrl(content.get("cover").get("small").asString());
+    book.setTitle(content.get("title").asString());
+    book.setAuthor(content.get("authors").get(0).get("name").asString());
+    book.setPublisher(content.get("publishers").get(0).get("name").asString("n.A."));
     book.setPages(content.get("number_of_pages").asLong(0));
-    book.setDescription(content.get("notes") == null ? "n.A" : content.get("notes").asText("n.A."));
+    book.setDescription(
+        content.get("notes") == null ? "n.A" : content.get("notes").asString("n.A."));
     book.setGenre(
         content.get("subjects") == null
             ? "n.A"
-            : content.get("subjects").get(0).get("name").asText("n.A."));
+            : content.get("subjects").get(0).get("name").asString("n.A."));
     return book;
   }
 }

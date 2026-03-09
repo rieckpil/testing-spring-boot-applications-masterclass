@@ -16,23 +16,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.localstack.LocalStackContainer;
 import org.testcontainers.utility.DockerImageName;
 
 import static org.awaitility.Awaitility.given;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
+import static org.testcontainers.containers.localstack.LocalStackContainer.*;
 
 @ExtendWith(SpringExtension.class)
 @Import(BookSynchronizationListener.class)
@@ -52,7 +52,7 @@ class BookSynchronizationListenerSliceTest {
   @Container
   static LocalStackContainer localStack =
       new LocalStackContainer(DockerImageName.parse("localstack/localstack:4.9.2"))
-          .withServices(LocalStackContainer.Service.SQS)
+          .withServices(Service.SQS.getLocalStackName())
           // can be removed with version 0.12.17 as LocalStack now has multi-region support
           // https://docs.localstack.cloud/localstack/configuration/#deprecated
           // .withEnv("DEFAULT_REGION", "eu-central-1")
@@ -72,16 +72,16 @@ class BookSynchronizationListenerSliceTest {
     registry.add("spring.cloud.aws.credentials.secret-key", () -> "foo");
     registry.add("spring.cloud.aws.credentials.access-key", () -> "bar");
     registry.add("spring.cloud.aws.region.static", () -> localStack.getRegion());
-    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpointOverride(SQS).toString());
+    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpoint().toString());
   }
 
   @Autowired private BookSynchronizationListener cut;
 
   @Autowired private SqsTemplate sqsTemplate;
 
-  @MockBean private BookRepository bookRepository;
+  @MockitoBean private BookRepository bookRepository;
 
-  @MockBean private OpenLibraryApiClient openLibraryApiClient;
+  @MockitoBean private OpenLibraryApiClient openLibraryApiClient;
 
   @Test
   void shouldStartSQS() {

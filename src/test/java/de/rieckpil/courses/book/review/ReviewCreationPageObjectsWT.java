@@ -19,8 +19,8 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.selenium.BrowserWebDriverContainer;
 import org.testcontainers.utility.DockerImageName;
 
 class ReviewCreationPageObjectsWT extends AbstractWebTest {
@@ -35,15 +35,14 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
   ReviewListPage reviewListPage = new ReviewListPage();
 
   @Container
-  static BrowserWebDriverContainer<?> webDriverContainer =
-      new BrowserWebDriverContainer<>(
+  static BrowserWebDriverContainer webDriverContainer =
+      new BrowserWebDriverContainer(
               // Workaround to allow running the tests on an Apple M1
               System.getProperty("os.arch").equals("aarch64")
                   ? DockerImageName.parse("seleniarm/standalone-firefox:latest")
                       .asCompatibleSubstituteFor("selenium/standalone-firefox")
                   : DockerImageName.parse("selenium/standalone-firefox:latest"))
-          .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, new File("./target"))
-          .withCapabilities(new FirefoxOptions());
+          .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, new File("./target"));
 
   private static final String ISBN = "9780321751041";
 

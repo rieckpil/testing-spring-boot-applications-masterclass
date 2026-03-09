@@ -14,16 +14,16 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.localstack.LocalStackContainer;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
+import static com.amazonaws.regions.ServiceAbbreviations.SQS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
 @Testcontainers(disabledWithoutDocker = true)
 @ActiveProfiles({"default", "integration-test"})
@@ -32,8 +32,8 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 class ApplicationIT {
 
   @Container
-  static PostgreSQLContainer<?> database =
-      new PostgreSQLContainer<>("postgres:17.2")
+  static PostgreSQLContainer database =
+      new PostgreSQLContainer("postgres:17.2")
           .withDatabaseName("test")
           .withUsername("duke")
           .withPassword("s3cret");
@@ -57,7 +57,7 @@ class ApplicationIT {
     registry.add("sqs.book-synchronization-queue", () -> QUEUE_NAME);
     registry.add("spring.cloud.aws.credentials.secret-key", () -> "foo");
     registry.add("spring.cloud.aws.credentials.access-key", () -> "bar");
-    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpointOverride(SQS));
+    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpoint());
   }
 
   @Autowired private BookRepository bookRepository;
