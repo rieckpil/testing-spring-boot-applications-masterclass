@@ -18,6 +18,9 @@ spring:
     aws:
       region:
         static: eu-central-1
+  testcontainers:
+    beans:
+      startup: parallel
 
 clients:
   open-library:
