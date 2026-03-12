@@ -36,6 +36,12 @@ public class TestcontainersConfig {
               String.format(
                   "http://%s:%d/auth/realms/spring",
                   keycloakContainer.getHost(), keycloakContainer.getMappedPort(8080)));
+      properties.add(
+          "keycloak.auth-server-url",
+          () ->
+              String.format(
+                  "http://%s:%d/auth",
+                  keycloakContainer.getHost(), keycloakContainer.getMappedPort(8080)));
     };
   }
 

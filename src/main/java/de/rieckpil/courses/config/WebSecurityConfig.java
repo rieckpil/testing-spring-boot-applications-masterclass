@@ -26,6 +26,8 @@ public class WebSecurityConfig {
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/books/reviews")
                     .permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/config")
+                    .permitAll()
                     .requestMatchers("/api/**")
                     .authenticated()
                     .requestMatchers(EndpointRequest.to(HealthEndpoint.class))
