@@ -24,6 +24,9 @@ jobs:
           java-version: 21
           cache: maven
 
+      - name: Make docker-compose available on PATH
+        run: sudo ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
+
       - name: Start application and verify actuator health
         run: |
           ./mvnw spring-boot:run -DskipTests --no-transfer-progress &
@@ -48,6 +51,9 @@ jobs:
           distribution: temurin
           java-version: 21
           cache: maven
+
+      - name: Make docker-compose available on PATH
+        run: sudo ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
 
       - name: Start application via Testcontainers and verify actuator health
         run: |

@@ -26,6 +26,9 @@ jobs:
           cache: npm
           cache-dependency-path: src/frontend/package-lock.json
 
+      - name: Make docker-compose available on PATH
+        run: sudo ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
+
       - name: Build project
         id: build
         continue-on-error: true
