@@ -11,7 +11,6 @@ import com.codeborne.selenide.WebDriverRunner;
 import de.rieckpil.courses.AbstractWebTest;
 import de.rieckpil.courses.book.management.Book;
 import de.rieckpil.courses.book.management.BookRepository;
-import org.apache.commons.lang3.SystemUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +20,8 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.testcontainers.Testcontainers;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.selenium.BrowserWebDriverContainer;
 import org.testcontainers.utility.DockerImageName;
@@ -34,6 +35,8 @@ class ReviewCreationWT extends AbstractWebTest {
   @Autowired private BookRepository bookRepository;
 
   @Autowired private ReviewRepository reviewRepository;
+
+  @LocalServerPort private int port;
 
   private static final LoggingPreferences LOG_PREFERENCES;
   private static final ChromeOptions CHROME_OPTIONS;
@@ -61,19 +64,24 @@ class ReviewCreationWT extends AbstractWebTest {
           .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, new File("./target"));
 
   private static final String ISBN = "9780321751041";
+  private static final boolean isLocalExecution = System.getenv("CI") == null;
 
   @BeforeEach
   void setup() {
     Configuration.timeout = 2000;
-    // TODO: Improve platform independence, see Testcontainers.exposeHostPorts
-    // https://rieckpil.de/write-concise-web-tests-with-selenide-for-java-projects/
-    Configuration.baseUrl =
-        SystemUtils.IS_OS_LINUX ? "http://172.17.0.1:8080" : "http://host.docker.internal:8080";
+    Configuration.headless = false;
 
-    RemoteWebDriver remoteWebDriver =
-        new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), CHROME_OPTIONS, false);
-    remoteWebDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-    WebDriverRunner.setWebDriver(remoteWebDriver);
+    if (isLocalExecution) {
+      Configuration.baseUrl = "http://localhost:" + port;
+    } else {
+      Testcontainers.exposeHostPorts(port);
+      Configuration.baseUrl = "http://host.testcontainers.internal:" + port;
+
+      RemoteWebDriver remoteWebDriver =
+          new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), CHROME_OPTIONS, false);
+      remoteWebDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+      WebDriverRunner.setWebDriver(remoteWebDriver);
+    }
 
     createBook();
   }

@@ -6,6 +6,9 @@ on:
   workflow_dispatch:
   push:
 
+permissions:
+  contents: read
+
 jobs:
   verify-spring-boot-run:
     runs-on: ubuntu-24.04

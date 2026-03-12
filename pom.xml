@@ -307,6 +307,7 @@
         <configuration>
           <includes>
             <include>**/*IT.java</include>
+            <include>**/*WT.java</include>
           </includes>
         </configuration>
         <executions>

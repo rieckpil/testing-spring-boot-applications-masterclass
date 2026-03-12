@@ -12,13 +12,14 @@ import de.rieckpil.courses.pages.DashboardPage;
 import de.rieckpil.courses.pages.LoginPage;
 import de.rieckpil.courses.pages.NewReviewPage;
 import de.rieckpil.courses.pages.ReviewListPage;
-import org.apache.commons.lang3.SystemUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.testcontainers.Testcontainers;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.selenium.BrowserWebDriverContainer;
 import org.testcontainers.utility.DockerImageName;
@@ -28,6 +29,8 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
   @Autowired private BookRepository bookRepository;
 
   @Autowired private ReviewRepository reviewRepository;
+
+  @LocalServerPort private int port;
 
   DashboardPage dashboardPage = new DashboardPage();
   LoginPage loginPage = new LoginPage();
@@ -45,19 +48,23 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
           .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, new File("./target"));
 
   private static final String ISBN = "9780321751041";
+  private static final boolean isLocalExecution = System.getenv("CI") == null;
 
   @BeforeEach
   void setup() {
     Configuration.timeout = 2000;
-    // TODO: Improve platform independence, see Testcontainers.exposeHostPorts
-    // https://rieckpil.de/write-concise-web-tests-with-selenide-for-java-projects/
-    Configuration.baseUrl =
-        SystemUtils.IS_OS_LINUX ? "http://172.17.0.1:8080" : "http://host.docker.internal:8080";
 
-    RemoteWebDriver remoteWebDriver =
-        new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), new FirefoxOptions(), false);
-    remoteWebDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-    WebDriverRunner.setWebDriver(remoteWebDriver);
+    if (isLocalExecution) {
+      Configuration.baseUrl = "http://localhost:" + port;
+    } else {
+      Testcontainers.exposeHostPorts(port);
+      Configuration.baseUrl = "http://host.testcontainers.internal:" + port;
+
+      RemoteWebDriver remoteWebDriver =
+          new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), new FirefoxOptions(), false);
+      remoteWebDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+      WebDriverRunner.setWebDriver(remoteWebDriver);
+    }
   }
 
   @AfterEach
