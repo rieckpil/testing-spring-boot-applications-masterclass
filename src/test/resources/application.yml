@@ -3,12 +3,13 @@ spring:
     password: test
     username: test
     url: jdbc:postgresql://localhost:5432/postgres
+# The following attributes will be set dynamically by our tests
   security:
     oauth2:
       resourceserver:
         jwt:
-          public-key-location: classpath:id_rsa.pub
-        #issuer-uri: http://localhost:8888/auth/realms/spring
+#          public-key-location: classpath:id_rsa.pub
+          issuer-uri: http://localhost:8888/auth/realms/spring
   jpa:
     hibernate:
       ddl-auto: validate
@@ -21,10 +22,16 @@ spring:
   testcontainers:
     beans:
       startup: parallel
+  docker:
+    compose:
+      enabled: false # to showchase Testcontainers during development
 
 clients:
   open-library:
     base-url: https://localhost:8080/shouldNotBeUsed
+
+keycloak:
+  auth-server-url: http://localhost:8888/auth
 
 sqs:
   book-synchronization-queue: test-default

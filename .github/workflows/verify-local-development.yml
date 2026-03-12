@@ -1,0 +1,52 @@
+name: Verify Local Spring Boot Startup
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+  push:
+
+jobs:
+  verify-spring-boot-run:
+    runs-on: ubuntu-24.04
+    name: Verify spring-boot:run startup
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+
+      - name: Start application and verify actuator health
+        run: |
+          ./mvnw spring-boot:run -DskipTests --no-transfer-progress &
+          timeout 180 .github/workflows/health-check.sh 8080
+
+      - name: Stop infrastructure
+        if: always()
+        run: |
+          docker compose logs
+          docker compose down
+
+  verify-spring-boot-test-run:
+    runs-on: ubuntu-24.04
+    name: Verify spring-boot:test-run startup
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+
+      - name: Start application via Testcontainers and verify actuator health
+        run: |
+          ./mvnw spring-boot:test-run -DskipTests --no-transfer-progress &
+          timeout 300 .github/workflows/health-check.sh 8080
