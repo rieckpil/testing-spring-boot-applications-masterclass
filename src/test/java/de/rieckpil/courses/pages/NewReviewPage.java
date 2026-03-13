@@ -27,18 +27,12 @@ public class NewReviewPage {
         .perform();
     actions.moveToElement($$("#book-rating > i").get(rating).getWrappedElement()).click().perform();
 
-    typeValue("#review-title", reviewTitle);
-    typeValue("#review-content", reviewContent);
+    // sendKeysToElement reliably fires browser input events that React's onChange handles
+    $("#review-title").sendKeys(reviewTitle);
+    $("#review-content").sendKeys(reviewContent);
 
     $("#review-submit").click(usingJavaScript());
     $(".ui .success").should(Condition.appear);
     return this;
-  }
-
-  private void typeValue(String cssSelector, String value) {
-    // Use Actions.sendKeys to generate real keyboard events that React's onChange handles reliably
-    // across all Chrome/Firefox versions. The JS native-value-setter approach breaks on newer
-    // Chrome (145+) due to changes in how synthetic events interact with React's event system.
-    new Actions(getWebDriver()).click($(cssSelector).getWrappedElement()).sendKeys(value).perform();
   }
 }

@@ -2,6 +2,8 @@ package de.rieckpil.courses.book.review;
 
 import java.io.File;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
@@ -13,7 +15,7 @@ import de.rieckpil.courses.book.management.BookRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +41,28 @@ class ReviewCreationWT extends AbstractWebTest {
 
   @LocalServerPort private int port;
 
+  private static final ChromeOptions CHROME_OPTIONS;
+
+  static {
+    CHROME_OPTIONS = new ChromeOptions();
+    CHROME_OPTIONS.addArguments("--no-sandbox");
+    CHROME_OPTIONS.addArguments("--disable-dev-shm-usage");
+    CHROME_OPTIONS.addArguments("--remote-allow-origins=*");
+    // Prevent Chrome's "Save password?" bubble from intercepting clicks
+    Map<String, Object> prefs = new HashMap<>();
+    prefs.put("credentials_enable_service", false);
+    prefs.put("profile.password_manager_enabled", false);
+    CHROME_OPTIONS.setExperimentalOption("prefs", prefs);
+  }
+
   @Container
   static BrowserWebDriverContainer webDriverContainer =
       new BrowserWebDriverContainer(
               // Workaround to allow running the tests on an Apple M1
               System.getProperty("os.arch").equals("aarch64")
-                  ? DockerImageName.parse("seleniarm/standalone-firefox:4.33.0")
-                      .asCompatibleSubstituteFor("selenium/standalone-firefox")
-                  : DockerImageName.parse("selenium/standalone-firefox:4.33.0"))
+                  ? DockerImageName.parse("seleniarm/standalone-chromium:4.33.0")
+                      .asCompatibleSubstituteFor("selenium/standalone-chrome")
+                  : DockerImageName.parse("selenium/standalone-chrome:4.33.0"))
           .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, new File("./target"))
           .withAccessToHost(true);
 
@@ -60,7 +76,7 @@ class ReviewCreationWT extends AbstractWebTest {
     Configuration.baseUrl = "http://host.testcontainers.internal:" + port;
 
     RemoteWebDriver remoteWebDriver =
-        new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), new FirefoxOptions(), false);
+        new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), CHROME_OPTIONS, false);
     remoteWebDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     WebDriverRunner.setWebDriver(remoteWebDriver);
 
@@ -113,22 +129,18 @@ class ReviewCreationWT extends AbstractWebTest {
     actions.moveToElement($$(".visible .menu > div").get(0).getWrappedElement()).click().perform();
     actions.moveToElement($$("#book-rating > i").get(4).getWrappedElement()).click().perform();
 
-    typeValue("#review-title", "Great Book about Software Development with Java!");
-    typeValue(
-        "#review-content",
-        "I really enjoyed reading this book. It contains great examples and discusses also advanced topics.");
+    // sendKeysToElement (WebDriver element command) reliably fires browser input events that
+    // React's onChange handles. The Actions.performActions command does not fire input events
+    // consistently in Chrome 115+. Fields start empty so no clear() is needed.
+    $("#review-title").sendKeys("Great Book about Software Development with Java!");
+    $("#review-content")
+        .sendKeys(
+            "I really enjoyed reading this book. It contains great examples and discusses also advanced topics.");
 
     screenshot("before_submit_review");
 
     $("#review-submit").click(usingJavaScript());
     $(".ui .success").should(Condition.appear);
-  }
-
-  private void typeValue(String cssSelector, String value) {
-    // Use Actions.sendKeys to generate real keyboard events that React's onChange handles reliably
-    // across all Chrome/Chromium versions. The JS native-value-setter approach breaks on newer
-    // Chrome (145+) due to changes in how synthetic events interact with React's event system.
-    new Actions(getWebDriver()).click($(cssSelector).getWrappedElement()).sendKeys(value).perform();
   }
 
   private void performLogin() {

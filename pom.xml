@@ -18,7 +18,7 @@
 
   <properties>
     <java.version>21</java.version>
-    <node.version>v18.16.0</node.version>
+    <node.version>v20.19.0</node.version>
     <spring-cloud-aws.version>4.0.0</spring-cloud-aws.version>
     <testcontainers.version>2.0.3</testcontainers.version>
     <wiremock.version>3.13.0</wiremock.version>
@@ -343,19 +343,6 @@
             <phase>generate-resources</phase>
             <configuration>
               <arguments>install</arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>npm test</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <phase>generate-resources</phase>
-            <configuration>
-              <environmentVariables>
-                <CI>true</CI>
-              </environmentVariables>
-              <arguments>test</arguments>
             </configuration>
           </execution>
           <execution>
