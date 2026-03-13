@@ -6,7 +6,6 @@ import org.openqa.selenium.interactions.Actions;
 import static com.codeborne.selenide.ClickOptions.usingJavaScript;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.executeJavaScript;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class NewReviewPage {
@@ -28,23 +27,18 @@ public class NewReviewPage {
         .perform();
     actions.moveToElement($$("#book-rating > i").get(rating).getWrappedElement()).click().perform();
 
-    setReactInputValue("#review-title", reviewTitle);
-    setReactInputValue("#review-content", reviewContent);
+    typeValue("#review-title", reviewTitle);
+    typeValue("#review-content", reviewContent);
 
     $("#review-submit").click(usingJavaScript());
     $(".ui .success").should(Condition.appear);
     return this;
   }
 
-  private void setReactInputValue(String cssSelector, String value) {
-    executeJavaScript(
-        "var el = document.querySelector(arguments[0]);"
-            + "var proto = el.tagName === 'TEXTAREA'"
-            + "  ? window.HTMLTextAreaElement.prototype"
-            + "  : window.HTMLInputElement.prototype;"
-            + "Object.getOwnPropertyDescriptor(proto, 'value').set.call(el, arguments[1]);"
-            + "el.dispatchEvent(new Event('input', { bubbles: true }));",
-        cssSelector,
-        value);
+  private void typeValue(String cssSelector, String value) {
+    // Use Actions.sendKeys to generate real keyboard events that React's onChange handles reliably
+    // across all Chrome/Firefox versions. The JS native-value-setter approach breaks on newer
+    // Chrome (145+) due to changes in how synthetic events interact with React's event system.
+    new Actions(getWebDriver()).click($(cssSelector).getWrappedElement()).sendKeys(value).perform();
   }
 }

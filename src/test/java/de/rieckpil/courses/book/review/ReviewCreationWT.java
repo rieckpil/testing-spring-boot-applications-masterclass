@@ -32,7 +32,6 @@ import org.testcontainers.utility.DockerImageName;
 import static com.codeborne.selenide.ClickOptions.usingJavaScript;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.executeJavaScript;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.screenshot;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
@@ -73,9 +72,9 @@ class ReviewCreationWT extends AbstractWebTest {
       new BrowserWebDriverContainer(
               // Workaround to allow running the tests on an Apple M1
               System.getProperty("os.arch").equals("aarch64")
-                  ? DockerImageName.parse("seleniarm/standalone-chromium:latest")
+                  ? DockerImageName.parse("seleniarm/standalone-chromium:4.33.0")
                       .asCompatibleSubstituteFor("selenium/standalone-chrome")
-                  : DockerImageName.parse("selenium/standalone-chrome:latest"))
+                  : DockerImageName.parse("selenium/standalone-chrome:4.33.0"))
           .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, new File("./target"))
           .withAccessToHost(true);
 
@@ -146,10 +145,8 @@ class ReviewCreationWT extends AbstractWebTest {
     actions.moveToElement($$(".visible .menu > div").get(0).getWrappedElement()).click().perform();
     actions.moveToElement($$("#book-rating > i").get(4).getWrappedElement()).click().perform();
 
-    // Use the native value setter + input event — the same technique React Testing Library
-    // uses — to reliably trigger onChange on React controlled inputs on CI Chrome
-    setReactInputValue("#review-title", "Great Book about Software Development with Java!");
-    setReactInputValue(
+    typeValue("#review-title", "Great Book about Software Development with Java!");
+    typeValue(
         "#review-content",
         "I really enjoyed reading this book. It contains great examples and discusses also advanced topics.");
 
@@ -159,16 +156,11 @@ class ReviewCreationWT extends AbstractWebTest {
     $(".ui .success").should(Condition.appear);
   }
 
-  private void setReactInputValue(String cssSelector, String value) {
-    executeJavaScript(
-        "var el = document.querySelector(arguments[0]);"
-            + "var proto = el.tagName === 'TEXTAREA'"
-            + "  ? window.HTMLTextAreaElement.prototype"
-            + "  : window.HTMLInputElement.prototype;"
-            + "Object.getOwnPropertyDescriptor(proto, 'value').set.call(el, arguments[1]);"
-            + "el.dispatchEvent(new Event('input', { bubbles: true }));",
-        cssSelector,
-        value);
+  private void typeValue(String cssSelector, String value) {
+    // Use Actions.sendKeys to generate real keyboard events that React's onChange handles reliably
+    // across all Chrome/Chromium versions. The JS native-value-setter approach breaks on newer
+    // Chrome (145+) due to changes in how synthetic events interact with React's event system.
+    new Actions(getWebDriver()).click($(cssSelector).getWrappedElement()).sendKeys(value).perform();
   }
 
   private void performLogin() {
