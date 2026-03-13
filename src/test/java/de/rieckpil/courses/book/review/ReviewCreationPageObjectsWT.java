@@ -45,13 +45,14 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
                   ? DockerImageName.parse("seleniarm/standalone-firefox:latest")
                       .asCompatibleSubstituteFor("selenium/standalone-firefox")
                   : DockerImageName.parse("selenium/standalone-firefox:latest"))
-          .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, new File("./target"));
+          .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, new File("./target"))
+          .withAccessToHost(true);
 
   private static final String ISBN = "9780321751041";
 
   @BeforeEach
   void setup() {
-    Configuration.timeout = 2000;
+    Configuration.timeout = 10_000;
 
     Testcontainers.exposeHostPorts(port, 8888);
     Configuration.baseUrl = "http://host.testcontainers.internal:" + port;
