@@ -133,9 +133,11 @@ class ReviewCreationWT extends AbstractWebTest {
 
     screenshot("after_click_submit_review");
     $("#review-submit").should(Condition.appear);
-    $("#book-selection").click();
+    // Wait for the books dropdown to finish loading before clicking
+    $("#book-selection").shouldNotHave(Condition.cssClass("loading"));
+    $("#book-selection").click(usingJavaScript());
     $(".visible .menu").should(Condition.appear);
-    $$(".visible .menu > div").get(0).click();
+    $$(".visible .menu > div").get(0).click(usingJavaScript());
     $$("#book-rating > i").get(4).click();
 
     $("#review-title").val("Great Book about Software Development with Java!");
