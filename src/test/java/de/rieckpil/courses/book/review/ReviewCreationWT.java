@@ -146,6 +146,10 @@ class ReviewCreationWT extends AbstractWebTest {
     screenshot("before_submit");
 
     $("#kc-login").click();
+    // Wait for the post-login auth callback to fully settle before proceeding.
+    // #submit-review appears briefly during the redirect, but clicks made then get
+    // overridden when the React app completes the callback and navigates to #/.
+    $("button.ui.red").should(Condition.appear);
   }
 
   private void createBook() {
