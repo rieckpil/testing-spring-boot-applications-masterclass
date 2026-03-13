@@ -28,6 +28,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.selenium.BrowserWebDriverContainer;
 import org.testcontainers.utility.DockerImageName;
 
+import static com.codeborne.selenide.ClickOptions.usingJavaScript;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
@@ -127,7 +128,8 @@ class ReviewCreationWT extends AbstractWebTest {
 
   private void submitReview() {
     $("#submit-review").should(Condition.appear);
-    $("#submit-review").click();
+    // Use JS click to bypass any invisible overlay that intercepts WebDriver's synthetic click
+    $("#submit-review").click(usingJavaScript());
 
     screenshot("after_click_submit_review");
     $("#review-submit").should(Condition.appear);
