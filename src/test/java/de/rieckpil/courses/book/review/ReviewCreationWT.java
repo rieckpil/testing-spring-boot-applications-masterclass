@@ -2,6 +2,8 @@ package de.rieckpil.courses.book.review;
 
 import java.io.File;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 import com.codeborne.selenide.CollectionCondition;
@@ -53,6 +55,12 @@ class ReviewCreationWT extends AbstractWebTest {
     CHROME_OPTIONS.addArguments("--no-sandbox");
     CHROME_OPTIONS.addArguments("--disable-dev-shm-usage");
     CHROME_OPTIONS.addArguments("--remote-allow-origins=*");
+    // Prevent Chrome's "Save password?" and autofill bubbles from intercepting clicks
+    CHROME_OPTIONS.addArguments("--disable-infobars");
+    Map<String, Object> prefs = new HashMap<>();
+    prefs.put("credentials_enable_service", false);
+    prefs.put("profile.password_manager_enabled", false);
+    CHROME_OPTIONS.setExperimentalOption("prefs", prefs);
 
     CHROME_OPTIONS.setCapability("goog:loggingPrefs", LOG_PREFERENCES);
   }
@@ -121,6 +129,7 @@ class ReviewCreationWT extends AbstractWebTest {
     $("#submit-review").should(Condition.appear);
     $("#submit-review").click();
 
+    screenshot("after_click_submit_review");
     $("#review-submit").should(Condition.appear);
     $("#book-selection").click();
     $(".visible .menu").should(Condition.appear);
