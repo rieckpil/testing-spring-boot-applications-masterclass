@@ -123,6 +123,7 @@ class ReviewCreationWT extends AbstractWebTest {
 
     $("#review-submit").should(Condition.appear);
     $("#book-selection").click();
+    $(".visible .menu").should(Condition.appear);
     $$(".visible .menu > div").get(0).click();
     $$("#book-rating > i").get(4).click();
 

@@ -14,6 +14,7 @@ public class NewReviewPage {
 
     $("#review-submit").should(Condition.appear);
     $("#book-selection").click();
+    $(".visible .menu").should(Condition.appear);
     $$(".visible .menu > div").get(selectedBook).click();
     $$("#book-rating > i").get(rating).click();
 
