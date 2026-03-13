@@ -2,9 +2,6 @@ package de.rieckpil.courses.book.review;
 
 import java.io.File;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
 
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
@@ -16,11 +13,8 @@ import de.rieckpil.courses.book.management.BookRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.logging.LogEntry;
-import org.openqa.selenium.logging.LogType;
-import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -45,36 +39,14 @@ class ReviewCreationWT extends AbstractWebTest {
 
   @LocalServerPort private int port;
 
-  private static final LoggingPreferences LOG_PREFERENCES;
-  private static final ChromeOptions CHROME_OPTIONS;
-
-  static {
-    LOG_PREFERENCES = new LoggingPreferences();
-    LOG_PREFERENCES.enable(LogType.BROWSER, Level.ALL);
-    LOG_PREFERENCES.enable(LogType.PERFORMANCE, Level.ALL);
-
-    CHROME_OPTIONS = new ChromeOptions();
-    CHROME_OPTIONS.addArguments("--no-sandbox");
-    CHROME_OPTIONS.addArguments("--disable-dev-shm-usage");
-    CHROME_OPTIONS.addArguments("--remote-allow-origins=*");
-    // Prevent Chrome's "Save password?" and autofill bubbles from intercepting clicks
-    CHROME_OPTIONS.addArguments("--disable-infobars");
-    Map<String, Object> prefs = new HashMap<>();
-    prefs.put("credentials_enable_service", false);
-    prefs.put("profile.password_manager_enabled", false);
-    CHROME_OPTIONS.setExperimentalOption("prefs", prefs);
-
-    CHROME_OPTIONS.setCapability("goog:loggingPrefs", LOG_PREFERENCES);
-  }
-
   @Container
   static BrowserWebDriverContainer webDriverContainer =
       new BrowserWebDriverContainer(
               // Workaround to allow running the tests on an Apple M1
               System.getProperty("os.arch").equals("aarch64")
-                  ? DockerImageName.parse("seleniarm/standalone-chromium:4.33.0")
-                      .asCompatibleSubstituteFor("selenium/standalone-chrome")
-                  : DockerImageName.parse("selenium/standalone-chrome:4.33.0"))
+                  ? DockerImageName.parse("seleniarm/standalone-firefox:4.33.0")
+                      .asCompatibleSubstituteFor("selenium/standalone-firefox")
+                  : DockerImageName.parse("selenium/standalone-firefox:4.33.0"))
           .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, new File("./target"))
           .withAccessToHost(true);
 
@@ -88,7 +60,7 @@ class ReviewCreationWT extends AbstractWebTest {
     Configuration.baseUrl = "http://host.testcontainers.internal:" + port;
 
     RemoteWebDriver remoteWebDriver =
-        new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), CHROME_OPTIONS, false);
+        new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), new FirefoxOptions(), false);
     remoteWebDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     WebDriverRunner.setWebDriver(remoteWebDriver);
 
@@ -99,10 +71,6 @@ class ReviewCreationWT extends AbstractWebTest {
   void tearDown() {
     this.reviewRepository.deleteAll();
     this.bookRepository.deleteAll();
-
-    for (LogEntry logEntry : getWebDriver().manage().logs().get(LogType.BROWSER)) {
-      LOG.info(logEntry.getMessage());
-    }
   }
 
   @Test
