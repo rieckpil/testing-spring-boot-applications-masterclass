@@ -140,9 +140,13 @@ class ReviewCreationWT extends AbstractWebTest {
     $$(".visible .menu > div").get(0).click();
     $$("#book-rating > i").get(4).click();
 
-    $("#review-title").val("Great Book about Software Development with Java!");
+    // Use click+sendKeys instead of val() — val() calls clear() first which does not
+    // trigger React's onChange on CI Chrome, leaving the controlled input empty on submit
+    $("#review-title").click(usingJavaScript());
+    $("#review-title").sendKeys("Great Book about Software Development with Java!");
+    $("#review-content").click(usingJavaScript());
     $("#review-content")
-        .val(
+        .sendKeys(
             "I really enjoyed reading this book. It contains great examples and discusses also advanced topics.");
 
     screenshot("before_submit_review");

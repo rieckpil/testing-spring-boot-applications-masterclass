@@ -20,8 +20,12 @@ public class NewReviewPage {
     $$(".visible .menu > div").get(selectedBook).click();
     $$("#book-rating > i").get(rating).click();
 
-    $("#review-title").val(reviewTitle);
-    $("#review-content").val(reviewContent);
+    // Use click+sendKeys instead of val() — val() calls clear() first which does not
+    // trigger React's onChange on CI Chrome, leaving the controlled input empty on submit
+    $("#review-title").click(usingJavaScript());
+    $("#review-title").sendKeys(reviewTitle);
+    $("#review-content").click(usingJavaScript());
+    $("#review-content").sendKeys(reviewContent);
 
     $("#review-submit").click(usingJavaScript());
     $(".ui .success").should(Condition.appear);
