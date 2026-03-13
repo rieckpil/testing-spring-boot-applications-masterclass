@@ -1,10 +1,13 @@
 package de.rieckpil.courses.pages;
 
 import com.codeborne.selenide.Condition;
+import org.openqa.selenium.interactions.Actions;
 
 import static com.codeborne.selenide.ClickOptions.usingJavaScript;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.executeJavaScript;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class NewReviewPage {
 
@@ -15,20 +18,33 @@ public class NewReviewPage {
 
     $("#review-submit").should(Condition.appear);
     $("#book-selection").shouldNotHave(Condition.cssClass("loading"));
-    $("#book-selection").click(usingJavaScript());
-    $(".visible .menu").should(Condition.appear);
-    $$(".visible .menu > div").get(selectedBook).click();
-    $$("#book-rating > i").get(rating).click();
 
-    // Use click+sendKeys instead of val() — val() calls clear() first which does not
-    // trigger React's onChange on CI Chrome, leaving the controlled input empty on submit
-    $("#review-title").click(usingJavaScript());
-    $("#review-title").sendKeys(reviewTitle);
-    $("#review-content").click(usingJavaScript());
-    $("#review-content").sendKeys(reviewContent);
+    Actions actions = new Actions(getWebDriver());
+    actions.moveToElement($("#book-selection").getWrappedElement()).click().perform();
+    $(".visible .menu").should(Condition.appear);
+    actions
+        .moveToElement($$(".visible .menu > div").get(selectedBook).getWrappedElement())
+        .click()
+        .perform();
+    actions.moveToElement($$("#book-rating > i").get(rating).getWrappedElement()).click().perform();
+
+    setReactInputValue("#review-title", reviewTitle);
+    setReactInputValue("#review-content", reviewContent);
 
     $("#review-submit").click(usingJavaScript());
     $(".ui .success").should(Condition.appear);
     return this;
+  }
+
+  private void setReactInputValue(String cssSelector, String value) {
+    executeJavaScript(
+        "var el = document.querySelector(arguments[0]);"
+            + "var proto = el.tagName === 'TEXTAREA'"
+            + "  ? window.HTMLTextAreaElement.prototype"
+            + "  : window.HTMLInputElement.prototype;"
+            + "Object.getOwnPropertyDescriptor(proto, 'value').set.call(el, arguments[1]);"
+            + "el.dispatchEvent(new Event('input', { bubbles: true }));",
+        cssSelector,
+        value);
   }
 }

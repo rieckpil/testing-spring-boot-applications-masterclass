@@ -17,6 +17,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
@@ -31,6 +32,7 @@ import org.testcontainers.utility.DockerImageName;
 import static com.codeborne.selenide.ClickOptions.usingJavaScript;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.executeJavaScript;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.screenshot;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
@@ -135,24 +137,38 @@ class ReviewCreationWT extends AbstractWebTest {
     $("#review-submit").should(Condition.appear);
     // Wait for the books dropdown to finish loading before clicking
     $("#book-selection").shouldNotHave(Condition.cssClass("loading"));
-    $("#book-selection").click(usingJavaScript());
-    $(".visible .menu").should(Condition.appear);
-    $$(".visible .menu > div").get(0).click();
-    $$("#book-rating > i").get(4).click();
 
-    // Use click+sendKeys instead of val() — val() calls clear() first which does not
-    // trigger React's onChange on CI Chrome, leaving the controlled input empty on submit
-    $("#review-title").click(usingJavaScript());
-    $("#review-title").sendKeys("Great Book about Software Development with Java!");
-    $("#review-content").click(usingJavaScript());
-    $("#review-content")
-        .sendKeys(
-            "I really enjoyed reading this book. It contains great examples and discusses also advanced topics.");
+    // Actions fires the full mouse event sequence (mousemove→mousedown→mouseup→click)
+    // that Semantic UI needs to properly open the dropdown and trigger onChange
+    Actions actions = new Actions(getWebDriver());
+    actions.moveToElement($("#book-selection").getWrappedElement()).click().perform();
+    $(".visible .menu").should(Condition.appear);
+    actions.moveToElement($$(".visible .menu > div").get(0).getWrappedElement()).click().perform();
+    actions.moveToElement($$("#book-rating > i").get(4).getWrappedElement()).click().perform();
+
+    // Use the native value setter + input event — the same technique React Testing Library
+    // uses — to reliably trigger onChange on React controlled inputs on CI Chrome
+    setReactInputValue("#review-title", "Great Book about Software Development with Java!");
+    setReactInputValue(
+        "#review-content",
+        "I really enjoyed reading this book. It contains great examples and discusses also advanced topics.");
 
     screenshot("before_submit_review");
 
     $("#review-submit").click(usingJavaScript());
     $(".ui .success").should(Condition.appear);
+  }
+
+  private void setReactInputValue(String cssSelector, String value) {
+    executeJavaScript(
+        "var el = document.querySelector(arguments[0]);"
+            + "var proto = el.tagName === 'TEXTAREA'"
+            + "  ? window.HTMLTextAreaElement.prototype"
+            + "  : window.HTMLInputElement.prototype;"
+            + "Object.getOwnPropertyDescriptor(proto, 'value').set.call(el, arguments[1]);"
+            + "el.dispatchEvent(new Event('input', { bubbles: true }));",
+        cssSelector,
+        value);
   }
 
   private void performLogin() {
