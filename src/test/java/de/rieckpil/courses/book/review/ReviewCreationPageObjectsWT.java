@@ -48,23 +48,18 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
           .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, new File("./target"));
 
   private static final String ISBN = "9780321751041";
-  private static final boolean isLocalExecution = System.getenv("CI") == null;
 
   @BeforeEach
   void setup() {
     Configuration.timeout = 2000;
 
-    if (isLocalExecution) {
-      Configuration.baseUrl = "http://localhost:" + port;
-    } else {
-      Testcontainers.exposeHostPorts(port);
-      Configuration.baseUrl = "http://host.testcontainers.internal:" + port;
+    Testcontainers.exposeHostPorts(port, 8888);
+    Configuration.baseUrl = "http://host.testcontainers.internal:" + port;
 
-      RemoteWebDriver remoteWebDriver =
-          new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), new FirefoxOptions(), false);
-      remoteWebDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-      WebDriverRunner.setWebDriver(remoteWebDriver);
-    }
+    RemoteWebDriver remoteWebDriver =
+        new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), new FirefoxOptions(), false);
+    remoteWebDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+    WebDriverRunner.setWebDriver(remoteWebDriver);
   }
 
   @AfterEach

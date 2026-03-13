@@ -528,16 +528,10 @@
     "clientAuthenticatorType": "client-secret",
     "secret": "bd6d4e0d-da42-4201-8020-4168cdc810e3",
     "redirectUris": [
-      "http://localhost:8080/*",
-      "http://localhost:3000/*",
-      "http://172.17.0.1:8080/*",
-      "http://host.docker.internal:8080/*"
+      "*"
     ],
     "webOrigins": [
-      "http://localhost:8080",
-      "http://localhost:3000",
-      "http://172.17.0.1:8080",
-      "http://host.docker.internal:8080"
+      "*"
     ],
     "notBefore": 0,
     "bearerOnly": false,

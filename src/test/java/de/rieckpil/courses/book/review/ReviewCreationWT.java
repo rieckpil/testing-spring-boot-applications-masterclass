@@ -26,7 +26,10 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.selenium.BrowserWebDriverContainer;
 import org.testcontainers.utility.DockerImageName;
 
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.screenshot;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -44,6 +47,7 @@ class ReviewCreationWT extends AbstractWebTest {
   static {
     LOG_PREFERENCES = new LoggingPreferences();
     LOG_PREFERENCES.enable(LogType.BROWSER, Level.ALL);
+    LOG_PREFERENCES.enable(LogType.PERFORMANCE, Level.ALL);
 
     CHROME_OPTIONS = new ChromeOptions();
     CHROME_OPTIONS.addArguments("--no-sandbox");
@@ -65,26 +69,18 @@ class ReviewCreationWT extends AbstractWebTest {
           .withAccessToHost(true);
 
   private static final String ISBN = "9780321751041";
-  private static final boolean isCiExecution = System.getenv("CI") != null;
 
   @BeforeEach
   void setup() {
-    Configuration.timeout = 2000;
-    Configuration.headless = false;
+    Configuration.timeout = 10_000;
 
-    if (isCiExecution) {
-      Configuration.baseUrl = "http://localhost:" + port;
-    } else {
-      Testcontainers.exposeHostPorts(port);
-      boolean isMac = System.getProperty("os.name").toLowerCase().contains("mac");
-      String hostName = isMac ? "host.docker.internal" : "host.testcontainers.internal";
-      Configuration.baseUrl = "http://" + hostName + ":" + port;
+    Testcontainers.exposeHostPorts(port, 8888);
+    Configuration.baseUrl = "http://host.testcontainers.internal:" + port;
 
-      RemoteWebDriver remoteWebDriver =
-          new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), CHROME_OPTIONS, false);
-      remoteWebDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-      WebDriverRunner.setWebDriver(remoteWebDriver);
-    }
+    RemoteWebDriver remoteWebDriver =
+        new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), CHROME_OPTIONS, false);
+    remoteWebDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+    WebDriverRunner.setWebDriver(remoteWebDriver);
 
     createBook();
   }
