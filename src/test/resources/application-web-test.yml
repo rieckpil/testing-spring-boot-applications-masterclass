@@ -18,6 +18,9 @@ spring:
       region:
         static: eu-central-1
 
+keycloak:
+  auth-server-url: http://host.docker.internal:8888/auth
+
 clients:
   open-library:
     base-url: OVERRIDEN_BY_TEST

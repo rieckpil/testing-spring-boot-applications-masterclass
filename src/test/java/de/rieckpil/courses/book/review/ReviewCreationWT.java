@@ -61,21 +61,24 @@ class ReviewCreationWT extends AbstractWebTest {
                   ? DockerImageName.parse("seleniarm/standalone-chromium:latest")
                       .asCompatibleSubstituteFor("selenium/standalone-chrome")
                   : DockerImageName.parse("selenium/standalone-chrome:latest"))
-          .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, new File("./target"));
+          .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, new File("./target"))
+          .withAccessToHost(true);
 
   private static final String ISBN = "9780321751041";
-  private static final boolean isLocalExecution = System.getenv("CI") == null;
+  private static final boolean isCiExecution = System.getenv("CI") != null;
 
   @BeforeEach
   void setup() {
     Configuration.timeout = 2000;
     Configuration.headless = false;
 
-    if (isLocalExecution) {
+    if (isCiExecution) {
       Configuration.baseUrl = "http://localhost:" + port;
     } else {
       Testcontainers.exposeHostPorts(port);
-      Configuration.baseUrl = "http://host.testcontainers.internal:" + port;
+      boolean isMac = System.getProperty("os.name").toLowerCase().contains("mac");
+      String hostName = isMac ? "host.docker.internal" : "host.testcontainers.internal";
+      Configuration.baseUrl = "http://" + hostName + ":" + port;
 
       RemoteWebDriver remoteWebDriver =
           new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), CHROME_OPTIONS, false);

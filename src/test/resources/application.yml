@@ -3,7 +3,6 @@ spring:
     password: test
     username: test
     url: jdbc:postgresql://localhost:5432/postgres
-# The following attributes will be set dynamically by our tests
   security:
     oauth2:
       resourceserver:
@@ -24,7 +23,7 @@ spring:
       startup: parallel
   docker:
     compose:
-      enabled: false # to showchase Testcontainers during development
+      enabled: false # to showcase Testcontainers during development
 
 clients:
   open-library:
