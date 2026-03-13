@@ -137,7 +137,7 @@ class ReviewCreationWT extends AbstractWebTest {
     $("#book-selection").shouldNotHave(Condition.cssClass("loading"));
     $("#book-selection").click(usingJavaScript());
     $(".visible .menu").should(Condition.appear);
-    $$(".visible .menu > div").get(0).click(usingJavaScript());
+    $$(".visible .menu > div").get(0).click();
     $$("#book-rating > i").get(4).click();
 
     $("#review-title").val("Great Book about Software Development with Java!");
@@ -147,7 +147,7 @@ class ReviewCreationWT extends AbstractWebTest {
 
     screenshot("before_submit_review");
 
-    $("#review-submit").click();
+    $("#review-submit").click(usingJavaScript());
     $(".ui .success").should(Condition.appear);
   }
 

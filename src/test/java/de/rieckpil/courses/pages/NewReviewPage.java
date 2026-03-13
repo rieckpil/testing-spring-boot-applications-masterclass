@@ -17,13 +17,13 @@ public class NewReviewPage {
     $("#book-selection").shouldNotHave(Condition.cssClass("loading"));
     $("#book-selection").click(usingJavaScript());
     $(".visible .menu").should(Condition.appear);
-    $$(".visible .menu > div").get(selectedBook).click(usingJavaScript());
+    $$(".visible .menu > div").get(selectedBook).click();
     $$("#book-rating > i").get(rating).click();
 
     $("#review-title").val(reviewTitle);
     $("#review-content").val(reviewContent);
 
-    $("#review-submit").click();
+    $("#review-submit").click(usingJavaScript());
     $(".ui .success").should(Condition.appear);
     return this;
   }
