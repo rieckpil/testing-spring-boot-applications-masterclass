@@ -1,6 +1,7 @@
 import Keycloak from "keycloak-js";
 import {Store} from "redux";
 import {login} from "./actions";
+import {AuthenticationActionTypes, RootState} from "./types";
 
 export const keycloak = new Keycloak({
     "realm": "spring",
@@ -9,7 +10,7 @@ export const keycloak = new Keycloak({
   }
 );
 
-export const initKeycloak = (onInitCallback: Function, store: Store) => {
+export const initKeycloak = (onInitCallback: Function, store: Store<RootState, AuthenticationActionTypes>) => {
   keycloak.init({
     onLoad: 'check-sso',
   }).then(authenticated => {

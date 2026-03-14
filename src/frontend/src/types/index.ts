@@ -21,12 +21,10 @@ export interface LoginPayload {
 interface LoginAction {
   type: typeof LOGIN
   payload: LoginPayload
-  [key: string]: unknown
 }
 
 interface LogoutAction {
   type: typeof LOGOUT
-  [key: string]: unknown
 }
 
 export type AuthenticationActionTypes = LoginAction | LogoutAction
