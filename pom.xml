@@ -183,6 +183,17 @@
       <scope>test</scope>
     </dependency> -->
     <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-testcontainers</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-docker-compose</artifactId>
+      <scope>runtime</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>testcontainers-postgresql</artifactId>
       <scope>test</scope>
@@ -297,6 +308,7 @@
         <configuration>
           <includes>
             <include>**/*IT.java</include>
+            <include>**/*WT.java</include>
           </includes>
         </configuration>
         <executions>
@@ -333,19 +345,6 @@
             <phase>generate-resources</phase>
             <configuration>
               <arguments>install</arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>npm test</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <phase>generate-resources</phase>
-            <configuration>
-              <environmentVariables>
-                <CI>true</CI>
-              </environmentVariables>
-              <arguments>test</arguments>
             </configuration>
           </execution>
           <execution>

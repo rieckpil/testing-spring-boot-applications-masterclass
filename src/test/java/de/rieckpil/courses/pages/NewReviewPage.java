@@ -1,26 +1,37 @@
 package de.rieckpil.courses.pages;
 
 import com.codeborne.selenide.Condition;
+import org.openqa.selenium.interactions.Actions;
 
+import static com.codeborne.selenide.ClickOptions.usingJavaScript;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class NewReviewPage {
 
   public NewReviewPage submitReview(
       String reviewTitle, String reviewContent, int selectedBook, int rating) {
     $("#submit-review").should(Condition.appear);
-    $("#submit-review").click();
+    $("#submit-review").click(usingJavaScript());
 
     $("#review-submit").should(Condition.appear);
-    $("#book-selection").click();
-    $$(".visible .menu > div").get(selectedBook).click();
-    $$("#book-rating > i").get(rating).click();
+    $("#book-selection").shouldNotHave(Condition.cssClass("loading"));
 
-    $("#review-title").val(reviewTitle);
-    $("#review-content").val(reviewContent);
+    Actions actions = new Actions(getWebDriver());
+    actions.moveToElement($("#book-selection").getWrappedElement()).click().perform();
+    $(".visible .menu").should(Condition.appear);
+    actions
+        .moveToElement($$(".visible .menu > div").get(selectedBook).getWrappedElement())
+        .click()
+        .perform();
+    actions.moveToElement($$("#book-rating > i").get(rating).getWrappedElement()).click().perform();
 
-    $("#review-submit").click();
+    // sendKeysToElement reliably fires browser input events that React's onChange handles
+    $("#review-title").sendKeys(reviewTitle);
+    $("#review-content").sendKeys(reviewContent);
+
+    $("#review-submit").click(usingJavaScript());
     $(".ui .success").should(Condition.appear);
     return this;
   }
