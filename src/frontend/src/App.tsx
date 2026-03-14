@@ -10,7 +10,7 @@ import AllReviewContainer from "./AllReviewContainer";
 const App: React.FC = () => {
   return (
     <Container>
-      <HashRouter>
+      <HashRouter future={{v7_startTransition: true, v7_relativeSplatPath: true}}>
         <Header/>
         <Routes>
           <Route path="/" element={<HomeContainer/>}/>

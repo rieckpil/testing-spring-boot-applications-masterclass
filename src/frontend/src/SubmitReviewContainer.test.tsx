@@ -66,7 +66,7 @@ async function renderForm(store = authenticatedStore) {
   let utils: ReturnType<typeof render>;
   await act(async () => {
     utils = render(
-      <MemoryRouter>
+      <MemoryRouter future={{v7_startTransition: true, v7_relativeSplatPath: true}}>
         <MantineProvider>
           <Provider store={store}>
             <SubmitReviewContainer/>
