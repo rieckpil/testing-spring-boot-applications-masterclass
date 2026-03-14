@@ -44,7 +44,7 @@ import static com.amazonaws.regions.ServiceAbbreviations.SQS;
 public abstract class AbstractIntegrationTest {
 
   static PostgreSQLContainer database =
-      new PostgreSQLContainer("postgres:17.2")
+      new PostgreSQLContainer("postgres:17.9")
           .withDatabaseName("test")
           .withUsername("duke")
           .withPassword("s3cret");
