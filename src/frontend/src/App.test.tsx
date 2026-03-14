@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, screen} from '@testing-library/react';
+import {render, screen, act} from '@testing-library/react';
 import {vi, beforeEach, afterEach, describe, test, expect} from 'vitest';
 import {MantineProvider} from '@mantine/core';
 import {Provider} from 'react-redux';
@@ -59,14 +59,18 @@ function mockFetch(urlResponses: Record<string, unknown>) {
   });
 }
 
-function renderApp(store = unauthenticatedStore) {
-  return render(
-    <MantineProvider>
-      <Provider store={store}>
-        <App/>
-      </Provider>
-    </MantineProvider>
-  );
+async function renderApp(store = unauthenticatedStore) {
+  let utils: ReturnType<typeof render>;
+  await act(async () => {
+    utils = render(
+      <MantineProvider>
+        <Provider store={store}>
+          <App/>
+        </Provider>
+      </MantineProvider>
+    );
+  });
+  return utils!;
 }
 
 describe('App navigation', () => {
@@ -78,31 +82,31 @@ describe('App navigation', () => {
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
   });
 
-  test('renders the Book Reviewr brand name', () => {
-    renderApp();
+  test('renders the Book Reviewr brand name', async () => {
+    await renderApp();
     expect(screen.getByText('Book Reviewr')).toBeInTheDocument();
   });
 
-  test('shows login button when unauthenticated', () => {
-    renderApp();
+  test('shows login button when unauthenticated', async () => {
+    await renderApp();
     expect(screen.getByRole('button', {name: /login/i})).toBeInTheDocument();
   });
 
-  test('shows logout button when authenticated', () => {
-    renderApp(authenticatedStore);
+  test('shows logout button when authenticated', async () => {
+    await renderApp(authenticatedStore);
     expect(screen.getByRole('button', {name: /logout/i})).toBeInTheDocument();
   });
 
-  test('renders All Reviews navigation button', () => {
-    renderApp();
+  test('renders All Reviews navigation button', async () => {
+    await renderApp();
     expect(screen.getByRole('button', {name: /all reviews/i})).toBeInTheDocument();
   });
 
-  test('renders Submit a new review navigation button', () => {
-    renderApp();
+  test('renders Submit a new review navigation button', async () => {
+    await renderApp();
     expect(screen.getByRole('button', {name: /submit a new review/i})).toBeInTheDocument();
   });
 });
@@ -116,11 +120,11 @@ describe('App home page', () => {
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
   });
 
-  test('renders section headings on home page', () => {
-    renderApp();
+  test('renders section headings on home page', async () => {
+    await renderApp();
     expect(screen.getByText('Latest books')).toBeInTheDocument();
     expect(screen.getByText('Best rated reviews')).toBeInTheDocument();
     expect(screen.getByText('Recently submitted reviews')).toBeInTheDocument();
