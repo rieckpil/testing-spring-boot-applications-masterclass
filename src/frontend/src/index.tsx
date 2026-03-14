@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {Provider} from 'react-redux';
-import {createStore, StoreEnhancer} from 'redux';
-import 'semantic-ui-css/semantic.min.css';
+import {createStore, Reducer, StoreEnhancer} from 'redux';
+import {AuthenticationActionTypes, RootState} from './types';
+import '@mantine/core/styles.css';
+import {MantineProvider} from '@mantine/core';
 
 import * as serviceWorker from './serviceWorker';
 import App from './App';
@@ -15,14 +17,20 @@ declare global {
   }
 }
 
-const store = createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
-
+// combineReducers returns Reducer<S, A, Partial<S>> (3 type params) but createStore's
+// first overload expects Reducer<S, A> (2 params, PreloadedState=S). Cast to bridge the gap.
+const store = createStore(
+  reducers as unknown as Reducer<RootState, AuthenticationActionTypes>,
+  window.__REDUX_DEVTOOLS_EXTENSION__?.()
+);
 
 const root = ReactDOM.createRoot(document.getElementById('root')!!);
 
 const renderApp = () => root.render(
   <Provider store={store}>
-    <App/>
+    <MantineProvider>
+      <App/>
+    </MantineProvider>
   </Provider>
 );
 
