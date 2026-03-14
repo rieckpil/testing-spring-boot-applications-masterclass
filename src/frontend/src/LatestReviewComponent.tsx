@@ -1,6 +1,7 @@
 import React from "react";
-import {Button, Container, Header, Item, Segment} from "semantic-ui-react";
-import {Link} from "react-router-dom";
+import {ActionIcon, Container, Group, Paper, Stack, Title} from "@mantine/core";
+import {useNavigate} from "react-router-dom";
+import {IconPlus} from "@tabler/icons-react";
 import {BookReview} from "./types";
 import BookReviewComponent from "./BookReviewComponent";
 
@@ -10,18 +11,18 @@ type Props = {
 }
 
 const LatestReviewComponent: React.FC<Props> = ({recentReviews, bestRatedReviews}) => {
+  const navigate = useNavigate();
+
   return (
-    <Container style={{marginTop: '20px'}}>
-      <Header as='h2' textAlign='center'>Best rated reviews</Header>
-      <Segment>
-        <Button
-          as={Link}
-          floated='right'
-          to='/submit-review'
-          size='tiny'
-          circular
-          icon='add'/>
-        <Item.Group>
+    <Container mt="md">
+      <Title order={2} ta="center" mb="md">Best rated reviews</Title>
+      <Paper withBorder p="md" mb="xl">
+        <Group justify="flex-end" mb="sm">
+          <ActionIcon variant="filled" radius="xl" onClick={() => navigate('/submit-review')}>
+            <IconPlus size={16}/>
+          </ActionIcon>
+        </Group>
+        <Stack>
           {bestRatedReviews.map((review, index) =>
             <BookReviewComponent
               key={index}
@@ -38,18 +39,16 @@ const LatestReviewComponent: React.FC<Props> = ({recentReviews, bestRatedReviews
               submittedAt={review.submittedAt}
             />
           )}
-        </Item.Group>
-      </Segment>
-      <Header as='h2' textAlign='center'>Recently submitted reviews</Header>
-      <Segment>
-        <Button
-          as={Link}
-          floated='right'
-          to='/submit-review'
-          size='tiny'
-          circular
-          icon='add'/>
-        <Item.Group>
+        </Stack>
+      </Paper>
+      <Title order={2} ta="center" mb="md">Recently submitted reviews</Title>
+      <Paper withBorder p="md">
+        <Group justify="flex-end" mb="sm">
+          <ActionIcon variant="filled" radius="xl" onClick={() => navigate('/submit-review')}>
+            <IconPlus size={16}/>
+          </ActionIcon>
+        </Group>
+        <Stack>
           {recentReviews.map((review, index) =>
             <BookReviewComponent
               key={index}
@@ -66,8 +65,8 @@ const LatestReviewComponent: React.FC<Props> = ({recentReviews, bestRatedReviews
               submittedAt={review.submittedAt}
             />
           )}
-        </Item.Group>
-      </Segment>
+        </Stack>
+      </Paper>
     </Container>
   );
 }

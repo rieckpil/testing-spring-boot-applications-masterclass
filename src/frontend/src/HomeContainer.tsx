@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Container} from "semantic-ui-react";
+import {Container} from "@mantine/core";
 import LatestBookListComponent from "./LatestBookListComponent";
 import LatestReviewComponent from "./LatestReviewComponent";
 import {Book, BookReview, ReviewStatistic, RootState} from "./types";

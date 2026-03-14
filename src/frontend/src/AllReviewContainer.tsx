@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {Container, Header, Item, Message} from "semantic-ui-react";
+import {Alert, Container, Stack, Title} from "@mantine/core";
+import {IconInbox} from "@tabler/icons-react";
 import {BookReview, RootState} from "./types";
 import BookReviewComponent from "./BookReviewComponent";
 import {connect, ConnectedProps} from "react-redux";
@@ -45,32 +46,31 @@ const AllReviewContainer: React.FC<Props> = ({token, isModerator}) => {
 
   return (
     <Container>
-      <Header as='h2' textAlign='center'>Browse through all book reviews</Header>
-          {reviews.length === 0 ?
-            <Message
-            icon='inbox'
-            header='Sad news :('
-            content={<span>There are no books reviews yet. Consider <Link to='/submit-review'>adding</Link> the first.</span>}
-            /> : ''}
-      <Item.Group id='reviews' divided>
+      <Title order={2} ta="center" mb="md">Browse through all book reviews</Title>
+      {reviews.length === 0 && (
+        <Alert icon={<IconInbox/>} title="Sad news :(" color="blue" mb="md">
+          There are no book reviews yet. Consider <Link to='/submit-review'>adding</Link> the first.
+        </Alert>
+      )}
+      <Stack id="reviews">
         {reviews.map((review, index) =>
-            <BookReviewComponent
-              key={index}
-              elementId={index}
-              isModerator={isModerator ? isModerator : false}
-              onDelete={() => deleteReview(review.bookIsbn, review.reviewId)}
-              reviewId={review.reviewId}
-              reviewContent={review.reviewContent}
-              reviewTitle={review.reviewTitle}
-              rating={review.rating}
-                bookIsbn={review.bookIsbn}
-                bookTitle={review.bookTitle}
-                bookThumbnailUrl={review.bookThumbnailUrl}
-                submittedBy={review.submittedBy}
-                submittedAt={review.submittedAt}
-              />
-            )}
-          </Item.Group>
+          <BookReviewComponent
+            key={index}
+            elementId={index}
+            isModerator={isModerator ? isModerator : false}
+            onDelete={() => deleteReview(review.bookIsbn, review.reviewId)}
+            reviewId={review.reviewId}
+            reviewContent={review.reviewContent}
+            reviewTitle={review.reviewTitle}
+            rating={review.rating}
+            bookIsbn={review.bookIsbn}
+            bookTitle={review.bookTitle}
+            bookThumbnailUrl={review.bookThumbnailUrl}
+            submittedBy={review.submittedBy}
+            submittedAt={review.submittedAt}
+          />
+        )}
+      </Stack>
     </Container>
   );
 }

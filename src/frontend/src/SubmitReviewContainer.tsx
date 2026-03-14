@@ -1,20 +1,24 @@
 import React, {FormEvent, useEffect, useState} from "react";
 import {
+  Alert,
+  Box,
   Button,
   Checkbox,
   Container,
-  Dropdown,
-  Form,
-  Header,
-  Message,
+  List,
+  Paper,
   Rating,
-  RatingProps,
-  TextArea
-} from "semantic-ui-react";
+  Select,
+  Stack,
+  Text,
+  Textarea,
+  TextInput,
+  Title
+} from "@mantine/core";
+import {IconLock} from "@tabler/icons-react";
 import {Book, RootState} from "./types";
 import {connect, ConnectedProps} from "react-redux";
 import {login} from "./actions";
-import {DropdownProps} from "semantic-ui-react/dist/commonjs/modules/Dropdown/Dropdown";
 import {Link} from "react-router-dom";
 import {keycloakLogin} from "./KeycloakService";
 
@@ -32,13 +36,15 @@ const connector = connect(mapState, mapDispatch);
 type PropsFromRedux = ConnectedProps<typeof connector>
 type Props = PropsFromRedux & {}
 
+type BookOption = { value: string; label: string };
+
 const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
 
-  const [bookOptions, setBookOptions] = useState<any>();
-  const [isbn, setIsbn] = useState<string | number | boolean | (string | number | boolean)[] | undefined>("");
+  const [bookOptions, setBookOptions] = useState<BookOption[] | undefined>(undefined);
+  const [isbn, setIsbn] = useState<string | null>(null);
   const [reviewTitle, setReviewTitle] = useState("");
   const [reviewContent, setReviewContent] = useState("");
-  const [rating, setRating] = useState<number | string | undefined>(0);
+  const [rating, setRating] = useState<number>(0);
   const [confirmation, setConfirmation] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -67,7 +73,7 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
         setRating(0)
         setReviewTitle("")
         setReviewContent("")
-        setIsbn("")
+        setIsbn(null)
       } else if (result.status === 418) {
         setErrorMessage('Your review does not meet the quality standards, please read them carefully and submit again.')
       } else {
@@ -82,117 +88,113 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
     fetch('/api/books')
       .then(result => result.json())
       .then((result: Book[]) => {
-        const formattedBooks = result.map((book: Book) => {
-          return {
-            "key": book.isbn,
-            "text": `${book.title} - ${book.author}`,
-            "value": book.isbn,
-            "image": {"src": book.thumbnailUrl}
-          }
-        });
+        const formattedBooks = result.map((book: Book) => ({
+          value: book.isbn,
+          label: `${book.title} - ${book.author}`,
+        }));
         setBookOptions(formattedBooks);
       })
   }, []);
 
   return (
     <Container>
-      <Header as='h2' textAlign='center'>Submit a new book review</Header>
-      {isAuthenticated ?
-        <Form size='large' onSubmit={(e: FormEvent) => handleSubmit(e)} success={success} error={errorMessage !== ""}>
-          <Message
-            success
-            header='This was a success'
-            content={<span>You successfully submitted a <Link to='/all-reviews'>new book review</Link>.</span>}
-          />
-          <Message
-            error
-            header='There was an error'
-            content={errorMessage}
-          />
+      <Title order={2} ta="center" mb="md">Submit a new book review</Title>
+      {isAuthenticated ? (
+        <form onSubmit={handleSubmit}>
+          <Stack>
+            {success && (
+              <Alert color="green" title="This was a success">
+                You successfully submitted a <Link to='/all-reviews'>new book review</Link>.
+              </Alert>
+            )}
+            {errorMessage && (
+              <Alert color="red" title="There was an error">
+                {errorMessage}
+              </Alert>
+            )}
 
-          <Form.Dropdown
-            loading={bookOptions == null}
-            label='Select a book'
-            id='book-selection'
-            required
-            control={Dropdown}
-            placeholder='Search for a book'
-            fluid
-            clearable
-            search
-            selection
-            value={isbn}
-            onChange={(event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => setIsbn(data.value)}
-            options={bookOptions || []}
-          />
+            <Select
+              label="Select a book"
+              id="book-selection"
+              required
+              placeholder="Search for a book"
+              data={bookOptions || []}
+              value={isbn}
+              onChange={setIsbn}
+              searchable
+              clearable
+              disabled={bookOptions === undefined}
+            />
 
-          <Form.Input
-            label='Title'
-            placeholder='Enter the title of your review'
-            id='review-title'
-            value={reviewTitle}
-            onChange={(e: any) => setReviewTitle(e.target.value)}
-            required
-          />
+            <TextInput
+              label="Title"
+              placeholder="Enter the title of your review"
+              id="review-title"
+              value={reviewTitle}
+              onChange={(e) => setReviewTitle(e.target.value)}
+              required
+            />
 
-          <Form.Field
-            label='Your rating'
-            control={Rating}
-            id='book-rating'
-            icon='star'
-            size='huge'
-            rating={rating}
-            maxRating={5}
-            onRate={(event: React.MouseEvent<HTMLDivElement>, data: RatingProps) => setRating(data.rating)}
-            required
-            clearable
-          />
+            <Box>
+              <Text component="label" fw={500} size="sm">
+                Your rating <Text component="span" c="red">*</Text>
+              </Text>
+              <Rating
+                id="book-rating"
+                value={rating}
+                onChange={setRating}
+                size="xl"
+                mt={4}
+              />
+            </Box>
 
-          <Form.Field
-            control={TextArea}
-            label='Your review'
-            id='review-content'
-            placeholder='Enter your book review...'
-            value={reviewContent}
-            onChange={(e: any) => setReviewContent(e.target.value)}
-            required
-          />
+            <Textarea
+              label="Your review"
+              id="review-content"
+              placeholder="Enter your book review..."
+              value={reviewContent}
+              onChange={(e) => setReviewContent(e.target.value)}
+              required
+              minRows={4}
+            />
 
-          <Message>
-            <Message.Header>Quality standards for your review</Message.Header>
-            <Message.List>
-              <Message.Item>The review contains at least 10 words</Message.Item>
-              <Message.Item>Swear words are not allowed</Message.Item>
-              <Message.Item>Don't use 'I' or 'good' too often</Message.Item>
-            </Message.List>
-            <Button
-              type="button"
-              style={{marginTop: "5px"}}
-              onClick={() => setReviewContent("This is an excellent book. I've learned quite a lot and can recommend it to every CS student.")}>
-              Prefill review content</Button>
-          </Message>
+            <Paper withBorder p="md">
+              <Text fw={600} mb="xs">Quality standards for your review</Text>
+              <List size="sm" mb="sm">
+                <List.Item>The review contains at least 10 words</List.Item>
+                <List.Item>Swear words are not allowed</List.Item>
+                <List.Item>Don't use 'I' or 'good' too often</List.Item>
+              </List>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setReviewContent("This is an excellent book. I've learned quite a lot and can recommend it to every CS student.")}
+              >
+                Prefill review content
+              </Button>
+            </Paper>
 
-          <Form.Field
-            control={Checkbox}
-            checked={confirmation}
-            onChange={() => setConfirmation(!confirmation)}
-            label='I hereby affirm that I have read the book'
-          />
-          <Button
-            id='review-submit'
-            secondary
-            type='submit'>Submit your review
-          </Button>
-        </Form>
-        :
-        <Message
-          icon='lock'
-          header='Restricted area'
-          content={<span>To submit a new book review, please <span
-            style={{color: "rgb(30, 112, 191)", cursor: "pointer"}} onClick={() => keycloakLogin()}>login</span> first.</span>}
-        />
+            <Checkbox
+              checked={confirmation}
+              onChange={() => setConfirmation(!confirmation)}
+              label="I hereby affirm that I have read the book"
+            />
 
-      }
+            <Button id="review-submit" type="submit">
+              Submit your review
+            </Button>
+          </Stack>
+        </form>
+      ) : (
+        <Alert icon={<IconLock size={20}/>} title="Restricted area" color="blue">
+          To submit a new book review, please{' '}
+          <Text component="span" style={{color: "rgb(30, 112, 191)", cursor: "pointer"}} onClick={() => keycloakLogin()}>
+            login
+          </Text>{' '}
+          first.
+        </Alert>
+      )}
     </Container>
   );
 }

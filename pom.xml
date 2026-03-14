@@ -18,7 +18,8 @@
 
   <properties>
     <java.version>21</java.version>
-    <node.version>v20.19.0</node.version>
+    <node.version>v24.12.0</node.version>
+    <npm.version>10.9.2</npm.version>
     <spring-cloud-aws.version>4.0.0</spring-cloud-aws.version>
     <testcontainers.version>2.0.3</testcontainers.version>
     <wiremock.version>3.13.0</wiremock.version>
@@ -326,6 +327,7 @@
         <configuration>
           <workingDirectory>src/frontend</workingDirectory>
           <nodeVersion>${node.version}</nodeVersion>
+          <npmVersion>${npm.version}</npmVersion>
         </configuration>
         <executions>
           <execution>
