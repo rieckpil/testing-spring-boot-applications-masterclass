@@ -9,8 +9,7 @@
   <!-- Noisy logs when shutting down the context, connection refuse messages for LocalStack⁄ -->
   <logger name="io.awspring.cloud.sqs.listener.source" level="OFF"/>
 
-  <logger name="org.springframework.security" level="TRACE"/>
-
+  <logger name="org.springframework.security" level="INFO"/>
 
   <!-- Noisy logs when running web test -->
   <logger name="org.openqa.selenium.remote.tracing.opentelemetry" level="WARN"/>

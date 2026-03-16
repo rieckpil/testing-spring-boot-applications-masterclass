@@ -32,7 +32,7 @@ jobs:
       - name: Build project
         id: build
         continue-on-error: true
-        run: ./mvnw -Dtest='ReviewCreationWT' test --no-transfer-progress
+        run: ./mvnw verify --no-transfer-progress
 
       - name: Flatten Selenide Screenshots and HTML source code on failure
         if: ${{ always() && steps.build.outcome == 'failure' }}
