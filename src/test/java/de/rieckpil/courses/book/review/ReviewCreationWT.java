@@ -2,8 +2,6 @@ package de.rieckpil.courses.book.review;
 
 import java.io.File;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
@@ -15,7 +13,7 @@ import de.rieckpil.courses.book.management.BookRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -39,28 +37,13 @@ class ReviewCreationWT extends AbstractWebTest {
 
   @LocalServerPort private int port;
 
-  private static final ChromeOptions CHROME_OPTIONS;
-
-  static {
-    CHROME_OPTIONS = new ChromeOptions();
-    CHROME_OPTIONS.addArguments("--no-sandbox");
-    CHROME_OPTIONS.addArguments("--disable-dev-shm-usage");
-    CHROME_OPTIONS.addArguments("--remote-allow-origins=*");
-    // Prevent Chrome's "Save password?" bubble from intercepting clicks
-    Map<String, Object> prefs = new HashMap<>();
-    prefs.put("credentials_enable_service", false);
-    prefs.put("profile.password_manager_enabled", false);
-    CHROME_OPTIONS.setExperimentalOption("prefs", prefs);
-  }
-
   @Container
   static BrowserWebDriverContainer webDriverContainer =
       new BrowserWebDriverContainer(
-              // Workaround to allow running the tests on an Apple M1
               System.getProperty("os.arch").equals("aarch64")
-                  ? DockerImageName.parse("seleniarm/standalone-chromium")
-                      .asCompatibleSubstituteFor("selenium/standalone-chrome")
-                  : DockerImageName.parse("selenium/standalone-chrome"))
+                  ? DockerImageName.parse("seleniarm/standalone-firefox")
+                      .asCompatibleSubstituteFor("selenium/standalone-firefox")
+                  : DockerImageName.parse("selenium/standalone-firefox"))
           .withRecordingMode(
               "true".equals(System.getenv("CI"))
                   ? BrowserWebDriverContainer.VncRecordingMode.RECORD_FAILING
@@ -78,7 +61,7 @@ class ReviewCreationWT extends AbstractWebTest {
     Configuration.baseUrl = "http://host.testcontainers.internal:" + port;
 
     RemoteWebDriver remoteWebDriver =
-        new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), CHROME_OPTIONS, false);
+        new RemoteWebDriver(webDriverContainer.getSeleniumAddress(), new FirefoxOptions(), false);
     remoteWebDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     WebDriverRunner.setWebDriver(remoteWebDriver);
 
@@ -115,7 +98,6 @@ class ReviewCreationWT extends AbstractWebTest {
 
   private void submitReview() {
     $("#submit-review").should(Condition.appear);
-    // Use JS click to bypass any invisible overlay that intercepts WebDriver's synthetic click
     $("#submit-review").click(usingJavaScript());
 
     screenshot("after_click_submit_review");
@@ -125,8 +107,6 @@ class ReviewCreationWT extends AbstractWebTest {
 
     $$("#book-rating label").get(5).click(usingJavaScript());
 
-    // sendKeysToElement (WebDriver element command) reliably fires browser input events that
-    // React's onChange handles. Fields start empty so no clear() is needed.
     $("#review-title").sendKeys("Great Book about Software Development with Java!");
     $("#review-content")
         .sendKeys(
@@ -147,9 +127,6 @@ class ReviewCreationWT extends AbstractWebTest {
     screenshot("before_submit");
 
     $("#kc-login").click();
-    // Wait for the post-login auth callback to fully settle before proceeding.
-    // #submit-review appears briefly during the redirect, but clicks made then get
-    // overridden when the React app completes the callback and navigates to #/.
     $("#logout").should(Condition.appear);
   }
 

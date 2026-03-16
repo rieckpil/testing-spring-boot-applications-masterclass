@@ -18,7 +18,6 @@ public class NewReviewPage {
 
     $$("#book-rating label").get(rating + 1).click(usingJavaScript());
 
-    // sendKeysToElement reliably fires browser input events that React's onChange handles
     $("#review-title").sendKeys(reviewTitle);
     $("#review-content").sendKeys(reviewContent);
 
