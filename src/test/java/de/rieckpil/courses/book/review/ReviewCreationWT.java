@@ -60,9 +60,9 @@ class ReviewCreationWT extends AbstractWebTest {
       new BrowserWebDriverContainer(
               // Workaround to allow running the tests on an Apple M1
               System.getProperty("os.arch").equals("aarch64")
-                  ? DockerImageName.parse("seleniarm/standalone-chromium:4.33.0")
+                  ? DockerImageName.parse("seleniarm/standalone-chromium")
                       .asCompatibleSubstituteFor("selenium/standalone-chrome")
-                  : DockerImageName.parse("selenium/standalone-chrome:4.33.0"))
+                  : DockerImageName.parse("selenium/standalone-chrome"))
           .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, new File("./target"))
           .withAccessToHost(true);
 
@@ -119,15 +119,13 @@ class ReviewCreationWT extends AbstractWebTest {
     screenshot("after_click_submit_review");
     $("#review-submit").should(Condition.appear);
     // Wait for the books dropdown to finish loading before clicking
-    $("#book-selection").shouldNotHave(Condition.cssClass("loading"));
+    $("#book-selection").should(Condition.enabled);
 
-    // Actions fires the full mouse event sequence (mousemove→mousedown→mouseup→click)
-    // that Semantic UI needs to properly open the dropdown and trigger onChange
     Actions actions = new Actions(getWebDriver());
     actions.moveToElement($("#book-selection").getWrappedElement()).click().perform();
-    $(".visible .menu").should(Condition.appear);
-    actions.moveToElement($$(".visible .menu > div").get(0).getWrappedElement()).click().perform();
-    actions.moveToElement($$("#book-rating > i").get(4).getWrappedElement()).click().perform();
+    $("[role='option']").should(Condition.appear);
+    actions.moveToElement($$("[role='option']").get(0).getWrappedElement()).click().perform();
+    actions.moveToElement($$("#book-rating label").get(5).getWrappedElement()).click().perform();
 
     // sendKeysToElement (WebDriver element command) reliably fires browser input events that
     // React's onChange handles. The Actions.performActions command does not fire input events
@@ -140,11 +138,11 @@ class ReviewCreationWT extends AbstractWebTest {
     screenshot("before_submit_review");
 
     $("#review-submit").click(usingJavaScript());
-    $(".ui .success").should(Condition.appear);
+    $("[role='alert']").should(Condition.appear);
   }
 
   private void performLogin() {
-    $("button.ui").click();
+    $("#login").click();
     $("#kc-login").should(Condition.appear);
     $("#username").val("duke");
     $("#password").val("dukeduke");
@@ -155,7 +153,7 @@ class ReviewCreationWT extends AbstractWebTest {
     // Wait for the post-login auth callback to fully settle before proceeding.
     // #submit-review appears briefly during the redirect, but clicks made then get
     // overridden when the React app completes the callback and navigates to #/.
-    $("button.ui.red").should(Condition.appear);
+    $("#logout").should(Condition.appear);
   }
 
   private void createBook() {

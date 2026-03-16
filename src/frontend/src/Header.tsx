@@ -48,6 +48,7 @@ const Header: React.FC<Props> = ({isAuthenticated}) => {
           </Button>
           {isAuthenticated ? (
             <Button
+              id="logout"
               color="red"
               leftSection={<IconLogout size={16}/>}
               onClick={() => keycloakLogout()}

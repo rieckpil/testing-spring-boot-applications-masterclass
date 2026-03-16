@@ -16,23 +16,26 @@ public class NewReviewPage {
     $("#submit-review").click(usingJavaScript());
 
     $("#review-submit").should(Condition.appear);
-    $("#book-selection").shouldNotHave(Condition.cssClass("loading"));
+    $("#book-selection").should(Condition.enabled);
 
     Actions actions = new Actions(getWebDriver());
     actions.moveToElement($("#book-selection").getWrappedElement()).click().perform();
-    $(".visible .menu").should(Condition.appear);
+    $("[role='option']").should(Condition.appear);
     actions
-        .moveToElement($$(".visible .menu > div").get(selectedBook).getWrappedElement())
+        .moveToElement($$("[role='option']").get(selectedBook).getWrappedElement())
         .click()
         .perform();
-    actions.moveToElement($$("#book-rating > i").get(rating).getWrappedElement()).click().perform();
+    actions
+        .moveToElement($$("#book-rating label").get(rating + 1).getWrappedElement())
+        .click()
+        .perform();
 
     // sendKeysToElement reliably fires browser input events that React's onChange handles
     $("#review-title").sendKeys(reviewTitle);
     $("#review-content").sendKeys(reviewContent);
 
     $("#review-submit").click(usingJavaScript());
-    $(".ui .success").should(Condition.appear);
+    $("[role='alert']").should(Condition.appear);
     return this;
   }
 }

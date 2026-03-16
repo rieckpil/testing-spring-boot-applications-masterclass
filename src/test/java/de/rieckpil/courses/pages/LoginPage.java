@@ -7,7 +7,7 @@ import static com.codeborne.selenide.Selenide.$;
 public class LoginPage {
 
   public LoginPage performLogin(String username, String password) {
-    $("button.ui").click();
+    $("#login").click();
     $("#kc-login").should(Condition.appear);
     $("#username").val(username);
     $("#password").val(password);
