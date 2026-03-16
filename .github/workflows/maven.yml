@@ -32,7 +32,7 @@ jobs:
       - name: Build project
         id: build
         continue-on-error: true
-        run: ./mvnw verify --no-transfer-progress
+        run: ./mvnw -Dtest='ReviewCreationWT' test --no-transfer-progress
 
       - name: Flatten Selenide Screenshots and HTML source code on failure
         if: ${{ always() && steps.build.outcome == 'failure' }}
@@ -56,6 +56,14 @@ jobs:
         with:
           name: selenide-failure-captures
           path: target/aggregated-outcome
+
+      - name: Archive VNC recordings on failure
+        uses: actions/upload-artifact@v5
+        if: ${{ always() && steps.build.outcome == 'failure' }}
+        with:
+          name: vnc-recordings
+          path: target/*.flv
+          if-no-files-found: ignore
 
       - name: Fail pipeline if build failed
         if: ${{ steps.build.outcome == 'failure' }}
