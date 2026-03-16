@@ -93,6 +93,9 @@ const SubmitReviewContainer: React.FC<Props> = ({isAuthenticated, token}) => {
           label: `${book.title} - ${book.author}`,
         }));
         setBookOptions(formattedBooks);
+        if (formattedBooks.length > 0) {
+          setIsbn(formattedBooks[0].value);
+        }
       })
   }, []);
 

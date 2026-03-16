@@ -83,7 +83,7 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
 
     dashboardPage.open();
     loginPage.performLogin("duke", "dukeduke");
-    newReviewPage.submitReview(reviewTitle, reviewContent, 0, 4);
+    newReviewPage.submitReview(reviewTitle, reviewContent, 4);
     reviewListPage.shouldContainExactlyOneReview(reviewTitle, reviewContent);
   }
 

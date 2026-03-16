@@ -120,16 +120,9 @@ class ReviewCreationWT extends AbstractWebTest {
 
     screenshot("after_click_submit_review");
     $("#review-submit").should(Condition.appear);
-    // Wait for the books dropdown to finish loading before clicking
+    // Wait for the books dropdown to finish loading (first book is preselected automatically)
     $("#book-selection").should(Condition.enabled);
 
-    // Direct click opens Mantine's combobox dropdown without pointer-movement side-effects
-    // that can cause an immediate blur/close on Linux CI (unlike Actions.moveToElement).
-    $("#book-selection").click();
-    screenshot("after_book_selection_click");
-    $("[role='option']").should(Condition.appear);
-    // JS click picks the option without triggering the pointer-leave that closes the dropdown
-    $$("[role='option']").get(0).click(usingJavaScript());
     $$("#book-rating label").get(5).click(usingJavaScript());
 
     // sendKeysToElement (WebDriver element command) reliably fires browser input events that
