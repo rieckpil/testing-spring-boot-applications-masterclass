@@ -16,7 +16,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -30,7 +29,6 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.screenshot;
-import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ReviewCreationWT extends AbstractWebTest {
@@ -125,15 +123,17 @@ class ReviewCreationWT extends AbstractWebTest {
     // Wait for the books dropdown to finish loading before clicking
     $("#book-selection").should(Condition.enabled);
 
-    Actions actions = new Actions(getWebDriver());
-    actions.moveToElement($("#book-selection").getWrappedElement()).click().perform();
+    // Direct click opens Mantine's combobox dropdown without pointer-movement side-effects
+    // that can cause an immediate blur/close on Linux CI (unlike Actions.moveToElement).
+    $("#book-selection").click();
+    screenshot("after_book_selection_click");
     $("[role='option']").should(Condition.appear);
-    actions.moveToElement($$("[role='option']").get(0).getWrappedElement()).click().perform();
-    actions.moveToElement($$("#book-rating label").get(5).getWrappedElement()).click().perform();
+    // JS click picks the option without triggering the pointer-leave that closes the dropdown
+    $$("[role='option']").get(0).click(usingJavaScript());
+    $$("#book-rating label").get(5).click(usingJavaScript());
 
     // sendKeysToElement (WebDriver element command) reliably fires browser input events that
-    // React's onChange handles. The Actions.performActions command does not fire input events
-    // consistently in Chrome 115+. Fields start empty so no clear() is needed.
+    // React's onChange handles. Fields start empty so no clear() is needed.
     $("#review-title").sendKeys("Great Book about Software Development with Java!");
     $("#review-content")
         .sendKeys(

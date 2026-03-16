@@ -1,12 +1,10 @@
 package de.rieckpil.courses.pages;
 
 import com.codeborne.selenide.Condition;
-import org.openqa.selenium.interactions.Actions;
 
 import static com.codeborne.selenide.ClickOptions.usingJavaScript;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class NewReviewPage {
 
@@ -18,17 +16,10 @@ public class NewReviewPage {
     $("#review-submit").should(Condition.appear);
     $("#book-selection").should(Condition.enabled);
 
-    Actions actions = new Actions(getWebDriver());
-    actions.moveToElement($("#book-selection").getWrappedElement()).click().perform();
+    $("#book-selection").click();
     $("[role='option']").should(Condition.appear);
-    actions
-        .moveToElement($$("[role='option']").get(selectedBook).getWrappedElement())
-        .click()
-        .perform();
-    actions
-        .moveToElement($$("#book-rating label").get(rating + 1).getWrappedElement())
-        .click()
-        .perform();
+    $$("[role='option']").get(selectedBook).click(usingJavaScript());
+    $$("#book-rating label").get(rating + 1).click(usingJavaScript());
 
     // sendKeysToElement reliably fires browser input events that React's onChange handles
     $("#review-title").sendKeys(reviewTitle);
