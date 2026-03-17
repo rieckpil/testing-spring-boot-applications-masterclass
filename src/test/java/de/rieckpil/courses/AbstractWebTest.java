@@ -14,32 +14,32 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.ComposeContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @ActiveProfiles("web-test")
-@Import(TestJwtDecoderConfig.class)
 @Testcontainers(disabledWithoutDocker = true)
+@Import(WebTestJwtConfig.class)
 @ContextConfiguration(initializers = WireMockInitializer.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class AbstractWebTest {
 
   protected static Logger LOG = LoggerFactory.getLogger(AbstractWebTest.class);
 
-  public static DockerComposeContainer<?> environment =
-      new DockerComposeContainer<>(new File("docker-compose.yml"))
-          .withExposedService("database_1", 5432, Wait.forListeningPort())
+  // this requires Docker Compose v2, for v1, consider DockerComposeContainer
+  public static ComposeContainer environment =
+      new ComposeContainer(new File("docker-compose.yml"))
+          .withExposedService("database-1", 5432, Wait.forListeningPort())
           .withExposedService(
-              "keycloak_1",
+              "keycloak-1",
               8080,
               Wait.forHttp("/auth").forStatusCode(200).withStartupTimeout(Duration.ofSeconds(90)))
-          .withExposedService("sqs_1", 9324, Wait.forListeningPort())
-          .withLogConsumer("keycloak_1", new Slf4jLogConsumer(LOG))
-          .withLogConsumer("database_1", new Slf4jLogConsumer(LOG))
-          .withLogConsumer("sqs_1", new Slf4jLogConsumer(LOG))
-          .withOptions("--compatibility");
+          .withExposedService("sqs-1", 9324, Wait.forListeningPort())
+          .withLogConsumer("keycloak-1", new Slf4jLogConsumer(LOG))
+          .withLogConsumer("database-1", new Slf4jLogConsumer(LOG))
+          .withLogConsumer("sqs-1", new Slf4jLogConsumer(LOG));
 
   @RegisterExtension
   static ScreenShooterExtension screenShooterExtension =

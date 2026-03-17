@@ -2,26 +2,27 @@ package de.rieckpil.courses.pages;
 
 import com.codeborne.selenide.Condition;
 
+import static com.codeborne.selenide.ClickOptions.usingJavaScript;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 public class NewReviewPage {
 
-  public NewReviewPage submitReview(
-      String reviewTitle, String reviewContent, int selectedBook, int rating) {
+  public NewReviewPage submitReview(String reviewTitle, String reviewContent, int rating) {
     $("#submit-review").should(Condition.appear);
-    $("#submit-review").click();
+    $("#submit-review").click(usingJavaScript());
 
     $("#review-submit").should(Condition.appear);
-    $("#book-selection").click();
-    $$(".visible .menu > div").get(selectedBook).click();
-    $$("#book-rating > i").get(rating).click();
+    // Wait for the books dropdown to finish loading (first book is preselected automatically)
+    $("#book-selection").should(Condition.enabled);
 
-    $("#review-title").val(reviewTitle);
-    $("#review-content").val(reviewContent);
+    $$("#book-rating label").get(rating + 1).click(usingJavaScript());
 
-    $("#review-submit").click();
-    $(".ui .success").should(Condition.appear);
+    $("#review-title").sendKeys(reviewTitle);
+    $("#review-content").sendKeys(reviewContent);
+
+    $("#review-submit").click(usingJavaScript());
+    $("[role='alert']").should(Condition.appear);
     return this;
   }
 }

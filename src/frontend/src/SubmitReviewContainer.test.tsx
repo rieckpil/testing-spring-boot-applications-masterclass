@@ -79,10 +79,7 @@ async function renderForm(store = authenticatedStore) {
 }
 
 async function fillAndSubmitForm(user: ReturnType<typeof userEvent.setup>) {
-  // Select a book from the combobox
-  const bookCombobox = screen.getByPlaceholderText(/search for a book/i);
-  await user.click(bookCombobox);
-  await user.click(screen.getByText('Clean Code - Robert C. Martin'));
+  // First book is preselected automatically — no need to open the dropdown
 
   // Fill in the review title
   await user.type(screen.getByRole('textbox', {name: /title/i}), 'A must-read for every developer');
@@ -177,10 +174,14 @@ describe('SubmitReviewContainer — form rendering', () => {
     await renderForm();
 
     const combobox = screen.getByPlaceholderText(/search for a book/i);
+    // Click to open the dropdown, then clear the preselected label and type to filter
     await user.click(combobox);
+    await user.clear(combobox);
     await user.type(combobox, 'Effective');
 
-    expect(screen.getByText('Effective Java - Joshua Bloch')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Effective Java - Joshua Bloch')).toBeInTheDocument();
+    });
     expect(screen.queryByText('Clean Code - Robert C. Martin')).not.toBeInTheDocument();
   });
 });

@@ -20,10 +20,10 @@ import org.testcontainers.localstack.LocalStackContainer;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
-import static com.amazonaws.regions.ServiceAbbreviations.SQS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
 @Testcontainers(disabledWithoutDocker = true)
 @ActiveProfiles({"default", "integration-test"})
@@ -41,7 +41,7 @@ class ApplicationIT {
   @Container
   static LocalStackContainer localStack =
       new LocalStackContainer(DockerImageName.parse("localstack/localstack:4.9.2"))
-          .withServices(SQS);
+          .withServices(SQS.getLocalStackName());
 
   // can be removed with version 0.12.17 as LocalStack now has multi-region support
   // https://docs.localstack.cloud/localstack/configuration/#deprecated

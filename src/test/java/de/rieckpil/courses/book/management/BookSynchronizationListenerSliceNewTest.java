@@ -30,7 +30,7 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 class BookSynchronizationListenerSliceNewTest {
 
   private static final Logger LOG =
-      LoggerFactory.getLogger(BookSynchronizationListenerSliceTest.class);
+      LoggerFactory.getLogger(BookSynchronizationListenerSliceNewTest.class);
 
   @Container
   static LocalStackContainer localStack =
