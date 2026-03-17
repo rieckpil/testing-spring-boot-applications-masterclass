@@ -10,7 +10,7 @@ jobs:
     name: Check for broken links in README.md
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Set up Node
         uses: actions/setup-node@v5
