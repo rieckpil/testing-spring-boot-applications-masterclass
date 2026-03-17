@@ -57,14 +57,6 @@ jobs:
           name: selenide-failure-captures
           path: target/aggregated-outcome
 
-      - name: Archive VNC recordings on failure
-        uses: actions/upload-artifact@v5
-        if: ${{ always() && steps.build.outcome == 'failure' }}
-        with:
-          name: vnc-recordings
-          path: target/*.flv
-          if-no-files-found: ignore
-
       - name: Fail pipeline if build failed
         if: ${{ steps.build.outcome == 'failure' }}
         run: exit 1

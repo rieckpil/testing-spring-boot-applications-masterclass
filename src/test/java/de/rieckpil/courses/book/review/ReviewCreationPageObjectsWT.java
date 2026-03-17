@@ -1,6 +1,5 @@
 package de.rieckpil.courses.book.review;
 
-import java.io.File;
 import java.time.Duration;
 
 import com.codeborne.selenide.Configuration;
@@ -39,17 +38,7 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
 
   @Container
   static BrowserWebDriverContainer webDriverContainer =
-      new BrowserWebDriverContainer(
-              // Workaround to allow running the tests on an Apple M1
-              System.getProperty("os.arch").equals("aarch64")
-                  ? DockerImageName.parse("seleniarm/standalone-firefox")
-                      .asCompatibleSubstituteFor("selenium/standalone-firefox")
-                  : DockerImageName.parse("selenium/standalone-firefox"))
-          .withRecordingMode(
-              "true".equals(System.getenv("CI"))
-                  ? BrowserWebDriverContainer.VncRecordingMode.RECORD_FAILING
-                  : BrowserWebDriverContainer.VncRecordingMode.SKIP,
-              new File("./target"))
+      new BrowserWebDriverContainer(DockerImageName.parse("selenium/standalone-firefox"))
           .withAccessToHost(true);
 
   private static final String ISBN = "9780321751041";
@@ -58,6 +47,7 @@ class ReviewCreationPageObjectsWT extends AbstractWebTest {
   void setup() {
     Configuration.timeout = 10_000;
 
+    // allow access to Keycloak
     Testcontainers.exposeHostPorts(port, 8888);
     Configuration.baseUrl = "http://host.testcontainers.internal:" + port;
 
