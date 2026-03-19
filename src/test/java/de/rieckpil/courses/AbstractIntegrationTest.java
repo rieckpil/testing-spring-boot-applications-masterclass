@@ -26,30 +26,32 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webtestclient.autoconfigure.AutoConfigureWebTestClient;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.containers.localstack.LocalStackContainer;
+import org.testcontainers.localstack.LocalStackContainer;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
+@AutoConfigureWebTestClient
 @ActiveProfiles("integration-test")
 @ContextConfiguration(initializers = WireMockInitializer.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class AbstractIntegrationTest {
 
-  static PostgreSQLContainer<?> database =
-      new PostgreSQLContainer<>("postgres:17.2")
+  static PostgreSQLContainer database =
+      new PostgreSQLContainer("postgres:17.2")
           .withDatabaseName("test")
           .withUsername("duke")
           .withPassword("s3cret");
 
   static LocalStackContainer localStack =
       new LocalStackContainer(DockerImageName.parse("localstack/localstack:4.9.2"))
-          .withServices(SQS);
+          .withServices(SQS.getLocalStackName());
 
   // can be removed with version 0.12.17 as LocalStack now has multi-region support
   // https://docs.localstack.cloud/localstack/configuration/#deprecated
@@ -70,7 +72,7 @@ public abstract class AbstractIntegrationTest {
     registry.add("sqs.book-synchronization-queue", () -> QUEUE_NAME);
     registry.add("spring.cloud.aws.credentials.secret-key", () -> "foo");
     registry.add("spring.cloud.aws.credentials.access-key", () -> "bar");
-    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpointOverride(SQS));
+    registry.add("spring.cloud.aws.endpoint", () -> localStack.getEndpoint());
   }
 
   @Autowired private ReviewRepository reviewRepository;

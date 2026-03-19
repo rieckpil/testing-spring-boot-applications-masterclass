@@ -1,5 +1,5 @@
 import React from "react";
-import {Card, Container, Header} from "semantic-ui-react";
+import {Container, Stack, Title} from "@mantine/core";
 import {Book, ReviewStatistic} from "./types";
 import BookComponent from "./BookComponent";
 
@@ -11,8 +11,8 @@ type Props = {
 const LatestBookListComponent: React.FC<Props> = ({availableBooks, reviewStatistics}) => {
   return (
     <Container>
-      <Header as='h2' textAlign='center'>Latest books</Header>
-      <Card.Group itemsPerRow='1'>
+      <Title order={2} ta="center" mb="md">Latest books</Title>
+      <Stack>
         {availableBooks.map((book, index) =>
           <BookComponent
             key={index}
@@ -25,7 +25,7 @@ const LatestBookListComponent: React.FC<Props> = ({availableBooks, reviewStatist
             }}
           />
         )}
-      </Card.Group>
+      </Stack>
     </Container>
   );
 }

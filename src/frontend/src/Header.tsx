@@ -1,77 +1,73 @@
-import {Button, Icon, Menu} from "semantic-ui-react";
-import React, {useState} from "react";
-import {Link} from "react-router-dom";
+import React from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from "./types";
 import {keycloakLogin, keycloakLogout} from "./KeycloakService";
+import {Button, Group, Paper, Text} from "@mantine/core";
+import {IconLogin, IconLogout} from "@tabler/icons-react";
 
 const mapState = (state: RootState) => ({
   isAuthenticated: state.authentication.isAuthenticated
 });
 
-const connector = connect(mapState)
-type PropsFromRedux = ConnectedProps<typeof connector>
-
-type Props = PropsFromRedux & {}
+const connector = connect(mapState);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type Props = PropsFromRedux & {};
 
 const Header: React.FC<Props> = ({isAuthenticated}) => {
-  const [activeItem, setActiveItem] = useState<string>();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   return (
-    <Menu size='large' stackable>
-      <Menu.Item
-        as={Link}
-        onClick={() => setActiveItem('')}
-        to="/"
-        header>Book Reviewr</Menu.Item>
-
-      <Menu.Item
-        as={Link}
-        id='all-reviews'
-        name='allReviews'
-        active={activeItem === 'allReviews'}
-        onClick={() => setActiveItem('allReviews')}
-        to="/all-reviews"
-      />
-
-      <Menu.Menu position='right'>
-        <Menu.Item>
+    <Paper shadow="sm" p="md" mb="md">
+      <Group justify="space-between">
+        <Group>
+          <Text
+            fw={700}
+            size="lg"
+            style={{cursor: 'pointer'}}
+            onClick={() => navigate('/')}
+          >
+            Book Reviewr
+          </Text>
           <Button
-            as={Link}
+            id="all-reviews"
+            variant={location.pathname === '/all-reviews' ? 'filled' : 'subtle'}
+            onClick={() => navigate('/all-reviews')}
+          >
+            All Reviews
+          </Button>
+        </Group>
+        <Group>
+          <Button
             id="submit-review"
-            to="/submit-review"
-            onClick={() => setActiveItem('submitReview')}
-            secondary>
+            variant="filled"
+            onClick={() => navigate('/submit-review')}
+          >
             Submit a new review
           </Button>
-        </Menu.Item>
-
-        <Menu.Item>
-          {isAuthenticated ?
+          {isAuthenticated ? (
             <Button
-              color='red'
-              animated
-              onClick={() => keycloakLogout()}>
-              <Button.Content visible>Logout</Button.Content>
-              <Button.Content hidden>
-                <Icon name='sign-out'/>
-              </Button.Content>
-            </Button> :
-            <Button
-              primary
-              animated
-              id="login"
-              onClick={() => keycloakLogin()}>
-              <Button.Content visible>Login</Button.Content>
-              <Button.Content hidden>
-                <Icon name='sign-in'/>
-              </Button.Content>
+              id="logout"
+              color="red"
+              leftSection={<IconLogout size={16}/>}
+              onClick={() => keycloakLogout()}
+            >
+              Logout
             </Button>
-          }
-        </Menu.Item>
-      </Menu.Menu>
-    </Menu>
+          ) : (
+            <Button
+              id="login"
+              leftSection={<IconLogin size={16}/>}
+              onClick={() => keycloakLogin()}
+            >
+              Login
+            </Button>
+          )}
+        </Group>
+      </Group>
+    </Paper>
   );
-}
+};
 
 export default connector(Header);

@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.5.0</version>
+    <version>4.0.2</version>
     <relativePath/>
     <!-- lookup parent from repository -->
   </parent>
@@ -18,16 +18,16 @@
 
   <properties>
     <java.version>21</java.version>
-    <node.version>v18.16.0</node.version>
-    <spring-cloud-aws.version>3.4.0</spring-cloud-aws.version>
-    <testcontainers.version>1.21.3</testcontainers.version>
+    <node.version>v24.12.0</node.version>
+    <npm.version>10.9.2</npm.version>
+    <spring-cloud-aws.version>4.0.0</spring-cloud-aws.version>
+    <testcontainers.version>2.0.3</testcontainers.version>
     <wiremock.version>3.13.0</wiremock.version>
     <p6spy.version>3.9.1</p6spy.version>
     <mockito.version>5.11.0</mockito.version>
-    <selenide.version>7.9.3</selenide.version>
-    <selenium.version>4.33.0</selenium.version>
+    <selenide.version>7.14.0</selenide.version>
+    <selenium.version>4.40.0</selenium.version>
     <commons-lang3.version>3.17.0</commons-lang3.version>
-    <okhttp.version>4.11.0</okhttp.version>
   </properties>
 
   <dependencyManagement>
@@ -46,23 +46,17 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <!-- pin Spring Boot's version to avoid overrides that result in NoClassDefFoundError -->
-      <dependency>
-        <groupId>com.squareup.okhttp3</groupId>
-        <artifactId>okhttp</artifactId>
-        <version>${okhttp.version}</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
+      <artifactId>spring-boot-starter-webmvc</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-webflux</artifactId>
+      <artifactId>spring-boot-starter-webclient</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -72,6 +66,10 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-restclient</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>io.awspring.cloud</groupId>
@@ -80,15 +78,7 @@
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-security</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-oauth2-jose</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-oauth2-resource-server</artifactId>
+      <artifactId>spring-boot-starter-security-oauth2-resource-server</artifactId>
     </dependency>
 
     <dependency>
@@ -101,8 +91,8 @@
       <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-core</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-flyway</artifactId>
     </dependency>
     <!-- required module since Flyway 10 (Spring Boot 3.3) -->
     <dependency>
@@ -110,11 +100,10 @@
       <artifactId>flyway-database-postgresql</artifactId>
     </dependency>
 
-    <!-- Fix noisy ERROR log on M1 processors during startup. See https://github.com/netty/netty/issues/11020 -->
+    <!-- Fix noisy ERROR log on ARM Mac processors during startup. See https://github.com/netty/netty/issues/11020 -->
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-resolver-dns-native-macos</artifactId>
-      <version>${netty.version}</version>
       <classifier>osx-aarch_64</classifier>
     </dependency>
 
@@ -133,7 +122,7 @@
     <dependency>
       <groupId>digital.pragmatech.testing</groupId>
       <artifactId>spring-test-profiler</artifactId>
-      <version>0.0.13</version>
+      <version>0.0.16</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -142,8 +131,38 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-test</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webclient-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-restclient-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webflux-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webmvc-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security-oauth2-resource-server-test</artifactId>
       <scope>test</scope>
     </dependency>
     <!-- No longer required, recent Mockito version include it -->
@@ -153,23 +172,34 @@
       <scope>test</scope>
     </dependency> -->
     <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-testcontainers</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-docker-compose</artifactId>
+      <scope>runtime</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
       <groupId>org.testcontainers</groupId>
-      <artifactId>postgresql</artifactId>
+      <artifactId>testcontainers-postgresql</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
-      <artifactId>junit-jupiter</artifactId>
+      <artifactId>testcontainers-junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
-      <artifactId>localstack</artifactId>
+      <artifactId>testcontainers-localstack</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
-      <artifactId>selenium</artifactId>
+      <artifactId>testcontainers-selenium</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -192,6 +222,21 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-flyway-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>mockwebserver</artifactId>
       <scope>test</scope>
@@ -199,14 +244,6 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>${commons-lang3.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <!-- Required for tests due to dependency with the AWS SDK v1 !-->
-    <dependency>
-      <groupId>com.amazonaws</groupId>
-      <artifactId>aws-java-sdk-core</artifactId>
-      <version>1.12.780</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -237,7 +274,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.3</version>
         <configuration>
           <properties>
             <configurationParameters>
@@ -251,10 +287,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.5.4</version>
         <configuration>
           <includes>
             <include>**/*IT.java</include>
+            <include>**/*WT.java</include>
           </includes>
         </configuration>
         <executions>
@@ -269,10 +305,11 @@
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
-        <version>1.15.1</version>
+        <version>1.15.4</version>
         <configuration>
           <workingDirectory>src/frontend</workingDirectory>
           <nodeVersion>${node.version}</nodeVersion>
+          <npmVersion>${npm.version}</npmVersion>
         </configuration>
         <executions>
           <execution>
@@ -293,19 +330,6 @@
             </configuration>
           </execution>
           <execution>
-            <id>npm test</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <phase>generate-resources</phase>
-            <configuration>
-              <environmentVariables>
-                <CI>true</CI>
-              </environmentVariables>
-              <arguments>test</arguments>
-            </configuration>
-          </execution>
-          <execution>
             <id>npm build</id>
             <goals>
               <goal>npm</goal>
@@ -316,6 +340,19 @@
                 <CI>true</CI>
               </environmentVariables>
               <arguments>run build</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm test</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <environmentVariables>
+                <CI>true</CI>
+              </environmentVariables>
+              <arguments>test</arguments>
             </configuration>
           </execution>
         </executions>

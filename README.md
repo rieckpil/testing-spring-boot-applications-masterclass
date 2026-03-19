@@ -2,7 +2,7 @@
 
 [![Masterclass](https://rieckpil.de/wp-content/uploads/2020/09/testing-spring-boot-applications-masterclass-course-logo.png)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
 
-[![](https://img.shields.io/badge/Spring%20Boot%20Version-3.5.0-orange)](/pom.xml)
+[![](https://img.shields.io/badge/Spring%20Boot%20Version-4.0.2-orange)](/pom.xml)
 [![](https://img.shields.io/badge/Java%20Version-21-orange)](/pom.xml)
 [![](https://img.shields.io/badge/Enroll-Now-orange)](https://rieckpil.de/testing-spring-boot-applications-masterclass/)
 
@@ -125,6 +125,8 @@ Even though the technical setup for your day-to-day projects might differ, the t
 
 `code-along` branch: [![Build & Test Maven Project (code-along)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/workflows/Build%20&%20Test%20Maven%20Project/badge.svg?branch=code-along)](https://github.com/rieckpil/testing-spring-boot-applications-masterclass/actions/workflows/maven.yml?query=branch%3Acode-along)
 
+`spring-boot-3` branch: Keeping the Spring Boot 3 version alive for those who are still on Spring Boot 3 and want to learn testing with that version.
+
 * [Course Landing Page with FAQ](https://rieckpil.de/testing-spring-boot-applications-masterclass/#FAQ)
 * [Course Overview](https://rieckpil.de/courses/testing-spring-boot-applications-masterclass/)
 * [Course Login](https://rieckpil.de/wp-login.php)
@@ -198,11 +200,10 @@ OS name: "linux", version: "5.4.0-92-generic", arch: "amd64", family: "unix"
 
 Assuming your local setups meets all requirements as stated above, you can now start the application:
 
-1. Make sure your Docker Engine is up- and running
-2. Start the required infrastructure components with `docker-compose up`
-3. Run the application with `./mvnw spring-boot:run` or inside your IDE
-4. Access http://localhost:8080 for the application frontend
-5. (Optional) Access http://localhost:8888 for the Keycloak Admin interface
+1. Make sure your Docker Engine is up- and running and `java -version` points to a Java 21 JDK
+2. Run the application with `./mvnw spring-boot:run` or the `Application` class inside your IDE. This will start a local Docker Compose environment for all infrastructure components
+3. Access http://localhost:8080 for the application frontend
+4. (Optional) Access http://localhost:8888 for the Keycloak Admin interface
 
 Valid application users:
 
@@ -312,7 +313,9 @@ npm config get https-proxy
 
 ### AWS SDK Proxy Configuration (LocalStack Connection)
 
-When running the application, the AWS SDK may attempt to route localhost connections (to LocalStack) through your corporate proxy, which will fail. To prevent this, add the following JVM argument when starting the application:
+When running the application, the AWS SDK may attempt to route localhost connections (to LocalStack) through your corporate proxy, which may will fail.
+
+To prevent this, add the following JVM argument when starting the application:
 
 ```bash
 # Using Maven

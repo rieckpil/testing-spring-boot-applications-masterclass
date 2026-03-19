@@ -1,7 +1,7 @@
 package de.rieckpil.courses.config;
 
-import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
-import org.springframework.boot.actuate.health.HealthEndpoint;
+import org.springframework.boot.health.actuate.endpoint.HealthEndpoint;
+import org.springframework.boot.security.autoconfigure.actuate.web.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,11 +13,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class WebSecurityConfig {
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) {
     httpSecurity
         .authorizeHttpRequests(
             authorize ->
@@ -25,6 +25,8 @@ public class WebSecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/api/books")
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/books/reviews")
+                    .permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/config")
                     .permitAll()
                     .requestMatchers("/api/**")
                     .authenticated()

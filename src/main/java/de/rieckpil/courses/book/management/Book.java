@@ -3,7 +3,12 @@ package de.rieckpil.courses.book.management;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import org.hibernate.annotations.NaturalId;
 
 @Entity
@@ -18,7 +23,9 @@ public class Book {
   @Column(nullable = false)
   private String title;
 
-  @NaturalId private String isbn;
+  @NaturalId
+  @Column(nullable = false)
+  private String isbn;
 
   private String author;
 
@@ -106,8 +113,12 @@ public class Book {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof Book)) return false;
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Book)) {
+      return false;
+    }
     Book book = (Book) o;
     return Objects.equals(isbn, book.getIsbn());
   }
