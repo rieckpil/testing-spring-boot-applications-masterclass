@@ -1,6 +1,6 @@
 services:
   database:
-    image: postgres:17.2
+    image: postgres:17.9
     environment:
       - POSTGRES_USER=test
       - POSTGRES_PASSWORD=test
