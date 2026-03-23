@@ -61,7 +61,7 @@ public class TestcontainersConfig {
 
   @Bean
   GenericContainer<?> keycloakContainer() {
-    return new GenericContainer<>(DockerImageName.parse("quay.io/keycloak/keycloak:18.0.2"))
+    return new GenericContainer<>(DockerImageName.parse("quay.io/keycloak/keycloak:26.5.6"))
         .withCommand("start-dev", "--http-relative-path", "/auth", "--import-realm")
         .withEnv("KEYCLOAK_DB", "dev-file")
         .withEnv("KEYCLOAK_ADMIN", "keycloak")
