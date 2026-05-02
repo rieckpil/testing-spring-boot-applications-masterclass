@@ -48,7 +48,7 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 class BookSynchronizationListenerIT {
 
   static PostgreSQLContainer database =
-      new PostgreSQLContainer("postgres:17.2")
+      new PostgreSQLContainer("postgres:17.9")
           .withDatabaseName("test")
           .withUsername("duke")
           .withPassword("s3cret");

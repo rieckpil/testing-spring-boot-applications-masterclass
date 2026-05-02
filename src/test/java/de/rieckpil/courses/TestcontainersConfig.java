@@ -48,7 +48,7 @@ public class TestcontainersConfig {
   @Bean
   @ServiceConnection
   PostgreSQLContainer database() {
-    return new PostgreSQLContainer("postgres:17.2")
+    return new PostgreSQLContainer("postgres:17.9")
         .withDatabaseName("test")
         .withUsername("duke")
         .withPassword("s3cret");
