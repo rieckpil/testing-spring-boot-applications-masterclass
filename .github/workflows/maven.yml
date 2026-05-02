@@ -51,7 +51,7 @@ jobs:
           fi
 
       - name: Archive Selenide outcome on failure
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         if: ${{ always() && steps.build.outcome == 'failure' }}
         with:
           name: selenide-failure-captures
