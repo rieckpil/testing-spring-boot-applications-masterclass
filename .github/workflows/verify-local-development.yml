@@ -29,12 +29,20 @@ jobs:
 
       - name: Start application and verify actuator health
         run: ./mvnw spring-boot:run -DskipTests --no-transfer-progress
+        env:
+          # Surface what Spring Boot's Docker Compose support is doing (which service/port
+          # it probes, the compose commands it runs, and readiness-check progress).
+          LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_BOOT_DOCKER_COMPOSE: DEBUG
+          # Don't run `docker compose down` when startup fails, so the containers
+          # (and their logs) survive for the "Stop infrastructure" step below.
+          SPRING_DOCKER_COMPOSE_LIFECYCLE_MANAGEMENT: start_only
    #      / & timeout 180 .github/workflows/health-check.sh 8080
 
       - name: Stop infrastructure
         if: always()
         run: |
-          docker compose logs
+          docker compose ps -a
+          docker compose logs --no-color
           docker compose down
 
   verify-spring-boot-test-run:
