@@ -45,3 +45,5 @@ src/docs/architecture/*.jpg
 
 .allure
 allure-results
+
+.diffblue/
