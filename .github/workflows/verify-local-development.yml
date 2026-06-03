@@ -35,7 +35,6 @@ jobs:
       - name: Stop infrastructure
         if: always()
         run: |
-          docker compose logs
           docker compose down
 
   verify-spring-boot-test-run:

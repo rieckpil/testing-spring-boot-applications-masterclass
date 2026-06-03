@@ -33,4 +33,3 @@ services:
         read_only: true
     ports:
       - "9324:9324"
-      - "9325:9325"
