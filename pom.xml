@@ -122,7 +122,7 @@
     <dependency>
       <groupId>digital.pragmatech.testing</groupId>
       <artifactId>spring-test-profiler</artifactId>
-      <version>0.0.16</version>
+      <version>0.2.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>
