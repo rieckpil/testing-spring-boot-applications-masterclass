@@ -29,7 +29,7 @@ jobs:
 
       - name: Start application and verify actuator health
         run: |
-          ./mvnw spring-boot:run -DskipTests --no-transfer-progress &
+          ./mvnw spring-boot:run -Dmaven.test.skip=true --no-transfer-progress &
           timeout 180 .github/workflows/health-check.sh 8080
 
       - name: Stop infrastructure
@@ -56,5 +56,5 @@ jobs:
 
       - name: Start application via Testcontainers and verify actuator health
         run: |
-          ./mvnw spring-boot:test-run -DskipTests --no-transfer-progress &
+          ./mvnw spring-boot:test-run -Dmaven.test.skip=true --no-transfer-progress &
           timeout 300 .github/workflows/health-check.sh 8080

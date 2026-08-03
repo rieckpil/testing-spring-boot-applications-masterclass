@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>4.0.2</version>
+    <version>4.1.0</version>
     <relativePath/>
     <!-- lookup parent from repository -->
   </parent>
@@ -20,11 +20,10 @@
     <java.version>21</java.version>
     <node.version>v24.12.0</node.version>
     <npm.version>10.9.2</npm.version>
-    <spring-cloud-aws.version>4.0.0</spring-cloud-aws.version>
+    <spring-cloud-aws.version>4.1.0</spring-cloud-aws.version>
     <testcontainers.version>2.0.5</testcontainers.version>
     <wiremock.version>3.13.0</wiremock.version>
     <p6spy.version>3.9.1</p6spy.version>
-    <mockito.version>5.11.0</mockito.version>
     <selenide.version>7.14.0</selenide.version>
     <selenium.version>4.40.0</selenium.version>
     <commons-lang3.version>3.17.0</commons-lang3.version>
@@ -122,7 +121,7 @@
     <dependency>
       <groupId>digital.pragmatech.testing</groupId>
       <artifactId>spring-test-profiler</artifactId>
-      <version>0.0.16</version>
+      <version>0.2.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>
