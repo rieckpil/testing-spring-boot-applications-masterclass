@@ -56,5 +56,5 @@ jobs:
 
       - name: Start application via Testcontainers and verify actuator health
         run: |
-          ./mvnw spring-boot:test-run -Dmaven.test.skip=true --no-transfer-progress &
+          ./mvnw spring-boot:test-run --no-transfer-progress &
           timeout 300 .github/workflows/health-check.sh 8080
