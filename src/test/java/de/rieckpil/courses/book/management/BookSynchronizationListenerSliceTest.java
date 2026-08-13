@@ -51,7 +51,7 @@ class BookSynchronizationListenerSliceTest {
 
   @Container
   static LocalStackContainer localStack =
-      new LocalStackContainer(DockerImageName.parse("localstack/localstack:4.9.2"))
+      new LocalStackContainer(DockerImageName.parse("localstack/localstack:4.14.0"))
           .withServices(Service.SQS.getLocalStackName())
           // can be removed with version 0.12.17 as LocalStack now has multi-region support
           // https://docs.localstack.cloud/localstack/configuration/#deprecated
