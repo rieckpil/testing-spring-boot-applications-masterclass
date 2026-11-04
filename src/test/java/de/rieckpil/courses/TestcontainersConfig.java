@@ -56,7 +56,7 @@ public class TestcontainersConfig {
 
   @Bean
   public LocalStackContainer localStack() {
-    return new LocalStackContainer(DockerImageName.parse("localstack/localstack:4.9.2"));
+    return new LocalStackContainer(DockerImageName.parse("localstack/localstack:4.14.0"));
   }
 
   @Bean
